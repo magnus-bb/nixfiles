@@ -175,7 +175,7 @@
   systemd.services."autovt@tty1".enable = false;
 
   # Fonts
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     source-code-pro
     font-awesome          # Icons
     corefonts             # MS
