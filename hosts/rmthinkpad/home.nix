@@ -18,7 +18,7 @@
 		# Links whole ranger directory dotfiles into .config/ranger
 		".config/ranger" = {
 			recursive = true;
-			source = ../../nixos/ranger; # ranger config
+			source = ../../ranger; # ranger config
 		};
 	};
 	
