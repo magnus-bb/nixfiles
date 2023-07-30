@@ -1,7 +1,11 @@
 { inputs, pkgs, lib, ... }: 
 let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
-in { # use lib.fakeSha256 as the sha256 for a github release and run to get the real sha256 to insert
+in {
+  imports = [
+		inputs.spicetify-nix.homeManagerModule
+	];
+
 	home.stateVersion = "23.05";
 
 	fonts.fontconfig.enable = true;
@@ -23,6 +27,7 @@ in { # use lib.fakeSha256 as the sha256 for a github release and run to get the 
 	
 	programs = {
 		starship.enable = true;
+
 		bat = {
 			enable = true;
 			config = {
@@ -231,6 +236,22 @@ in { # use lib.fakeSha256 as the sha256 for a github release and run to get the 
 				bindkey '^[[3;5~' kill-word
 			'';
 		};
+
+		# spicetify = {
+    #   enable = true;
+
+    #   theme = spicePkgs.themes.Nord;
+    #   # colorScheme = "flamingo";
+
+    #   enabledExtensions = with spicePkgs.extensions; [
+    #     fullAppDisplay
+    #     shuffle
+    #     hidePodcasts
+		# 		trashbin
+		# 		powerBar
+		# 		skipOrPlayLikedSongs
+    #   ];
+    # };
 	};
 
 	gtk = {
