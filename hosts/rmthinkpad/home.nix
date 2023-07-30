@@ -12,7 +12,7 @@
 	#* Or something like this perhaps
 	home.file = {
 		".config/ranger/rc.conf".source = ../../ranger/rc.conf; # ranger config
-		".config/ranger/plugins/ranger_devicons/__init__.py".source = ../ranger/plugins/ranger_devicons/__init__.py; # ranger icons plugin
+		".config/ranger/plugins/ranger_devicons/__init__.py".source = ../../ranger/plugins/ranger_devicons/__init__.py; # ranger icons plugin
 		".config/ranger/plugins/ranger_devicons/devicons.py".source = ../../ranger/plugins/ranger_devicons/devicons.py; # ranger icons plugin
 	};
 	
