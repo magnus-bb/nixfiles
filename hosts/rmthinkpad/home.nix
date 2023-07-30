@@ -240,8 +240,7 @@ in {
 		spicetify = {
       enable = true;
 
-      theme = spicePkgs.themes.Nord;
-      # colorScheme = "flamingo";
+      theme = spicePkgs.themes.Ziro;
 
       enabledExtensions = with spicePkgs.extensions; [
         fullAppDisplay
@@ -456,7 +455,7 @@ in {
 		google-chrome
 		firefox
 		vscode
-		spotify
+		# spotify
 		obsidian
 		discord
 
