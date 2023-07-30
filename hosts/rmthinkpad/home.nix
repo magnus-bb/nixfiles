@@ -237,21 +237,21 @@ in {
 			'';
 		};
 
-		# spicetify = {
-    #   enable = true;
+		spicetify = {
+      enable = true;
 
-    #   theme = spicePkgs.themes.Nord;
-    #   # colorScheme = "flamingo";
+      theme = spicePkgs.themes.Nord;
+      # colorScheme = "flamingo";
 
-    #   enabledExtensions = with spicePkgs.extensions; [
-    #     fullAppDisplay
-    #     shuffle
-    #     hidePodcasts
-		# 		trashbin
-		# 		powerBar
-		# 		skipOrPlayLikedSongs
-    #   ];
-    # };
+      enabledExtensions = with spicePkgs.extensions; [
+        fullAppDisplay
+        shuffle
+        hidePodcasts
+				trashbin
+				powerBar
+				skipOrPlayLikedSongs
+      ];
+    };
 	};
 
 	gtk = {
