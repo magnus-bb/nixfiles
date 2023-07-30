@@ -1,4 +1,7 @@
-{ inputs, pkgs, lib, ... }: { # use lib.fakeSha256 as the sha256 for a github release and run to get the real sha256 to insert
+{ inputs, pkgs, lib, ... }: 
+let
+ spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
+in { # use lib.fakeSha256 as the sha256 for a github release and run to get the real sha256 to insert
 	home.stateVersion = "23.05";
 
 	fonts.fontconfig.enable = true;
