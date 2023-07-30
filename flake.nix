@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # spicetify-nix.url = "github:the-argus/spicetify-nix";
+    spicetify-nix.url = "github:the-argus/spicetify-nix"; # theming for spotify
 
     # TODO: Add any other flake you might need
     # hardware.url = "github:nixos/nixos-hardware";
