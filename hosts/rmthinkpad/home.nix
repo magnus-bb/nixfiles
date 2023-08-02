@@ -18,11 +18,17 @@ in {
 	#   '';
 	#* Or something like this perhaps
 	home.file = {
-		# Links whole ranger directory dotfiles into .config/ranger
 		".config/ranger" = {
 			recursive = true;
-			source = ../../dotfiles/ranger; # ranger config
+			source = ../../dotfiles/ranger;
 		};
+
+		".config/cava" = {
+			recursive = true;
+			source = ../../dotfiles/cava;
+		};
+
+
 	};
 	
 	programs = {
