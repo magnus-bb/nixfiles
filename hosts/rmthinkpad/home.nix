@@ -382,7 +382,7 @@ in {
 
 			"org/gnome/shell/keybindings" = {
 				# toggle-overview = [ "<Control><Alt>Tab" ]; # logitech mx master thumb button sends this keybind
-				show-screenshot-ui = [ "<Shift><Super>s" ];
+				show-screenshot-ui = [ "Print" "<Shift><Super>S" ];
 			};
 
 			"org/gnome/mutter" = {
