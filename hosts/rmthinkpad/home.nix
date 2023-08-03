@@ -10,13 +10,7 @@ in {
 
 	fonts.fontconfig.enable = true;
 
-	#* Use this to manage dotfiles
-	# home.activation.linkDotfiles = lib.hm.dag.entryAfter [ "writeBoundary" ]
-	#   ''
-	#     ln -sfn ./ranger/rc.conf $HOME/.config/ranger/rc.conf
-	#     ...
-	#   '';
-	#* Or something like this perhaps
+	# Dotfiles
 	home.file = {
 		".config/ranger" = {
 			recursive = true;
@@ -27,8 +21,6 @@ in {
 			recursive = true;
 			source = ../../dotfiles/cava;
 		};
-
-
 	};
 	
 	programs = {
@@ -461,9 +453,10 @@ in {
 		google-chrome
 		firefox
 		vscode
-		# spotify
+		# spotify: spicetify install spotify too
 		obsidian
 		discord
+		figma-linux
 
 		# Terminal
 		thefuck
