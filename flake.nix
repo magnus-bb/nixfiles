@@ -18,6 +18,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    inputs.hyprland.url = "github:hyprwm/Hyprland";
+
     spicetify-nix.url = "github:the-argus/spicetify-nix"; # theming for spotify
 
     # TODO: Add any other flake you might need
