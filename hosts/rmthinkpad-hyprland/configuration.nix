@@ -137,10 +137,11 @@
     # };
   };
 
-  # programs.hyprland = {
-  #   enable = true;
-  #   package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  # };
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+  };
 
   services = {
     xserver = {
@@ -148,7 +149,10 @@
       enable = true;
 
       displayManager = {
-        gdm.enable = true;
+        gdm = {
+          enable = true;
+          wayland = true; # necessary for hyprland?
+        };
         # Enable automatic login for the user.
         autoLogin.enable = true;
         autoLogin.user = user;
@@ -239,6 +243,7 @@
     # $ nix search wget
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
+      xdg-desktop-portal-hyprland # helps windows communicate in hyprland
     ];
 
     # GNOME apps I don't need

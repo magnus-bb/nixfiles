@@ -7,8 +7,8 @@
 
     # Nix user repository packages
     nur = {
-        url = "github:nix-community/NUR";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     
     home-manager = {
@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # inputs.hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     spicetify-nix.url = "github:the-argus/spicetify-nix"; # theming for spotify
 
@@ -41,7 +41,7 @@
       rmthinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
 
-        specialArgs = { inherit inputs user; }; # Pass flake inputs to our config
+        specialArgs = { inherit inputs user; host = "rmthinkpad"; }; # Pass flake inputs to our config
 
         modules = [
           # This adds a nur configuration option.
@@ -78,7 +78,7 @@
       rmthinkpad-hyprland = nixpkgs.lib.nixosSystem {
         inherit system;
 
-        specialArgs = { inherit inputs user; }; # Pass flake inputs to our config
+        specialArgs = { inherit inputs user; host = "rmthinkpad-hyprland"; }; # Pass flake inputs to our config
 
         modules = [
           # This adds a nur configuration option.

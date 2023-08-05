@@ -332,7 +332,7 @@ in {
 				theme = "Minimal Dark";
 			};
 			"org/gnome/shell/extensions/vertical-workspaces" = {
-				dash-position = 2;
+				dash-position = 4; # hide dash in overview
 				dash-show-recent-files-icon = 0;
 				dash-show-windows-icon = false;
 				hot-corner-action = 0;
@@ -344,7 +344,6 @@ in {
 				show-app-icon-position = 2;
 				show-bg-in-overview = true;
 				startup-state = 0;
-				dash-position = 4; # hide dash in overview
 			};
 			"org/gnome/shell/extensions/net/gfxmonk/scroll-workspaces" = {
 				indicator = true;
