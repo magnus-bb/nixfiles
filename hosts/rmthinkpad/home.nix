@@ -424,7 +424,7 @@ in {
 	};
 
 	home.packages = with pkgs; [
-		# GNOME
+		# DE
 		gnome.dconf-editor
 		gnome.gnome-tweaks
 		gnomeExtensions.gtile
@@ -435,6 +435,7 @@ in {
 		gnomeExtensions.user-themes
 		gnomeExtensions.clipman
 		layan-gtk-theme
+		eww-wayland
 
 		# Apps
 		# fixes slack screensharing with wayland

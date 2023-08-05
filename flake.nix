@@ -6,7 +6,10 @@
     # nixpkgs-un.url = "github:NixOS/nixpkgs/nixos-23.05";
 
     # Nix user repository packages
-    nur.url = github:nix-community/NUR;
+    nur = {
+        url = "github:nix-community/NUR";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
     
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -57,6 +60,13 @@
             # Use extraSpecialArgs to pass arguments to home.nix
             extraSpecialArgs = { inherit inputs; };
           };
+
+          nixpkgs.overlays = [
+            # adds nur to pkgs: https://www.reddit.com/r/NixOS/comments/r9544v/comment/hnl6ywr/
+            # e.g. nur packages can be found with something like: pkgs.nur.repos.mic92.hello-nur
+            # modules from nur should be included in home.nix's 'imports [...]'
+            nur.overlay
+          ];
         }
       ];
     };
