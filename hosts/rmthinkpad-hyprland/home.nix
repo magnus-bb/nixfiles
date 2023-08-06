@@ -21,6 +21,11 @@ in {
 			recursive = true;
 			source = ../../dotfiles/cava;
 		};
+
+		".config/hypr" = {
+			recursive = true;
+			source = ../../dotfiles/hypr;
+		};
 	};
 	
 	programs = {

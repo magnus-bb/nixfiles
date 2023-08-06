@@ -255,7 +255,8 @@
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
       # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
-      wlr-randr
+      # wlr-randr
+      nwg-displays # GUI for setting monitors
     ];
 
     # # GNOME apps I don't need
