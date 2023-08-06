@@ -295,6 +295,9 @@ in {
 
 	dconf = {
 		enable = true; # allow gnome settings with dconf
+		settings = {
+
+		}
 	};
 
 	home.packages = with pkgs; [

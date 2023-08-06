@@ -239,6 +239,7 @@
       # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
       # wlr-randr
       wdisplays # GUI for setting monitors
+      gnome.dconf-editor # GUI for editing configurations
     ];
   };
 
