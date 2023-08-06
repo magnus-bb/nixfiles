@@ -22,3 +22,7 @@
     )
   )
 )
+
+(defwindow panel
+  (workspaces)
+  (window_w))
