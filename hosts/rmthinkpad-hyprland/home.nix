@@ -26,6 +26,11 @@ in {
 			recursive = true;
 			source = ../../dotfiles/hypr;
 		};
+
+		".config/eww" = {
+			recursive = true;
+			source = ../../dotfiles/eww;
+		};
 	};
 	
 	programs = {
