@@ -150,34 +150,17 @@
       enable = true;
 
       displayManager = {
-        sddm = {
+        # sddm = {
+        #   enable = true;
+        # };
+        gdm = {
           enable = true;
+          wayland = true; # necessary for hyprland?
         };
-      #   gdm = {
-      #     enable = true;
-      #     wayland = true; # necessary for hyprland?
-      #   };
-      #   # Enable automatic login for the user.
-      #   autoLogin.enable = true;
-      #   autoLogin.user = user;
+        # Enable automatic login for the user.
+        autoLogin.enable = true;
+        autoLogin.user = user;
       };
-      # Enable the GNOME Desktop Environment.
-      # desktopManager.gnome.enable = true;
-      # Keyboard
-      # layout = "dk";
-      # xkbVariant = "";
-      # libinput = {
-      #   # touchpad
-      #   enable = true;
-      #   # disabling mouse acceleration
-      #   mouse = {
-      #     accelProfile = "flat";
-      #   };
-      #   # disabling touchpad acceleration
-      #   touchpad = {
-      #     accelProfile = "flat";
-      #   };
-      # };
     };
     # Enable CUPS to print documents.
     printing.enable = true;
@@ -205,8 +188,7 @@
   ];
 
   # Configure console keymap
-  # console.keyMap = "dk-latin1";
-  console.useXkbConfig = true;
+  console.keyMap = "dk-latin1";
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -256,17 +238,8 @@
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
       # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
       # wlr-randr
-      nwg-displays # GUI for setting monitors
+      wdisplays # GUI for setting monitors
     ];
-
-    # # GNOME apps I don't need
-    # gnome.excludePackages = with pkgs.gnome; [
-    #   epiphany
-    #   gedit
-    #   yelp
-    #   geary
-    #   seahorse
-    # ];
   };
 
 

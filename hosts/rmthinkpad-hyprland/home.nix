@@ -119,7 +119,7 @@ in {
 			# };
 			shellAliases = {
 				upnix = "sudo nixos-rebuild switch --flake /etc/nixos/#";
-				# ednix = "$EDITOR /etc/nixos/configuration.nix";
+				ednix = "$EDITOR /etc/nixos";
 
 				zshreload = "source ~/.zshrc";
 
@@ -295,151 +295,10 @@ in {
 
 	dconf = {
 		enable = true; # allow gnome settings with dconf
-
-		settings = {
-			"org/gnome/shell" = {
-				disable-user-extensions = false;
-
-				# `gnome-extensions list` to list extensions
-				enabled-extensions = [
-					"clipman@popov895.ukr.net"
-					"blur-my-shell@aunetx"
-					"gTile@vibou"
-					"scroll-workspaces@gfxmonk.net"
-					"vertical-workspaces@G-dH.github.com"
-					"user-theme@gnome-shell-extensions.gcampax.github.com"
-					"appindicatorsupport@rgcjonas.gmail.com"
-				];
-
-			};
-
-			"org/gnome/shell/extensions/clipman" = {
-				history-size = 25;
-				toggle-menu-shortcut = [ "<Super>c" ];
-				web-search-url = "https://google.com/?q=%s";
-			};
-			"org/gnome/shell/extensions/blur-my-shell" = {
-				hacks-level = 3;
-			};
-			"org/gnome/shell/extensions/blur-my-shell/panel" = {
-				unblur-in-overview = true;
-			};
-			"org/gnome/shell/extensions/gtile" = {
-				insets-primary-bottom = 8;
-				insets-primary-left = 8;
-				insets-primary-right = 8;
-				insets-primary-top = 8;
-				insets-secondary-bottom = 8;
-				insets-secondary-left = 8;
-				insets-secondary-right = 8;
-				insets-secondary-top = 8;
-				window-margin = 8;
-				theme = "Minimal Dark";
-			};
-			"org/gnome/shell/extensions/vertical-workspaces" = {
-				dash-position = 4; # hide dash in overview
-				dash-show-recent-files-icon = 0;
-				dash-show-windows-icon = false;
-				hot-corner-action = 0;
-				hot-corner-fullscreen = 0;
-				hot-corner-position = 0;
-				overview-bg-blur-sigma = 40;
-				overview-bg-brightness = 100;
-				search-windows-enable = false;
-				show-app-icon-position = 2;
-				show-bg-in-overview = true;
-				startup-state = 0;
-			};
-			"org/gnome/shell/extensions/net/gfxmonk/scroll-workspaces" = {
-				indicator = true;
-				scroll-delay = 50;
-			};
-
-			"org/gnome/shell/extensions/user-theme" = {
-				name = "Layan-Dark";
-			};
-
-			"org/gnome/desktop/interface" = {
-				color-scheme = "prefer-dark";
-			};
-
-			"org/gnome/desktop/wm/preferences" = {
-				resize-with-right-button = true;
-			};
-
-			"org/gnome/desktop/peripherals/touchpad" = {
-				tap-to-click = true;
-			};
-
-			"org/gnome/desktop/wm/keybindings" = {
-				switch-to-workspace-up = ["<Control><Super>Up"];
-				switch-to-workspace-down = ["<Control><Super>Down"];
-				maximize = ["<Super>M" "<Super>Up"];
-				close = ["<Super>Q"];
-				# switch-panels = ["<Shift><Control>Tab"]; # only rebound so ctrl+right-alt+tab can be bound to the overview (because logitech mx master mouse will trigger this keybind with thumb button)
-			};
-
-			# "org/gnome/desktop/input-sources" = {
-			#   xkb-options = [ "lv3:ralt_alt" ]; # allows binding right-alt (used by logitech mx master mouse to show overview)
-			# };
-
-			"org/gnome/shell/keybindings" = {
-				# toggle-overview = [ "<Control><Alt>Tab" ]; # logitech mx master thumb button sends this keybind
-				show-screenshot-ui = [ "Print" "<Shift><Super>S" ];
-			};
-
-			"org/gnome/mutter" = {
-				workspaces-only-on-primary = true;
-				dynamic-workspaces = true;
-				edge-tiling = true;
-			};
-
-			"org/gnome/desktop/calendar" = {
-				show-weekdate = true;
-			};
-
-			"org/gnome/desktop/interface" = {
-				clock-show-weekday = true;
-			};
-
-			# Shortcuts for launching Kitty and System Monitor on GNOME
-			"org/gnome/settings-daemon/plugins/media-keys" = {
-				calculator = [ "Calculator" ];
-				home = [ "<Super>f" ];
-				www = [ "<Super>b" ];
-
-				custom-keybindings = [
-					"/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" # Kitty
-					"/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/" # System Monitor
-				];
-			};
-			# Kitty
-			"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-				binding = "<Super>T";
-				command = "kitty";
-				name = "Launch Kitty";
-			};
-			# System Monitor
-			"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-				binding = "<Shift><Control>Escape";
-				command = "gnome-system-monitor";
-				name = "Launch System Monitor";
-			};
-		};
 	};
 
 	home.packages = with pkgs; [
 		# DE
-		gnome.dconf-editor
-		gnome.gnome-tweaks
-		gnomeExtensions.gtile
-		gnomeExtensions.top-panel-workspace-scroll
-		gnomeExtensions.blur-my-shell
-		gnomeExtensions.vertical-workspaces
-		gnomeExtensions.gsconnect
-		gnomeExtensions.user-themes
-		gnomeExtensions.clipman
-		layan-gtk-theme
 		eww-wayland
 
 		# Apps
