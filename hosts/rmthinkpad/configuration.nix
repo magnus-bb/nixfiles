@@ -211,7 +211,7 @@
     ${user} = {
       isNormalUser = true;
       description = "Magnus Bendix Borregaard";
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker" "admin"];
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker"];
       shell = pkgs.zsh;
     };
   };

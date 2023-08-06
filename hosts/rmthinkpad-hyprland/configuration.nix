@@ -150,44 +150,47 @@
       enable = true;
 
       displayManager = {
-        gdm = {
+        sddm = {
           enable = true;
-          wayland = true; # necessary for hyprland?
         };
-        # Enable automatic login for the user.
-        # autoLogin.enable = true;
-        # autoLogin.user = user;
+      #   gdm = {
+      #     enable = true;
+      #     wayland = true; # necessary for hyprland?
+      #   };
+      #   # Enable automatic login for the user.
+      #   autoLogin.enable = true;
+      #   autoLogin.user = user;
       };
       # Enable the GNOME Desktop Environment.
-      desktopManager.gnome.enable = true;
+      # desktopManager.gnome.enable = true;
       # Keyboard
-      layout = "dk";
-      xkbVariant = "";
-      libinput = {
-        # touchpad
-        enable = true;
-        # disabling mouse acceleration
-        mouse = {
-          accelProfile = "flat";
-        };
-        # disabling touchpad acceleration
-        touchpad = {
-          accelProfile = "flat";
-        };
-      };
+      # layout = "dk";
+      # xkbVariant = "";
+      # libinput = {
+      #   # touchpad
+      #   enable = true;
+      #   # disabling mouse acceleration
+      #   mouse = {
+      #     accelProfile = "flat";
+      #   };
+      #   # disabling touchpad acceleration
+      #   touchpad = {
+      #     accelProfile = "flat";
+      #   };
+      # };
     };
     # Enable CUPS to print documents.
     printing.enable = true;
 
     flatpak.enable = true;
 
-    # Allows GNOME systray icons extension to work (https://nixos.wiki/wiki/GNOME)
-    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    # # Allows GNOME systray icons extension to work (https://nixos.wiki/wiki/GNOME)
+    # udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   };
 
-  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
+  # # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  # systemd.services."getty@tty1".enable = false;
+  # systemd.services."autovt@tty1".enable = false;
 
   # Fonts
   fonts.packages = with pkgs; [
@@ -202,7 +205,8 @@
   ];
 
   # Configure console keymap
-  console.keyMap = "dk-latin1";
+  # console.keyMap = "dk-latin1";
+  console.useXkbConfig = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -210,11 +214,13 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    audio.enable = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -226,7 +232,7 @@
     ${user} = {
       isNormalUser = true;
       description = "Magnus Bendix Borregaard";
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker" "admin"];
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker"];
       shell = pkgs.zsh;
     };
   };
@@ -252,14 +258,14 @@
       wlr-randr
     ];
 
-    # GNOME apps I don't need
-    gnome.excludePackages = with pkgs.gnome; [
-      epiphany
-      gedit
-      yelp
-      geary
-      seahorse
-    ];
+    # # GNOME apps I don't need
+    # gnome.excludePackages = with pkgs.gnome; [
+    #   epiphany
+    #   gedit
+    #   yelp
+    #   geary
+    #   seahorse
+    # ];
   };
 
 
