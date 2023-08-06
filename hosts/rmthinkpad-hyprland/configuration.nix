@@ -99,7 +99,7 @@
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
 
-      # Cache hyprland so we don't rebuild from source every time
+      # Use hyprland cache so we don't rebuild from source every time
       substituters = ["https://hyprland.cachix.org"];
       trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
@@ -140,6 +140,7 @@
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
   };
 
@@ -154,8 +155,8 @@
           wayland = true; # necessary for hyprland?
         };
         # Enable automatic login for the user.
-        autoLogin.enable = true;
-        autoLogin.user = user;
+        # autoLogin.enable = true;
+        # autoLogin.user = user;
       };
       # Enable the GNOME Desktop Environment.
       desktopManager.gnome.enable = true;
@@ -234,16 +235,21 @@
 
   environment = {
     shells = with pkgs; [ zsh ]; # GDM only shows users that have their default shell set to a shell listed in /etc/shells. This adds the zsh package to /etc/shells
+
     variables = {
       EDITOR = "code";
       VISUAL = "code";
+    };
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
-      xdg-desktop-portal-hyprland # helps windows communicate in hyprland
+      # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
+      wlr-randr
     ];
 
     # GNOME apps I don't need
