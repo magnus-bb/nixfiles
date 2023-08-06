@@ -301,8 +301,9 @@ in {
 	};
 
 	home.packages = with pkgs; [
-		# DE
-		eww-wayland
+		# DE utils
+		eww-wayland # bar / panel
+		nwg-drawer # launcher (like gnome search)
 
 		# Apps
 		# fixes slack screensharing with wayland
