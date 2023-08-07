@@ -1,9 +1,10 @@
-{ inputs, pkgs, lib, ... }: 
+{ inputs, pkgs, lib, config, ... }: 
 let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
+		inputs.fufexan.homeManagerModules.eww-hyprland
 	];
 
 	home.stateVersion = "23.05";
@@ -27,13 +28,35 @@ in {
 			source = ../../dotfiles/hypr;
 		};
 
-		".config/eww" = {
-			recursive = true;
-			source = ../../dotfiles/eww;
+		# Product Sans font used by fufexan's eww bar
+  	"${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
+			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
+			src = pkgs.fetchzip {
+				url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
+				sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
+				stripRoot = false;
+			};
 		};
+
+		# ".config/eww" = {
+		# 	recursive = true;
+		# 	source = ../../dotfiles/eww;
+		# };
 	};
-	
+
 	programs = {
+		eww-hyprland = {
+			enable = true;
+
+			# default package
+			package = pkgs.eww-wayland;
+
+			# if you want to change colors
+			# colors = builtins.readFile ./latte.scss;
+
+			# set to true to reload on change
+			autoReload = false; 
+		};
 		starship.enable = true;
 
 		bat = {
@@ -307,8 +330,11 @@ in {
 
 	home.packages = with pkgs; [
 		# DE utils
-		eww-wayland # bar / panel
+		# eww-wayland # bar / panel
 		nwg-drawer # launcher (like gnome search)
+		socat # allows us to hook into the socket that shows which window is active (for window title in panel)
+		jq # json processor used by eww widget for workspaces
+		python312 # used for widgets in eww panel
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland

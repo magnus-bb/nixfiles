@@ -240,6 +240,7 @@
       # wlr-randr
       wdisplays # GUI for setting monitors
       gnome.dconf-editor # GUI for editing configurations
+      material-symbols # icon font for fufexan's eww bar
     ];
   };
 

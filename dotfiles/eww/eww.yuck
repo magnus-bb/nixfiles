@@ -1,28 +1,61 @@
-(deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces")
-(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
-(defwidget workspaces []
-  (eventbox :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}" :class "workspaces-widget"
-    (box :space-evenly true
-      (label :text "${workspaces}${current_workspace}" :visible false)
-      (for workspace in workspaces
-        (eventbox :onclick "hyprctl dispatch workspace ${workspace.id}"
-          (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
-            (label :text "${workspace.id}")
-          )
-        )
-      )
-    )
-  )
-)
+; all variables and listeners
+(include "./variables.yuck")
 
-(deflisten window :initial "..." "sh ~/.config/eww/scripts/get-window-title")
-(defwidget window_w []
+; various bar modules
+(include "./modules/bluetooth.yuck")
+(include "./modules/bright.yuck")
+(include "./modules/clock.yuck")
+(include "./modules/indicators.yuck")
+(include "./modules/music.yuck")
+(include "./modules/net.yuck")
+(include "./modules/sys.yuck")
+(include "./modules/volume.yuck")
+(include "./modules/workspaces.yuck")
+
+; individual windows; bar is in this file
+(include "./windows/calendar.yuck")
+(include "./windows/music.yuck")
+(include "./windows/osd.yuck") ; on-screen-display (volume/brightness)
+(include "./windows/system-menu.yuck")
+
+; bar modules alignment
+(defwidget left []
   (box
-    (label :text "${window}"
-    )
-  )
-)
+    :space-evenly false
+    :halign "start"
+    (workspaces)))
 
-(defwindow panel
-  workspaces
-  window_w)
+(defwidget center []
+  (box
+    :space-evenly false
+    :halign "center"
+    (music-module)))
+
+(defwidget right []
+  (box
+    :space-evenly false
+    :halign "end"
+    (indicators)
+    (bright)
+    (volume-module)
+    (bluetooth)
+    (net)
+    (sys)
+    (clock_module)))
+
+(defwidget bar-box []
+  (centerbox
+    (left)
+    (center)
+    (right)))
+
+(defwindow bar
+    :monitor 0
+    :geometry (geometry :x "0%"
+      :y "0%"
+      :width "100%"
+      :height "32px"
+      :anchor "top center")
+    :stacking "fg"
+    :exclusive true
+  (bar-box))

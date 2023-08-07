@@ -20,6 +20,12 @@
 
     hyprland.url = "github:hyprwm/Hyprland";
 
+    fufexan = {
+      url = "github:fufexan/dotfiles";
+      # Override my nixpkgs, binary cache will have less hits
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     spicetify-nix.url = "github:the-argus/spicetify-nix"; # theming for spotify
 
     # TODO: Add any other flake you might need

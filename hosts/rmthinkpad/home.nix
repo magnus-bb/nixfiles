@@ -435,7 +435,6 @@ in {
 		gnomeExtensions.user-themes
 		gnomeExtensions.clipman
 		layan-gtk-theme
-		eww-wayland
 
 		# Apps
 		# fixes slack screensharing with wayland
