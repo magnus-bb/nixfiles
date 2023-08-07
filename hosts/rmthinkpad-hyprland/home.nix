@@ -311,7 +311,7 @@ in {
 		nwg-drawer # launcher (like gnome search)
 
 		# Apps
-		# fixes slack screensharing with wayland
+		# fixes slack screensharing with wayland and forces running under wayland
 		(slack.overrideAttrs
 			(default: {
 				installPhase = default.installPhase + ''
@@ -320,7 +320,7 @@ in {
 					makeWrapper $out/lib/slack/slack $out/bin/slack \
 					--prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
 					--prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-					--add-flags "--enable-features=WebRTCPipeWireCapturer"
+					--add-flags "--enable-features=WebRTCPipeWireCapturer --enable-features=UseOzonePlatform --ozone-platform=wayland"
 				'';
 			})
 		)

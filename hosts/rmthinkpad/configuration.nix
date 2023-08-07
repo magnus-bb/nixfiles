@@ -220,9 +220,13 @@
 
   environment = {
     shells = with pkgs; [ zsh ]; # GDM only shows users that have their default shell set to a shell listed in /etc/shells. This adds the zsh package to /etc/shells
+
     variables = {
       EDITOR = "code";
       VISUAL = "code";
+    };
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
 
     # List packages installed in system profile. To search, run:
