@@ -240,11 +240,8 @@
       # wlr-randr
       wdisplays # GUI for setting monitors
       gnome.dconf-editor # GUI for editing configurations
-      material-symbols # icon font for fufexan's eww bar
     ];
   };
-
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

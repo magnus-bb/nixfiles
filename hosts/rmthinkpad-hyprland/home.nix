@@ -4,7 +4,7 @@ let
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
-		inputs.fufexan.homeManagerModules.eww-hyprland
+		# inputs.fufexan.homeManagerModules.eww-hyprland
 	];
 
 	home.stateVersion = "23.05";
@@ -38,25 +38,13 @@ in {
 			};
 		};
 
-		# ".config/eww" = {
-		# 	recursive = true;
-		# 	source = ../../dotfiles/eww;
-		# };
+		".config/eww" = {
+			recursive = true;
+			source = ../../dotfiles/eww;
+		};
 	};
 
 	programs = {
-		eww-hyprland = {
-			enable = true;
-
-			# default package
-			package = pkgs.eww-wayland;
-
-			# if you want to change colors
-			# colors = builtins.readFile ./latte.scss;
-
-			# set to true to reload on change
-			autoReload = false; 
-		};
 		starship.enable = true;
 
 		bat = {
@@ -330,11 +318,42 @@ in {
 
 	home.packages = with pkgs; [
 		# DE utils
-		# eww-wayland # bar / panel
+		eww-wayland # bar / panel
 		nwg-drawer # launcher (like gnome search)
-		socat # allows us to hook into the socket that shows which window is active (for window title in panel)
-		jq # json processor used by eww widget for workspaces
-		python312 # used for widgets in eww panel
+		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
+		# jq # json processor used by eww widget for workspaces
+		# python312 # used for widgets in eww panel
+
+		# fufexan's eww bar dependencies
+		inputs.fufexan.packages.x86_64-linux.gross
+    material-symbols
+		bash
+    blueberry
+    bluez
+    brillo
+    coreutils
+    dbus
+    findutils
+    gawk
+    gnome.gnome-control-center
+    gnused
+    imagemagick
+    jaq
+    jc
+    libnotify
+    networkmanager
+    pavucontrol
+    playerctl
+    procps
+    pulseaudio
+    ripgrep
+    socat
+    udev
+    upower
+    util-linux
+    wget
+    wireplumber
+    wlogout
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -353,7 +372,7 @@ in {
 		google-chrome
 		firefox
 		vscode
-		# spotify: spicetify install spotify too
+		# spotify: spicetify installs spotify too
 		obsidian
 		discord
 		figma-linux
