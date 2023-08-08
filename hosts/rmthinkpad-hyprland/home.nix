@@ -4,7 +4,6 @@ let
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
-		# inputs.fufexan.homeManagerModules.eww-hyprland
 	];
 
 	home.stateVersion = "23.05";
@@ -28,15 +27,15 @@ in {
 			source = ../../dotfiles/hypr;
 		};
 
-		# Product Sans font used by fufexan's eww bar
-  	"${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
-			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
-			src = pkgs.fetchzip {
-				url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
-				sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
-				stripRoot = false;
-			};
-		};
+		# # Product Sans font used by fufexan's eww bar
+  	# "${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
+		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
+		# 	src = pkgs.fetchzip {
+		# 		url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
+		# 		sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
+		# 		stripRoot = false;
+		# 	};
+		# };
 
 		".config/eww" = {
 			recursive = true;
@@ -44,7 +43,15 @@ in {
 		};
 	};
 
+	services = {
+		# Notification daemon
+		mako = {
+			enable = true;
+		};
+	};
+
 	programs = {
+
 		starship.enable = true;
 
 		bat = {
@@ -325,35 +332,35 @@ in {
 		# python312 # used for widgets in eww panel
 
 		# fufexan's eww bar dependencies
-		inputs.fufexan.packages.x86_64-linux.gross
+		# inputs.fufexan.packages.x86_64-linux.gross
     material-symbols
-		bash
-    blueberry
-    bluez
-    brillo
-    coreutils
-    dbus
-    findutils
-    gawk
-    gnome.gnome-control-center
-    gnused
-    imagemagick
-    jaq
-    jc
-    libnotify
-    networkmanager
-    pavucontrol
-    playerctl
-    procps
-    pulseaudio
-    ripgrep
-    socat
-    udev
-    upower
-    util-linux
-    wget
-    wireplumber
-    wlogout
+		# bash
+    # blueberry
+    # bluez
+    # brillo
+    # coreutils
+    # dbus
+    # findutils
+    # gawk
+    # gnome.gnome-control-center
+    # gnused
+    # imagemagick
+    # jaq
+    # jc
+    # libnotify
+    # networkmanager
+    # pavucontrol
+    # playerctl
+    # procps
+    # pulseaudio
+    # ripgrep
+    # socat
+    # udev
+    # upower
+    # util-linux
+    # wget
+    # wireplumber
+    # wlogout
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -365,13 +372,13 @@ in {
 					makeWrapper $out/lib/slack/slack $out/bin/slack \
 					--prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
 					--prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-					--add-flags "--enable-features=WebRTCPipeWireCapturer --enable-features=UseOzonePlatform --ozone-platform=wayland"
+					--add-flags "--enable-features=WebRTCPipeWireCapturer"
 				'';
 			})
 		)
 		google-chrome
 		firefox
-		vscode
+		vscode # has a hm module
 		# spotify: spicetify installs spotify too
 		obsidian
 		discord

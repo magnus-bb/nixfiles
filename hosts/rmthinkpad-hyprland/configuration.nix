@@ -139,7 +139,7 @@
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland; # from flake
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
   };
@@ -150,9 +150,6 @@
       enable = true;
 
       displayManager = {
-        # sddm = {
-        #   enable = true;
-        # };
         gdm = {
           enable = true;
           wayland = true; # necessary for hyprland?
@@ -166,14 +163,7 @@
     printing.enable = true;
 
     flatpak.enable = true;
-
-    # # Allows GNOME systray icons extension to work (https://nixos.wiki/wiki/GNOME)
-    # udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   };
-
-  # # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  # systemd.services."getty@tty1".enable = false;
-  # systemd.services."autovt@tty1".enable = false;
 
   # Fonts
   fonts.packages = with pkgs; [
@@ -239,7 +229,6 @@
       # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
       # wlr-randr
       wdisplays # GUI for setting monitors
-      gnome.dconf-editor # GUI for editing configurations
     ];
   };
 
@@ -250,11 +239,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
