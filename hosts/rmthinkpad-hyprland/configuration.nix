@@ -163,7 +163,6 @@
     printing.enable = true;
   };
 
-
   # Fonts
   fonts.packages = with pkgs; [
     source-code-pro
@@ -226,9 +225,8 @@
     # $ nix search wget
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
-      # xdg-desktop-portal-hyprland # helps windows communicate in hyprland
+      polkit_gnome
       # wlr-randr
-      wdisplays # GUI for setting monitors
     ];
   };
 

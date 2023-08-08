@@ -27,6 +27,17 @@ in {
 			source = ../../dotfiles/hypr;
 		};
 
+		# For some reason, polkit_gnome does not link the binary out of the nix store
+		"polkit-gnome/polkit-gnome-authentication-agent-1" = {
+			executable = true;
+			source = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+		};
+
+		"Pictures/wallpapers" = {
+			recursive = true;
+			source = ../../dotfiles/assets/wallpapers;
+		};
+
 		# # Product Sans font used by fufexan's eww bar
   	# "${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
 		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
@@ -324,10 +335,15 @@ in {
 	};
 
 	home.packages = with pkgs; [
-		# DE utils
+		# DE
 		eww-wayland # bar / panel
 		nwg-drawer # launcher (like gnome search)
-		polkit_gnome # modal for auth
+    wdisplays # GUI for setting monitors
+		qt6.qtwayland # to make qt apps work
+		libsForQt5.qt5.qtwayland # to make qt apps work
+		swww # wallpapers
+		# polkit_gnome # authentication agent
+
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
 		# python312 # used for widgets in eww panel
