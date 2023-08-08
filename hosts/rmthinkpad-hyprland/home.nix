@@ -327,6 +327,7 @@ in {
 		# DE utils
 		eww-wayland # bar / panel
 		nwg-drawer # launcher (like gnome search)
+		polkit_gnome # modal for auth
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
 		# python312 # used for widgets in eww panel
