@@ -37,10 +37,10 @@ in {
 		# 	};
 		# };
 
-		".config/eww" = {
-			recursive = true;
-			source = ../../dotfiles/eww;
-		};
+		# ".config/eww" = {
+		# 	recursive = true;
+		# 	source = ../../dotfiles/eww;
+		# };
 	};
 
 	services = {
@@ -347,7 +347,7 @@ in {
     # imagemagick
     # jaq
     # jc
-    # libnotify
+    libnotify # enables notify-send
     # networkmanager
     # pavucontrol
     # playerctl
