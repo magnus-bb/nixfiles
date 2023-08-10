@@ -155,8 +155,8 @@
           wayland = true; # necessary for hyprland?
         };
         # Enable automatic login for the user.
-        autoLogin.enable = true;
-        autoLogin.user = user;
+        # autoLogin.enable = true;
+        # autoLogin.user = user;
       };
     };
     # Enable CUPS to print documents.
@@ -212,7 +212,7 @@
 
   environment = {
     shells = with pkgs; [ zsh ]; # GDM only shows users that have their default shell set to a shell listed in /etc/shells. This adds the zsh package to /etc/shells
-
+    
     variables = {
       EDITOR = "code";
       VISUAL = "code";
