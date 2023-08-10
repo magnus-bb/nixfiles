@@ -37,6 +37,11 @@ in {
 			source = ../../assets/wallpapers;
 		};
 
+		".config/swaylock" = {
+			recursive = true;
+			source = ../../configs/swaylock-effects;
+		};
+
 		# # Product Sans font used by fufexan's eww bar
   	# "${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
 		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
