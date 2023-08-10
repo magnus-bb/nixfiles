@@ -221,6 +221,12 @@
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
 
+    # Files in /etc to create
+    etc = {
+      # This file is needed for swaylock (and swaylock-effects) to work
+      "pam.d/swaylock".text = "auth include login";
+    };
+
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
