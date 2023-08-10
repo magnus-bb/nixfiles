@@ -57,13 +57,21 @@ in {
 	services = {
 		# Notification daemon
 		mako = {
-			enable = true;
+		 enable = true;
 		};
 	};
 
 	programs = {
 
 		starship.enable = true;
+
+		btop = {
+			enable = true;
+			settings = {
+				theme_background = false;
+				# more here: https://github.com/aristocratos/btop#configurability
+			};
+		};
 
 		bat = {
 			enable = true;
@@ -89,7 +97,7 @@ in {
 
 			shellIntegration.enableZshIntegration = true;
 
-			# theme = "GitHub Dark Colorblind";
+			theme = "GitHub Dark Colorblind";
 			
 			font = {
 				name = "FiraCode Nerd Font Mono";
@@ -108,51 +116,12 @@ in {
 				background_opacity = "0.7";
 				editor = ".";
 			};
-
-			extraConfig = ''
-				# EVERBLUSH THEME
-				# Base colors
-				foreground              #dadada
-				background              #141b1e
-				selection_foreground    #dadada
-				selection_background    #2d3437
-
-				# Cursor colors
-				cursor                  #2d3437
-				cursor_text_color       #dadada
-
-				# Normal colors
-				color0                  #232a2d
-				color1                  #e57474
-				color2                  #8ccf7e
-				color3                  #e5c76b
-				color4                  #67b0e8
-				color5                  #c47fd5
-				color6                  #6cbfbf
-				color7                  #b3b9b8
-
-				# Bright colors
-				color8                  #2d3437
-				color9                  #ef7e7e
-				color10                 #96d988
-				color11                 #f4d67a
-				color12                 #71baf2
-				color13                 #ce89df
-				color14                 #67cbe7
-				color15                 #bdc3c2
-
-				# Tab colors 
-				active_tab_foreground   #e182e0
-				active_tab_background   #1b2224
-				inactive_tab_foreground #cd69cc
-				inactive_tab_background #232a2c
-			'';
 		};
 
 		zsh = {
 			enable = true;
 			plugins = [
-					{
+				{
 					name = "zsh-autosuggestions";
 					src = pkgs.fetchFromGitHub {
 						owner = "zsh-users";
@@ -330,6 +299,51 @@ in {
 				skipOrPlayLikedSongs
       ];
     };
+
+		# App launcher / runner
+		wofi = {
+			enable = true;
+			settings = {
+
+			};
+			style = ''
+				window {
+					margin: 0px;
+					border: 1px solid #bd93f9;
+					background-color: #282a36;
+					font-family: FiraCode Nerd Font Mono;
+				}
+
+				#input {
+					margin: 5px;
+					border: none;
+					color: #f8f8f2;
+					background-color: #44475a;
+				}
+
+				#inner-box {
+					margin: 5px;
+					border: none;
+					background-color: #282a36;
+				}
+
+				#outer-box {
+					margin: 5px;
+					border: none;
+					background-color: #282a36;
+				}
+
+				#text {
+					margin: 5px;
+					border: none;
+					color: #f8f8f2;
+				} 
+
+				#entry:selected {
+					background-color: #44475a;
+				}
+			'';
+		};
 	};
 
 	gtk = {
@@ -379,12 +393,13 @@ in {
 	home.packages = with pkgs; [
 		# DE
 		eww-wayland # bar / panel
-		nwg-drawer # launcher (like gnome search)
+		# nwg-drawer # launcher (like gnome search)
     wdisplays # GUI for setting monitors
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
 		swww # wallpapers
-		# polkit_gnome # authentication agent
+		polkit_gnome # authentication agent
+		swaylock-effects # lock screen
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -438,7 +453,6 @@ in {
 		google-chrome
 		firefox
 		vscode # has a hm module
-		# spotify: spicetify installs spotify too
 		obsidian
 		discord
 		figma-linux
