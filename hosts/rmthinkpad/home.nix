@@ -10,16 +10,15 @@ in {
 
 	fonts.fontconfig.enable = true;
 
-	# Dotfiles
 	home.file = {
 		".config/ranger" = {
 			recursive = true;
-			source = ../../dotfiles/ranger;
+			source = ../../configs/ranger;
 		};
 
 		".config/cava" = {
 			recursive = true;
-			source = ../../dotfiles/cava;
+			source = ../../configs/cava;
 		};
 	};
 	

@@ -10,21 +10,20 @@ in {
 
 	fonts.fontconfig.enable = true;
 
-	# Dotfiles
 	home.file = {
 		".config/ranger" = {
 			recursive = true;
-			source = ../../dotfiles/ranger;
+			source = ../../configs/ranger;
 		};
 
 		".config/cava" = {
 			recursive = true;
-			source = ../../dotfiles/cava;
+			source = ../../configs/cava;
 		};
 
 		".config/hypr" = {
 			recursive = true;
-			source = ../../dotfiles/hypr;
+			source = ../../configs/hypr;
 		};
 
 		# For some reason, polkit_gnome does not link the binary out of the nix store
