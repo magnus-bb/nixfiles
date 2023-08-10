@@ -208,6 +208,9 @@
     };
   };
 
+  # Allows users in the group "video" to change brightness by changing udev rules for /sys/class/backlight/%k/brightness
+  programs.light.enable = true;
+
   programs.zsh.enable = true;
 
   environment = {

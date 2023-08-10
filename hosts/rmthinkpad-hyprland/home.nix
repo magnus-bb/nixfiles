@@ -62,6 +62,11 @@ in {
 		mako = {
 		 enable = true;
 		};
+
+		# On-screen display for volume, brightness (and caps lock, but backend does not work)
+		swayosd = {
+			enable = true;
+		};
 	};
 
 	programs = {
@@ -304,48 +309,19 @@ in {
     };
 
 		# App launcher / runner
-		wofi = {
+		rofi = {
 			enable = true;
-			settings = {
-
+			font = "FiraCode Nerd Font Mono";
+			pass = {
+				enable = true;
+				stores = ["$HOME/passwords"];
 			};
-			style = ''
-				window {
-					margin: 0px;
-					border: 1px solid #bd93f9;
-					background-color: #282a36;
-					font-family: FiraCode Nerd Font Mono;
-				}
-
-				#input {
-					margin: 5px;
-					border: none;
-					color: #f8f8f2;
-					background-color: #44475a;
-				}
-
-				#inner-box {
-					margin: 5px;
-					border: none;
-					background-color: #282a36;
-				}
-
-				#outer-box {
-					margin: 5px;
-					border: none;
-					background-color: #282a36;
-				}
-
-				#text {
-					margin: 5px;
-					border: none;
-					color: #f8f8f2;
-				} 
-
-				#entry:selected {
-					background-color: #44475a;
-				}
-			'';
+			terminal = "kitty";
+			theme = ;
+			plugins = with pkgs; [
+				rofi-calc
+				rofi-emoji
+			];
 		};
 	};
 
@@ -438,6 +414,9 @@ in {
     # wget
     # wireplumber
     # wlogout
+
+		# Utilities
+		hyprpicker
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
