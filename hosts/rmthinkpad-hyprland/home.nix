@@ -35,7 +35,7 @@ in {
 
 		"Pictures/wallpapers" = {
 			recursive = true;
-			source = ../../dotfiles/assets/wallpapers;
+			source = ../../assets/wallpapers;
 		};
 
 		# # Product Sans font used by fufexan's eww bar
