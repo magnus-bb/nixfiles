@@ -317,7 +317,7 @@ in {
 				stores = ["$HOME/passwords"];
 			};
 			terminal = "kitty";
-			theme = ;
+			# theme = ;
 			plugins = with pkgs; [
 				rofi-calc
 				rofi-emoji
