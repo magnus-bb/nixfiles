@@ -1,0 +1,10 @@
+[split-monitor-workspaces]
+description = "Split monitor workspaces"
+version = "1.0.0"
+author = "Duckonaut"
+
+[split-monitor-workspaces.build]
+output = "split-monitor-workspaces.so"
+steps = [
+    "make all",
+]

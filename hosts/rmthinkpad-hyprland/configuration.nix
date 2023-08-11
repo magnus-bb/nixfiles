@@ -140,6 +140,9 @@
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland; # from flake
+    plugins = [
+      "/home/${user}/.config/hypr/plugins/split-monitor-workspaces"
+    ];
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
   };
