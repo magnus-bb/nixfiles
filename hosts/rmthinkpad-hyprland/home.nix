@@ -74,6 +74,12 @@ in {
 		};
 	};
 
+	wayland.windowManager.hyprland = {
+		plugins = [
+			"/home/magnus/.config/hypr/plugins/split-monitor-workspaces"
+		];
+	};
+	
 	programs = {
 
 		starship.enable = true;
@@ -316,6 +322,7 @@ in {
 		# App launcher / runner
 		rofi = {
 			enable = true;
+			package = pkgs.rofi-wayland;
 			font = "FiraCode Nerd Font Mono";
 			pass = {
 				enable = true;
