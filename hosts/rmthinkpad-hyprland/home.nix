@@ -47,6 +47,11 @@ in {
 			source = ../../configs/rofi;
 		};
 
+		".config/mako" = {
+			recursive = true;
+			source = ../../configs/mako;
+		};
+
   	"${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
 			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
 			src = pkgs.fetchzip {
