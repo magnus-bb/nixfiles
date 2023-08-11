@@ -325,10 +325,10 @@ in {
 			enable = true;
 			package = pkgs.rofi-wayland;
 			font = "Product Sans 12";
-			pass = {
-				enable = true;
-				stores = ["$HOME/passwords"];
-			};
+			# pass = {
+			# 	enable = true;
+			# 	stores = ["$HOME/passwords"];
+			# };
 			terminal = "kitty";
 			theme = "themes/rounded-custom.rasi";
 			plugins = with pkgs; [
@@ -337,6 +337,7 @@ in {
 			];
 
 			extraConfig = {
+				modi = "drun,run,calc,emoji";
 				show-icons = true;
 				icon-theme = iconTheme;
 			};
@@ -397,6 +398,8 @@ in {
 		swww # wallpapers
 		polkit_gnome # authentication agent
 		swaylock-effects # lock screen
+		wtype # allows programs to send keystrokes and mouse clicks etc (for pasting emojis with rofi-emoji)
+		# haskellPackages.greenclip # clipboard manager for rofi
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
