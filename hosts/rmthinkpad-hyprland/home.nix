@@ -42,6 +42,11 @@ in {
 			source = ../../configs/swaylock-effects;
 		};
 
+		".config/rofi" = {
+			recursive = true;
+			source = ../../configs/rofi;
+		};
+
   	"${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
 			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
 			src = pkgs.fetchzip {
@@ -317,7 +322,7 @@ in {
 				stores = ["$HOME/passwords"];
 			};
 			terminal = "kitty";
-			# theme = ;
+			theme = "themes/rounded-gray-dark.rasi";
 			plugins = with pkgs; [
 				rofi-calc
 				rofi-emoji
