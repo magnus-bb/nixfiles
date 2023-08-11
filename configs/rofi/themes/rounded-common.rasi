@@ -5,7 +5,8 @@
  *******************************************************************************/
 
 * {
-    font:   "Roboto 12";
+    // font:   "Roboto 12";
+    // font:   "Product Sans 14";
 
     background-color:   transparent;
     text-color:         @fg0;
@@ -17,30 +18,39 @@
 
 window {
     location:       center;
-    width:          480;
+    // width:          480;
+    width:          600;
     border-radius:  24px;
+
+    /* custom border */
+    border: 2px;
+    border-color:       @everblush-blue;
     
-    background-color:   @bg0;
+    //background-color:   @bg0;
+    background-color:   @everblush-bg;
 }
 
 mainbox {
-    padding:    12px;
+    padding:    14px;
 }
 
 inputbar {
-    background-color:   @bg1;
-    border-color:       @bg3;
+    // background-color:   @bg1;
+    // border-color:       @bg3;
+    background-color:   @everblush-bg-lighter;
+    // border-color:       @;
 
-    border:         2px;
+    // border:         2px;
     border-radius:  16px;
 
     padding:    8px 16px;
-    spacing:    8px;
+    spacing:    12px;
     children:   [ prompt, entry ];
 }
 
 prompt {
-    text-color: @fg2;
+    // text-color: @fg2;
+    text-color: @everblush-gray;
 }
 
 entry {
@@ -49,10 +59,13 @@ entry {
 }
 
 message {
+    // What is this?
     margin:             12px 0 0;
     border-radius:      16px;
-    border-color:       @bg2;
-    background-color:   @bg2;
+    // border-color:       @bg2;
+    // background-color:   @bg2;
+    border-color:   @everblush-green;
+    background-color:       @everblush-bg-lighter;
 }
 
 textbox {
@@ -76,11 +89,13 @@ element {
 }
 
 element normal active {
-    text-color: @bg3;
+    // text-color: @bg3;
+    text-color: @everblush-red;
 }
 
 element selected normal, element selected active {
-    background-color:   @bg3;
+    // background-color:   @bg3;
+    background-color:   @everblush-red;
 }
 
 element-icon {

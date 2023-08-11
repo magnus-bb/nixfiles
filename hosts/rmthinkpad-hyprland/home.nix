@@ -1,6 +1,8 @@
 { inputs, pkgs, lib, config, ... }: 
 let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
+
+ iconTheme = "Papirus-Dark";
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
@@ -52,7 +54,7 @@ in {
 			source = ../../configs/mako;
 		};
 
-  	"${config.xdg.dataHome}/fonts/ProductSans".source = lib.cleanSourceWith {
+  	"local/share/fonts/ProductSans".source = lib.cleanSourceWith {
 			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
 			src = pkgs.fetchzip {
 				url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
@@ -77,12 +79,6 @@ in {
 		swayosd = {
 			enable = true;
 		};
-	};
-
-	wayland.windowManager.hyprland = {
-		plugins = [
-			"/home/magnus/.config/hypr/plugins/split-monitor-workspaces"
-		];
 	};
 	
 	programs = {
@@ -328,27 +324,32 @@ in {
 		rofi = {
 			enable = true;
 			package = pkgs.rofi-wayland;
-			font = "FiraCode Nerd Font Mono";
+			font = "Product Sans 12";
 			pass = {
 				enable = true;
 				stores = ["$HOME/passwords"];
 			};
 			terminal = "kitty";
-			theme = "themes/rounded-gray-dark.rasi";
+			theme = "themes/rounded-custom.rasi";
 			plugins = with pkgs; [
 				rofi-calc
 				rofi-emoji
 			];
+
+			extraConfig = {
+				show-icons = true;
+				icon-theme = iconTheme;
+			};
 		};
 	};
 
 	gtk = {
 		enable = true;
 		
-		# iconTheme = {
-		#   name = "Papirus-Dark";
-		#   package = pkgs.papirus-icon-theme;
-		# };
+		iconTheme = {
+		  name = iconTheme;
+		  package = pkgs.papirus-icon-theme;
+		};
 
 		theme = {
 			name = "Layan-Dark";
