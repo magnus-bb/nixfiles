@@ -15,7 +15,7 @@ width=300
 height=100
 margin=10
 padding=15
-border-size=2
+border-size=3
 border-radius=10
 icons=1
 max-icon-size=48
@@ -30,25 +30,33 @@ max-visible=5
 layer=overlay
 anchor=top-center
 
-background-color=#141b1e # Everblush bg
-text-color=#dadada # Everblush foreground
-border-color=#67b0e8 # Everblush blue
-progress-color=over #c47fd5 # Everblush magenta
+# Everblush bg
+background-color=#141b1e
+# Everblush foreground
+text-color=#dadada
+# Everblush blue
+border-color=#67b0e8
+# Everblush magenta
+progress-color=over #c47fd5
 
 [urgency=low]
-border-color=#232a2d # Everblush bg lighter
+# Everblush bg lighter
+# border-color=#232a2d
 default-timeout=2000
 
 [urgency=normal]
-border-color=#67b0e8 # Everblush blue
+# Everblush blue
+# border-color=#67b0e8
 default-timeout=5000
 
 [urgency=high]
-border-color=#e5c76b # Everblush yellow
-text-color=#e5c76b # Everblush yellow
+# Everblush yellow
+border-color=#e5c76b
+# Everblush yellow
+text-color=#e5c76b
 default-timeout=0
 
 # [category=mpd]
-# border-color=#f9e2af
+# border-color=#xxxxxx
 # default-timeout=2000
 # group-by=category
