@@ -399,7 +399,9 @@ in {
 		polkit_gnome # authentication agent
 		swaylock-effects # lock screen
 		wtype # allows programs to send keystrokes and mouse clicks etc (for pasting emojis with rofi-emoji)
-		# haskellPackages.greenclip # clipboard manager for rofi
+		cliphist # clipboard manager
+		wl-clip-persist # makes sure clipboard is not cleared when closing programs on wayland
+		wl-clipboard # dependency of cliphist
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
