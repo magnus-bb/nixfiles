@@ -49,7 +49,7 @@ in {
 			source = ../../configs/rofi/themes;
 		};
 
-		".local/bin/rofi-wifi-menu".source = ../../configs/rofi/scripts/rofi-wifi-menu;
+		# ".local/bin/rofi-wifi-menu".source = ../../configs/rofi/scripts/rofi-wifi-menu;
 
 		# ".config/mako" = {
 		# 	recursive = true;
@@ -407,6 +407,7 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
+		(callPackage ../../packages/rofi-wifi-menu.nix { })
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces

@@ -229,7 +229,7 @@
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
 
-    # Adds .local/bin to PATH so user scripts (such as rofi-wifi-menu) can live there
+    # Adds .local/bin to PATH in case any programs end up there
     localBinInPath = true;
 
     # Files in /etc to create
