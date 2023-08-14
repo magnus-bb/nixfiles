@@ -407,7 +407,7 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		(callPackage ../../packages/rofi-wifi-menu.nix { })
+		(callPackage ../../packages/rofi-wifi-menu { })
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
