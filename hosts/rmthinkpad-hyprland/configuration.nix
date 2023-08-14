@@ -28,11 +28,16 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Logitech options with Solaar
   hardware = {
+    # Logitech options with Solaar
     logitech.wireless = {
       enable = true;
       enableGraphical = true;
+    };
+
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
     };
   };
 
@@ -223,6 +228,9 @@
     sessionVariables = {
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
+
+    # Adds .local/bin to PATH so user scripts (such as rofi-wifi-menu) can live there
+    localBinInPath = true;
 
     # Files in /etc to create
     etc = {
