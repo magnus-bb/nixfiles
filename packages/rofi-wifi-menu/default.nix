@@ -2,23 +2,30 @@
 pkgs.stdenv.mkDerivation {
 	name = "rofi-wifi-menu";
 
-	src = "./.";
-
 	nativeBuildInputs = [
 		pkgs.makeWrapper
 	];
 
-	buildPhase = '''';
+  src = ./rofi-wifi-menu.sh;
 
-	installPhase = ''
-		mkdir -p $out/bin
-		cp -r rofi-wifi-menu $out/bin
-	'';
+  phases = [ "installPhase" "postFixup" ];
 
-	dontUnpack = true;
+  installPhase = ''
+    mkdir -p $out/bin
+    cp $src $out/bin
+  '';
+
+	# buildPhase = '''';
+
+	# installPhase = ''
+	# 	mkdir -p $out/bin
+	# 	cp -r rofi-wifi-menu $out/bin
+	# '';
+
+	# dontUnpack = true;
 
 	postFixup = ''
-		wrapProgram $out/bin/rofi-wifi-menu \
+		wrapProgram $out/bin/rofi-wifi-menu.sh \
 			--set PATH ${pkgs.lib.makeBinPath (with pkgs; [
 				networkmanager
 			])}
