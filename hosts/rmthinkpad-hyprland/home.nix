@@ -44,15 +44,17 @@ in {
 			source = ../../configs/swaylock-effects;
 		};
 
-		".config/rofi" = {
+		".config/rofi/themes" = {
 			recursive = true;
-			source = ../../configs/rofi;
+			source = ../../configs/rofi/themes;
 		};
 
-		".config/mako" = {
-			recursive = true;
-			source = ../../configs/mako;
-		};
+		".local/bin/rofi-wifi-menu".source = ../../configs/rofi/scripts/rofi-wifi-menu;
+
+		# ".config/mako" = {
+		# 	recursive = true;
+		# 	source = ../../configs/mako;
+		# };
 
   	"local/share/fonts/ProductSans".source = lib.cleanSourceWith {
 			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
@@ -71,9 +73,9 @@ in {
 
 	services = {
 		# Notification daemon
-		mako = {
-		 enable = true;
-		};
+		# mako = {
+		#  enable = true;
+		# };
 
 		# On-screen display for volume, brightness (and caps lock, but backend does not work)
 		swayosd = {
@@ -402,6 +404,9 @@ in {
 		cliphist # clipboard manager
 		wl-clip-persist # makes sure clipboard is not cleared when closing programs on wayland
 		wl-clipboard # dependency of cliphist
+		swaynotificationcenter # notifications and control center
+    libnotify # enables notify-send
+		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -423,7 +428,6 @@ in {
     # imagemagick
     # jaq
     # jc
-    libnotify # enables notify-send
     # networkmanager
     # pavucontrol
     # playerctl
@@ -439,7 +443,7 @@ in {
     # wlogout
 
 		# Utilities
-		hyprpicker
+		hyprpicker # color picker
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
