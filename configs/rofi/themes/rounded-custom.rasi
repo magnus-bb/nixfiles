@@ -13,8 +13,8 @@
     fg1:    #FFFFFF;
     fg2:    #969696;
     fg3:    #3D3D3D;
-    everblush-bg: #141b1ef2;
-	everblush-bg-lighter: #232a2df2;
+    everblush-bg: #141b1ebf;
+	everblush-bg-lighter: #232a2dbf;
 	everblush-red: #e57474;
 	everblush-green: #8ccf7e;
 	everblush-yellow: #e5c76b;

@@ -76,10 +76,18 @@ listview {
     background-color:   transparent;
 
     margin:     12px 0 0;
-    lines:      8;
+    // lines:      8;
     columns:    1;
 
-    fixed-height: false;
+    // fixed-height: true;
+    // height: 200;
+}
+
+scrollbar {
+    width: 8;
+    padding: 2;
+    handle-width: 12;
+    handle-color: white;
 }
 
 element {
