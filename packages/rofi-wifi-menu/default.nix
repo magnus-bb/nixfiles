@@ -6,7 +6,7 @@ pkgs.stdenv.mkDerivation {
 		pkgs.makeWrapper
 	];
 
-  src = ./rofi-wifi-menu.sh;
+  src = ./rofi-wifi-menu;
 
   phases = [ "installPhase" "postFixup" ];
 
@@ -24,8 +24,8 @@ pkgs.stdenv.mkDerivation {
 
 	# dontUnpack = true;
 
-	postFixup = ''
-		wrapProgram $out/bin/rofi-wifi-menu.sh \
+	postBuild = ''
+		wrapProgram $out/bin/rofi-wifi-menu \
 			--set PATH ${pkgs.lib.makeBinPath (with pkgs; [
 				networkmanager
 			])}
