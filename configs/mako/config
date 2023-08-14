@@ -13,7 +13,7 @@ on-touch=dismiss
 font="Product Sans", 12
 width=300
 height=100
-margin=10
+margin=16
 padding=15
 border-size=2
 border-radius=10
@@ -42,7 +42,7 @@ progress-color=over #c47fd5
 [urgency=low]
 # Everblush bg lighter
 # border-color=#232a2d
-default-timeout=2000
+default-timeout=3000
 
 [urgency=normal]
 # Everblush blue
