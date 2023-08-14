@@ -2,7 +2,7 @@
 pkgs.stdenv.mkDerivation {
 	name = "rofi-wifi-menu";
 
-	src = "../configs/rofi/scripts/rofi-wifi-menu";
+	src = "./.";
 
 	nativeBuildInputs = [
 		pkgs.makeWrapper
@@ -10,7 +10,7 @@ pkgs.stdenv.mkDerivation {
 
 	installPhase = ''
 		mkdir -p $out/bin
-		cp -r $src $out/bin
+		cp -r $src/rofi-wifi-menu $out/bin
 	'';
 
 	postFixup = ''
