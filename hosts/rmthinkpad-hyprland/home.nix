@@ -56,14 +56,15 @@ in {
 		# 	source = ../../configs/mako;
 		# };
 
-  	"local/share/fonts/ProductSans".source = lib.cleanSourceWith {
-			filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
-			src = pkgs.fetchzip {
-				url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
-				sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
-				stripRoot = false;
-			};
-		};
+		# DOES NOT HAVE NERD FONT VERSION, USE ARIMO NERD FONT INSTEAD
+  	# "local/share/fonts/ProductSans".source = lib.cleanSourceWith {
+		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
+		# 	src = pkgs.fetchzip {
+		# 		url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
+		# 		sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
+		# 		stripRoot = false;
+		# 	};
+		# };
 
 		# ".config/eww" = {
 		# 	recursive = true;
@@ -123,7 +124,7 @@ in {
 			
 			font = {
 				name = "FiraCode Nerd Font Mono";
-				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; });
+				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
 			};
 
 			keybindings = {
@@ -445,6 +446,9 @@ in {
 
 		# Utilities
 		hyprpicker # color picker
+		grim # screenshot util
+		slurp # screen area selector (to be used with grim)
+		swappy # gui for annotating images
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
