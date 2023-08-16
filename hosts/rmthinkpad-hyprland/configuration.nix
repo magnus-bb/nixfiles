@@ -154,6 +154,8 @@
       # Enable the X11 windowing system.
       enable = true;
 
+      videoDrivers = ["displaylink"]; # this SHOULD enable displaylink and set necessary options (I think)
+
       displayManager = {
         gdm = {
           enable = true;
@@ -166,6 +168,9 @@
     };
     # Enable CUPS to print documents.
     printing.enable = true;
+
+    # Enable powerprofilesctl to change between performance, balanced, and power-saver modes
+    power-profiles-daemon.enable = true;
   };
 
   # Fonts
