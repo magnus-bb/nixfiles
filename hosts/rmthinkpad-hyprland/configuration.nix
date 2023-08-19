@@ -249,6 +249,7 @@
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
       polkit_gnome
+      pulseaudio # this just installs command line tools like pactl, but the config uses pipewire
       # wlr-randr
     ];
   };

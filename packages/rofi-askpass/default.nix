@@ -2,7 +2,7 @@
 pkgs.writeShellApplication {
   name = "rofi-askpass";
 
-  runtimeInputs = [ pkgs.gnused ];
+  runtimeInputs = with pkgs; [ rofi-wayland gnused ];
 
 	text = builtins.readFile ./rofi-askpass;
 }

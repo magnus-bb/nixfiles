@@ -345,9 +345,45 @@ in {
 			];
 
 			extraConfig = {
-				modi = "drun,run,calc,emoji";
+				# 'rofi -show power-menu' will run the rofi-power-menu binary
+				modi = "drun,run,calc,emoji,power-menu:rofi-power-menu";
 				show-icons = true;
 				icon-theme = iconTheme;
+			};
+		};
+
+		vscode = {
+			enable = true;
+			# allow extensions to be handled outside of this config
+			mutableExtensionsDir = true; # TODO: turn this off and handle all vscode conf in here 
+
+			# extensions = [
+				# e.g.: pkgs.vscode.extensions.bbenoist.nix
+			# ];
+			globalSnippets = {
+				# e.g.:
+				# fixme = {
+				# 	body = [
+				# 		"$LINE_COMMENT FIXME: $0"
+				# 	];
+				# 	description = "Insert a FIXME remark";
+				# 	prefix = [
+				# 		"fixme"
+				# 	];
+				# };
+			};
+
+			keybindings = [
+				# e.g.:
+				# {
+				# 	key = "ctrl+c";
+				# 	command = "editor.action.clipboardCopyAction";
+				# 	when = "textInputFocus";
+				# }
+			];
+
+			userSettings = {
+				# Configuration written to Visual Studio Code’s settings.json.
 			};
 		};
 	};
@@ -412,8 +448,11 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection (needs rofi and networkmanager)
-		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS (needs rofi and gnused)
+		rofi-pulse-select # rofi util for picking input / output devices
+		# rofi-power-menu # rofi util for power off, reboot etc
+		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
+		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
+		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -472,10 +511,15 @@ in {
 		)
 		google-chrome
 		firefox
-		vscode # has a hm module
+		# vscode # has a hm module
 		obsidian
 		discord
 		figma-linux
+		libreoffice-fresh
+		# spellcheck packages for libreoffice
+		hunspell
+    hunspellDicts.en_US
+    hunspellDicts.da_DK
 
 		# Terminal
 		thefuck
