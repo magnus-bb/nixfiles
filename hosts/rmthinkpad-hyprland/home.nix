@@ -39,7 +39,7 @@ in {
 			source = ../../assets/wallpapers;
 		};
 
-		".config/swaylock" = {
+		".config/swaylock" =packages/rofi-wifi-menu/default.nix {
 			recursive = true;
 			source = ../../configs/swaylock-effects;
 		};
@@ -54,8 +54,6 @@ in {
 			source = ../../configs/rofi/themes;
 		};
 		
-
-		# ".local/bin/rofi-wifi-menu".source = ../../configs/rofi/scripts/rofi-wifi-menu;
 
 		# ".config/mako" = {
 		# 	recursive = true;
@@ -400,7 +398,6 @@ in {
 	home.packages = with pkgs; [
 		# DE
 		eww-wayland # bar / panel
-		# nwg-drawer # launcher (like gnome search)
     wdisplays # GUI for setting monitors
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
@@ -414,7 +411,8 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		(callPackage ../../packages/rofi-wifi-menu { })
+		(callPackage ../../packages/rofi-wifi-menu { }) # small script that uses rofi to select wifi
+		(callPackage ../../packages/rofi-askpass { }) # small script that uses rofi to ask for sudo password with sudo -A
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -456,6 +454,7 @@ in {
 		slurp # screen area selector (to be used with grim)
 		swappy # gui for annotating images
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
+		dconf-editor # gui for dconf settings
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
