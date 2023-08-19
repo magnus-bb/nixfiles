@@ -39,7 +39,7 @@ in {
 			source = ../../assets/wallpapers;
 		};
 
-		".config/swaylock" =packages/rofi-wifi-menu/default.nix {
+		".config/swaylock" = {
 			recursive = true;
 			source = ../../configs/swaylock-effects;
 		};
@@ -190,12 +190,13 @@ in {
 			#   ];
 			# };
 			shellAliases = {
-				upnix = "sudo nixos-rebuild switch --flake /etc/nixos/#";
+				sudo = "sudo -A"; # use rofi-askpass to type pw instead of typing in the terminal
+				upnix = "sudo -A nixos-rebuild switch --flake /etc/nixos#";
 				ednix = "$EDITOR /etc/nixos";
 
 				zshreload = "source ~/.zshrc";
 
-				rmvpn = "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
+				rmvpn = "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
 
 				# filesystem
 				".." = "cd ..";
@@ -411,8 +412,8 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		(callPackage ../../packages/rofi-wifi-menu { }) # small script that uses rofi to select wifi
-		(callPackage ../../packages/rofi-askpass { }) # small script that uses rofi to ask for sudo password with sudo -A
+		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection (needs rofi and networkmanager)
+		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS (needs rofi and gnused)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -454,7 +455,6 @@ in {
 		slurp # screen area selector (to be used with grim)
 		swappy # gui for annotating images
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
-		dconf-editor # gui for dconf settings
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland

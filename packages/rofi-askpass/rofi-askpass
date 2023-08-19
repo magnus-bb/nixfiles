@@ -6,4 +6,4 @@
 rofi -dmenu \
 	-password \
 	-no-fixed-num-lines \
-	-p "$(printf "$1" | sed s/://)" \
+	-p "$(printf '%s' "$1" | sed s/://)" # shows text from the programme that requests the password (usually sudo -A, but can be used with other programmes as well)

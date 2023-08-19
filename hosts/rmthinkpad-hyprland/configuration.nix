@@ -229,6 +229,7 @@
     variables = {
       EDITOR = "code";
       VISUAL = "code";
+      SUDO_ASKPASS = "$(which rofi-askpass)"; # uses own package rofi-askpass to ask for sudo password when sudo -A is used
     };
     sessionVariables = {
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
