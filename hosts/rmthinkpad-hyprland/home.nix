@@ -44,10 +44,16 @@ in {
 			source = ../../configs/swaylock-effects;
 		};
 
+		".config/swaync" = {
+			recursive = true;
+			source = ../../configs/swaync;
+		};
+
 		".config/rofi/themes" = {
 			recursive = true;
 			source = ../../configs/rofi/themes;
 		};
+		
 
 		# ".local/bin/rofi-wifi-menu".source = ../../configs/rofi/scripts/rofi-wifi-menu;
 
@@ -449,6 +455,7 @@ in {
 		grim # screenshot util
 		slurp # screen area selector (to be used with grim)
 		swappy # gui for annotating images
+		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland

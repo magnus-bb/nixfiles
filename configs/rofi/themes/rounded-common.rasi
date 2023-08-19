@@ -104,7 +104,7 @@ element normal active {
 
 element selected normal, element selected active {
     // background-color:   @bg3;
-    background-color:   @everblush-red;
+    background-color:   @everblush-green;
 }
 
 element-icon {
