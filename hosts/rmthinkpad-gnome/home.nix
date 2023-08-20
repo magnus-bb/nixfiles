@@ -275,17 +275,13 @@ in {
 			package = pkgs.nordzy-cursor-theme;
 		};
 
-		gtk3.extraConfig = {
-			Settings = ''
-				gtk-application-prefer-dark-theme=1
-			'';
-		};
+		gtk3.extraConfig = ''
+			gtk-application-prefer-dark-theme=1
+		'';
 
-		gtk4.extraConfig = {
-			Settings = ''
-				gtk-application-prefer-dark-theme=1
-			'';
-		};
+		gtk4.extraConfig = ''
+			gtk-application-prefer-dark-theme=1
+		'';
 	};
 
 	home.sessionVariables.GTK_THEME = "Layan-Dark";

@@ -3,6 +3,8 @@ let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
 
  iconTheme = "Papirus-Dark";
+#  gtkTheme = "Layan-Dark";
+ gtkTheme = "Everblush";
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
@@ -346,11 +348,11 @@ in {
 			};
 		};
 
-		eww = {
-			enable = true;
-			package = pkgs.eww-wayland;
-			# configDir = ../../configs/eww;
-		};
+		# eww = {
+		# 	enable = true;
+		# 	package = pkgs.eww-wayland;
+		# 	configDir = ../../configs/eww;
+		# };
 
 		vscode = {
 			enable = true;
@@ -397,8 +399,10 @@ in {
 		};
 
 		theme = {
-			name = "Layan-Dark";
-			package = pkgs.layan-gtk-theme;
+			# name = gtkTheme;
+			# package = pkgs.layan-gtk-theme;
+			name = gtkTheme;
+			package = (pkgs.callPackage ../../packages/everblush-gtk-theme { }); # custom package for theme
 		};
 
 		# font = {
@@ -410,20 +414,17 @@ in {
 			package = pkgs.nordzy-cursor-theme;
 		};
 
-		gtk3.extraConfig = {
-			Settings = ''
-				gtk-application-prefer-dark-theme=1
-			'';
-		};
+		gtk3.extraConfig = ''
+			gtk-application-prefer-dark-theme=1
+		'';
 
-		gtk4.extraConfig = {
-			Settings = ''
-				gtk-application-prefer-dark-theme=1
-			'';
-		};
+		gtk4.extraConfig = ''
+			gtk-application-prefer-dark-theme=1
+		'';
 	};
 
-	home.sessionVariables.GTK_THEME = "Layan-Dark";
+	# home.sessionVariables.GTK_THEME = "Layan-Dark";
+	home.sessionVariables.GTK_THEME = gtkTheme;
 
 	dconf = {
 		enable = true; # allow gnome settings with dconf
@@ -434,7 +435,7 @@ in {
 
 	home.packages = with pkgs; [
 		# DE
-		# eww-wayland # bar / panel
+		eww-wayland # bar / panel
     wdisplays # GUI for setting monitors
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
@@ -519,7 +520,6 @@ in {
 		hunspell
     hunspellDicts.en_US
     hunspellDicts.da_DK
-		(callPackage ../../packages/everblush-gtk-theme { }) # custom package for theme
 
 		# Terminal
 		thefuck
