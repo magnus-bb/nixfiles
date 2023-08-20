@@ -17,7 +17,7 @@
 
 # Manual sensitivity in %. If autosens is enabled, this will only be the initial value.
 # 200 means double height. Accepts only non-negative values.
-sensitivity = 150
+sensitivity = 130
 
 # The number of bars (0-200). 0 sets it to auto (fill up console).
 # Bars' width and space between bars in number of characters.
@@ -145,14 +145,15 @@ sensitivity = 150
 
 gradient = 1
 
-gradient_color_1 = '#8BE9FD'
-gradient_color_2 = '#9AEDFE'
-gradient_color_3 = '#CAA9FA'
-gradient_color_4 = '#BD93F9'
-gradient_color_5 = '#FF92D0'
-gradient_color_6 = '#FF79C6'
-gradient_color_7 = '#FF6E67'
-gradient_color_8 = '#FF5555'
+# Everblush color theme
+gradient_color_1 = '#e57474'
+gradient_color_2 = '#8ccf7e'
+gradient_color_3 = '#e5c76b'
+gradient_color_4 = '#67b0e8'
+gradient_color_5 = '#c47fd5'
+gradient_color_6 = '#6cbfbf'
+gradient_color_7 = '#b3b9b8'
+gradient_color_8 = '#dadada'
 
 
 

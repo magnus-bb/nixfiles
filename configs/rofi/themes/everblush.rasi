@@ -1,0 +1,15 @@
+* {
+	muted:    #3D3D3D;
+	everblush-bg: #141b1ebf;
+	everblush-bg-lighter: #232a2dbf;
+	everblush-red: #e57474;
+	everblush-green: #8ccf7e;
+	everblush-yellow: #e5c76b;
+	everblush-blue:	#67b0e8;
+	everblush-magenta: #c47fd5;
+	everblush-cyan:	#6cbfbf;
+	everblush-gray:	#b3b9b8;
+	everblush-fg: #dadada;
+}
+
+@import "styles.rasi"

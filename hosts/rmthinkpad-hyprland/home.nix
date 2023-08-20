@@ -49,12 +49,11 @@ in {
 			source = ../../configs/swaync;
 		};
 
-		".config/rofi/themes" = {
+		".config/rofi" = {
 			recursive = true;
-			source = ../../configs/rofi/themes;
+			source = ../../configs/rofi;
 		};
 		
-
 		# ".config/mako" = {
 		# 	recursive = true;
 		# 	source = ../../configs/mako;
@@ -82,7 +81,7 @@ in {
 		#  enable = true;
 		# };
 
-		# On-screen display for volume, brightness (and caps lock, but backend does not work)
+		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
 		swayosd = {
 			enable = true;
 		};
@@ -332,23 +331,23 @@ in {
 		rofi = {
 			enable = true;
 			package = pkgs.rofi-wayland;
-			font = "Product Sans 12";
+			font = "Arimo Nerd Font 14";
 			# pass = {
 			# 	enable = true;
 			# 	stores = ["$HOME/passwords"];
 			# };
 			terminal = "kitty";
-			theme = "themes/rounded-custom.rasi";
+			theme = "themes/everblush.rasi";
 			plugins = with pkgs; [
 				rofi-calc
 				rofi-emoji
 			];
 
 			extraConfig = {
-				# 'rofi -show power-menu' will run the rofi-power-menu binary
-				modi = "drun,run,calc,emoji,power-menu:rofi-power-menu";
+				modi = "drun,run,calc,emoji";
 				show-icons = true;
 				icon-theme = iconTheme;
+				scroll-method = 1;
 			};
 		};
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Uses pkgs.rofi-power-menu
+# rofi-power-menu can only be run through this script, since the original binary is only a dependency here (so any customization must be done here)
 rofi -show power-menu \
 	-modi power-menu:rofi-power-menu \
 	-no-show-icons \

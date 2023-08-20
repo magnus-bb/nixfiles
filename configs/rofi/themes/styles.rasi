@@ -1,15 +1,8 @@
-/*******************************************************************************
- * ROUNDED THEME FOR ROFI 
- * User                 : LR-Tech               
- * Theme Repo           : https://github.com/lr-tech/rofi-themes-collection
- *******************************************************************************/
-
 * {
-    // font:   "Roboto 12";
     font:   "Arimo Nerd Font 14";
 
     background-color:   transparent;
-    text-color:         @fg0;
+    text-color:         @everblush-fg;
 
     margin:     0px;
     padding:    0px;
@@ -18,16 +11,10 @@
 
 window {
     location:       center;
-    // width:          480;
     width:          600;
     border-radius:  24px;
-    // border-radius:  12px;
-
-    /* custom border */
     border: 2px;
     border-color:       @everblush-blue;
-    
-    //background-color:   @bg0;
     background-color:   @everblush-bg;
 }
 
@@ -36,12 +23,7 @@ mainbox {
 }
 
 inputbar {
-    // background-color:   @bg1;
-    // border-color:       @bg3;
     background-color:   @everblush-bg-lighter;
-    // border-color:       @;
-
-    // border:         2px;
     border-radius:  16px;
 
     padding:    8px 16px;
@@ -50,21 +32,15 @@ inputbar {
 }
 
 prompt {
-    // text-color: @fg2;
     text-color: @everblush-gray;
 }
 
 entry {
     placeholder:        "Search";
-    placeholder-color:  @fg3;
+    placeholder-color:  @muted;
 }
 
 message {
-    // margin:             12px 0 0;
-    // border-radius:      16px;
-    // border-color:       @bg2;
-    // background-color:   @bg2;
-    // background-color:       @everblush-bg-lighter;
 }
 
 textbox {
@@ -75,11 +51,7 @@ listview {
     background-color:   transparent;
 
     margin:     12px 0 0;
-    // lines:      8;
     columns:    1;
-
-    // fixed-height: true;
-    // height: 200;
 }
 
 scrollbar {
@@ -96,12 +68,10 @@ element {
 }
 
 element normal active {
-    // text-color: @bg3;
     text-color: @everblush-red;
 }
 
 element selected normal, element selected active {
-    // background-color:   @bg3;
     background-color:   @everblush-green;
     text-color:   @everblush-bg;
 }
