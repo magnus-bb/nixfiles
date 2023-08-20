@@ -351,6 +351,12 @@ in {
 			};
 		};
 
+		eww = {
+			enable = true;
+			package = pkgs.eww-wayland
+			configDir = ../../configs/eww;
+		};
+
 		vscode = {
 			enable = true;
 			# allow extensions to be handled outside of this config
@@ -433,7 +439,7 @@ in {
 
 	home.packages = with pkgs; [
 		# DE
-		eww-wayland # bar / panel
+		# eww-wayland # bar / panel
     wdisplays # GUI for setting monitors
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
@@ -510,7 +516,6 @@ in {
 		)
 		google-chrome
 		firefox
-		# vscode # has a hm module
 		obsidian
 		discord
 		figma-linux
@@ -519,6 +524,7 @@ in {
 		hunspell
     hunspellDicts.en_US
     hunspellDicts.da_DK
+		(callPackage ../../packages/everblush-gtk-theme { }) # custom package for theme
 
 		# Terminal
 		thefuck
