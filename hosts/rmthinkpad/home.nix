@@ -68,11 +68,6 @@ in {
 		# 		stripRoot = false;
 		# 	};
 		# };
-
-		# ".config/eww" = {
-		# 	recursive = true;
-		# 	source = ../../dotfiles/eww;
-		# };
 	};
 
 	services = {
@@ -353,7 +348,7 @@ in {
 
 		eww = {
 			enable = true;
-			package = pkgs.eww-wayland
+			package = pkgs.eww-wayland;
 			configDir = ../../configs/eww;
 		};
 
