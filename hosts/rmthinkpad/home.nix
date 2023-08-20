@@ -349,7 +349,7 @@ in {
 		eww = {
 			enable = true;
 			package = pkgs.eww-wayland;
-			configDir = ../../configs/eww;
+			# configDir = ../../configs/eww;
 		};
 
 		vscode = {

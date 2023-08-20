@@ -1,0 +1,33 @@
+(defvar user "Magnus")
+(defvar show-time true)
+(defpoll time :interval "1s"
+							:run-while show-time
+	`date +%H:%M:%S`)
+
+(defwindow panel :monitor 0
+  							 :geometry (geometry :x "0%"
+																		 :y "12px"
+    																 :width "98.8%"
+																		 :height "30px"
+																		 :anchor "top center")
+								 :stacking "fg"
+								 ; :reserve (struts :distance "40px" :side "top")
+								 :exclusive true
+								 :windowtype "dock"
+								 :wm-ignore false
+	(greeter :text time
+					 :name user))
+
+(defwidget greeter [?text name]
+  (labeled-container :label text
+										 :orientation "horizontal"
+    	 							 :halign "center"
+		(button :onclick "notify-send 'Hello', 'Hello, ${name}'"
+			"Greet")))
+
+(defwidget labeled-container [?label orientation halign]
+	(box :class "container"
+			 :orientation orientation
+			 :halign halign
+		label
+		(children)))
