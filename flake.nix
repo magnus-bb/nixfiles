@@ -32,6 +32,29 @@
   in {
     # Available through 'nixos-rebuild --flake .#host'
     nixosConfigurations = {
+      rmthinkpad-gnome = nixpkgs.lib.nixosSystem {
+        inherit system;
+
+        specialArgs = { inherit inputs user; host = "rmthinkpad-gnome"; }; # Pass flake inputs to our config
+
+        modules = [
+          ./hosts/rmthinkpad-gnome/configuration.nix # system wide configuration
+
+          ./hosts/rmthinkpad-gnome/hardware-configuration.nix # generated machine configuration ('nixos-generate-config')
+
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${user} = import ./hosts/rmthinkpad-gnome/home.nix;
+              # Use extraSpecialArgs to pass arguments to home.nix
+              extraSpecialArgs = { inherit inputs; };
+            };
+          }
+        ];
+      };
+
+      # Hyprland
       rmthinkpad = nixpkgs.lib.nixosSystem {
         inherit system;
 
@@ -47,29 +70,6 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user} = import ./hosts/rmthinkpad/home.nix;
-              # Use extraSpecialArgs to pass arguments to home.nix
-              extraSpecialArgs = { inherit inputs; };
-            };
-          }
-        ];
-      };
-
-      # Testing hyprland
-      rmthinkpad-hyprland = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = { inherit inputs user; host = "rmthinkpad-hyprland"; }; # Pass flake inputs to our config
-
-        modules = [
-          ./hosts/rmthinkpad-hyprland/configuration.nix # system wide configuration
-
-          ./hosts/rmthinkpad-hyprland/hardware-configuration.nix # generated machine configuration ('nixos-generate-config')
-
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user} = import ./hosts/rmthinkpad-hyprland/home.nix;
               # Use extraSpecialArgs to pass arguments to home.nix
               extraSpecialArgs = { inherit inputs; };
             };

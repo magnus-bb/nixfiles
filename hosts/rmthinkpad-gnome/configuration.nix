@@ -28,16 +28,11 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Logitech options with Solaar
   hardware = {
-    # Logitech options with Solaar
     logitech.wireless = {
       enable = true;
       enableGraphical = true;
-    };
-
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
     };
   };
 
@@ -103,10 +98,6 @@
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
-
-      # Use hyprland cache so we don't rebuild from source every time
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
 
     gc = {
@@ -142,36 +133,46 @@
     # };
   };
 
-  programs.hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland; # from flake
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    xwayland.enable = true;
-  };
-
   services = {
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
-
-      videoDrivers = ["displaylink"]; # this SHOULD enable displaylink and set necessary options (I think)
-
+      # Enable the GNOME Desktop Environment.
       displayManager = {
-        gdm = {
-          enable = true;
-          wayland = true; # necessary for hyprland?
-        };
+        gdm.enable = true;
         # Enable automatic login for the user.
-        # autoLogin.enable = true;
-        # autoLogin.user = user;
+        autoLogin.enable = true;
+        autoLogin.user = user;
+      };
+      desktopManager.gnome.enable = true;
+      # Keyboard
+      layout = "dk";
+      xkbVariant = "";
+      libinput = {
+        # touchpad
+        enable = true;
+        # disabling mouse acceleration
+        mouse = {
+          accelProfile = "flat";
+        };
+        # disabling touchpad acceleration
+        touchpad = {
+          accelProfile = "flat";
+        };
       };
     };
     # Enable CUPS to print documents.
     printing.enable = true;
 
-    # Enable powerprofilesctl to change between performance, balanced, and power-saver modes
-    power-profiles-daemon.enable = true;
+    flatpak.enable = true;
+
+    # Allows GNOME systray icons extension to work (https://nixos.wiki/wiki/GNOME)
+    udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   };
+
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
 
   # Fonts
   fonts.packages = with pkgs; [
@@ -194,14 +195,11 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    wireplumber.enable = true;
-    audio.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    jack.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -218,41 +216,36 @@
     };
   };
 
-  # Allows users in the group "video" to change brightness by changing udev rules for /sys/class/backlight/%k/brightness
-  programs.light.enable = true;
-
   programs.zsh.enable = true;
 
   environment = {
     shells = with pkgs; [ zsh ]; # GDM only shows users that have their default shell set to a shell listed in /etc/shells. This adds the zsh package to /etc/shells
-    
+
     variables = {
       EDITOR = "code";
       VISUAL = "code";
-      SUDO_ASKPASS = "$(which rofi-askpass)"; # uses own package rofi-askpass to ask for sudo password when sudo -A is used
     };
     sessionVariables = {
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
-    };
-
-    # Adds .local/bin to PATH in case any programs end up there
-    localBinInPath = true;
-
-    # Files in /etc to create
-    etc = {
-      # This file is needed for swaylock (and swaylock-effects) to work
-      "pam.d/swaylock".text = "auth include login";
     };
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
       openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
-      polkit_gnome
-      pulseaudio # this just installs command line tools like pactl, but the config uses pipewire
-      # wlr-randr
+    ];
+
+    # GNOME apps I don't need
+    gnome.excludePackages = with pkgs.gnome; [
+      epiphany
+      gedit
+      yelp
+      geary
+      seahorse
     ];
   };
+
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -261,6 +254,11 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

@@ -1,8 +1,6 @@
-{ inputs, pkgs, lib, config, ... }: 
+{ inputs, pkgs, lib, ... }: 
 let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
-
- iconTheme = "Papirus-Dark";
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
@@ -22,82 +20,10 @@ in {
 			recursive = true;
 			source = ../../configs/cava;
 		};
-
-		".config/hypr" = {
-			recursive = true;
-			source = ../../configs/hypr;
-		};
-
-		# For some reason, polkit_gnome does not link the binary out of the nix store
-		"polkit-gnome/polkit-gnome-authentication-agent-1" = {
-			executable = true;
-			source = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-		};
-
-		"Pictures/wallpapers" = {
-			recursive = true;
-			source = ../../assets/wallpapers;
-		};
-
-		".config/swaylock" = {
-			recursive = true;
-			source = ../../configs/swaylock-effects;
-		};
-
-		".config/swaync" = {
-			recursive = true;
-			source = ../../configs/swaync;
-		};
-
-		".config/rofi" = {
-			recursive = true;
-			source = ../../configs/rofi;
-		};
-		
-		# ".config/mako" = {
-		# 	recursive = true;
-		# 	source = ../../configs/mako;
-		# };
-
-		# DOES NOT HAVE NERD FONT VERSION, USE ARIMO NERD FONT INSTEAD
-  	# "local/share/fonts/ProductSans".source = lib.cleanSourceWith {
-		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
-		# 	src = pkgs.fetchzip {
-		# 		url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
-		# 		sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
-		# 		stripRoot = false;
-		# 	};
-		# };
-
-		# ".config/eww" = {
-		# 	recursive = true;
-		# 	source = ../../dotfiles/eww;
-		# };
-	};
-
-	services = {
-		# Notification daemon
-		# mako = {
-		#  enable = true;
-		# };
-
-		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
-		swayosd = {
-			enable = true;
-		};
 	};
 	
 	programs = {
-
 		starship.enable = true;
-
-		btop = {
-			enable = true;
-			settings = {
-				theme_background = false;
-				# more here: https://github.com/aristocratos/btop#configurability
-			};
-		};
 
 		bat = {
 			enable = true;
@@ -127,7 +53,7 @@ in {
 			
 			font = {
 				name = "FiraCode Nerd Font Mono";
-				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
+				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; });
 			};
 
 			keybindings = {
@@ -189,13 +115,12 @@ in {
 			#   ];
 			# };
 			shellAliases = {
-				sudo = "sudo -A"; # use rofi-askpass to type pw instead of typing in the terminal
-				upnix = "sudo -A nixos-rebuild switch --flake /etc/nixos#";
-				ednix = "$EDITOR /etc/nixos";
+				upnix = "sudo nixos-rebuild switch --flake /etc/nixos/#";
+				# ednix = "$EDITOR /etc/nixos/configuration.nix";
 
 				zshreload = "source ~/.zshrc";
 
-				rmvpn = "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
+				rmvpn = "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
 
 				# filesystem
 				".." = "cd ..";
@@ -326,74 +251,15 @@ in {
 				skipOrPlayLikedSongs
       ];
     };
-
-		# App launcher / runner
-		rofi = {
-			enable = true;
-			package = pkgs.rofi-wayland;
-			font = "Arimo Nerd Font 14";
-			# pass = {
-			# 	enable = true;
-			# 	stores = ["$HOME/passwords"];
-			# };
-			terminal = "kitty";
-			theme = "themes/everblush.rasi";
-			plugins = with pkgs; [
-				rofi-calc
-				rofi-emoji
-			];
-
-			extraConfig = {
-				modi = "drun,run,calc,emoji";
-				show-icons = true;
-				icon-theme = iconTheme;
-				scroll-method = 1;
-			};
-		};
-
-		vscode = {
-			enable = true;
-			# allow extensions to be handled outside of this config
-			mutableExtensionsDir = true; # TODO: turn this off and handle all vscode conf in here 
-
-			# extensions = [
-				# e.g.: pkgs.vscode.extensions.bbenoist.nix
-			# ];
-			globalSnippets = {
-				# e.g.:
-				# fixme = {
-				# 	body = [
-				# 		"$LINE_COMMENT FIXME: $0"
-				# 	];
-				# 	description = "Insert a FIXME remark";
-				# 	prefix = [
-				# 		"fixme"
-				# 	];
-				# };
-			};
-
-			keybindings = [
-				# e.g.:
-				# {
-				# 	key = "ctrl+c";
-				# 	command = "editor.action.clipboardCopyAction";
-				# 	when = "textInputFocus";
-				# }
-			];
-
-			userSettings = {
-				# Configuration written to Visual Studio Code’s settings.json.
-			};
-		};
 	};
 
 	gtk = {
 		enable = true;
 		
-		iconTheme = {
-		  name = iconTheme;
-		  package = pkgs.papirus-icon-theme;
-		};
+		# iconTheme = {
+		#   name = "Papirus-Dark";
+		#   package = pkgs.papirus-icon-theme;
+		# };
 
 		theme = {
 			name = "Layan-Dark";
@@ -426,76 +292,154 @@ in {
 
 	dconf = {
 		enable = true; # allow gnome settings with dconf
-		settings = {
 
+		settings = {
+			"org/gnome/shell" = {
+				disable-user-extensions = false;
+
+				# `gnome-extensions list` to list extensions
+				enabled-extensions = [
+					"clipman@popov895.ukr.net"
+					"blur-my-shell@aunetx"
+					"gTile@vibou"
+					"scroll-workspaces@gfxmonk.net"
+					"vertical-workspaces@G-dH.github.com"
+					"user-theme@gnome-shell-extensions.gcampax.github.com"
+					"appindicatorsupport@rgcjonas.gmail.com"
+				];
+
+			};
+
+			"org/gnome/shell/extensions/clipman" = {
+				history-size = 25;
+				toggle-menu-shortcut = [ "<Super>c" ];
+				web-search-url = "https://google.com/?q=%s";
+			};
+			"org/gnome/shell/extensions/blur-my-shell" = {
+				hacks-level = 3;
+			};
+			"org/gnome/shell/extensions/blur-my-shell/panel" = {
+				unblur-in-overview = true;
+			};
+			"org/gnome/shell/extensions/gtile" = {
+				insets-primary-bottom = 8;
+				insets-primary-left = 8;
+				insets-primary-right = 8;
+				insets-primary-top = 8;
+				insets-secondary-bottom = 8;
+				insets-secondary-left = 8;
+				insets-secondary-right = 8;
+				insets-secondary-top = 8;
+				window-margin = 8;
+				theme = "Minimal Dark";
+			};
+			"org/gnome/shell/extensions/vertical-workspaces" = {
+				dash-position = 4; # hide dash in overview
+				dash-show-recent-files-icon = 0;
+				dash-show-windows-icon = false;
+				hot-corner-action = 0;
+				hot-corner-fullscreen = 0;
+				hot-corner-position = 0;
+				overview-bg-blur-sigma = 40;
+				overview-bg-brightness = 100;
+				search-windows-enable = false;
+				show-app-icon-position = 2;
+				show-bg-in-overview = true;
+				startup-state = 0;
+			};
+			"org/gnome/shell/extensions/net/gfxmonk/scroll-workspaces" = {
+				indicator = true;
+				scroll-delay = 50;
+			};
+
+			"org/gnome/shell/extensions/user-theme" = {
+				name = "Layan-Dark";
+			};
+
+			"org/gnome/desktop/interface" = {
+				color-scheme = "prefer-dark";
+			};
+
+			"org/gnome/desktop/wm/preferences" = {
+				resize-with-right-button = true;
+			};
+
+			"org/gnome/desktop/peripherals/touchpad" = {
+				tap-to-click = true;
+			};
+
+			"org/gnome/desktop/wm/keybindings" = {
+				switch-to-workspace-up = ["<Control><Super>Up"];
+				switch-to-workspace-down = ["<Control><Super>Down"];
+				maximize = ["<Super>M" "<Super>Up"];
+				close = ["<Super>Q"];
+				# switch-panels = ["<Shift><Control>Tab"]; # only rebound so ctrl+right-alt+tab can be bound to the overview (because logitech mx master mouse will trigger this keybind with thumb button)
+			};
+
+			# "org/gnome/desktop/input-sources" = {
+			#   xkb-options = [ "lv3:ralt_alt" ]; # allows binding right-alt (used by logitech mx master mouse to show overview)
+			# };
+
+			"org/gnome/shell/keybindings" = {
+				# toggle-overview = [ "<Control><Alt>Tab" ]; # logitech mx master thumb button sends this keybind
+				show-screenshot-ui = [ "Print" "<Shift><Super>S" ];
+			};
+
+			"org/gnome/mutter" = {
+				workspaces-only-on-primary = true;
+				dynamic-workspaces = true;
+				edge-tiling = true;
+			};
+
+			"org/gnome/desktop/calendar" = {
+				show-weekdate = true;
+			};
+
+			"org/gnome/desktop/interface" = {
+				clock-show-weekday = true;
+			};
+
+			# Shortcuts for launching Kitty and System Monitor on GNOME
+			"org/gnome/settings-daemon/plugins/media-keys" = {
+				calculator = [ "Calculator" ];
+				home = [ "<Super>f" ];
+				www = [ "<Super>b" ];
+
+				custom-keybindings = [
+					"/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" # Kitty
+					"/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/" # System Monitor
+				];
+			};
+			# Kitty
+			"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+				binding = "<Super>T";
+				command = "kitty";
+				name = "Launch Kitty";
+			};
+			# System Monitor
+			"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+				binding = "<Shift><Control>Escape";
+				command = "gnome-system-monitor";
+				name = "Launch System Monitor";
+			};
 		};
 	};
 
 	home.packages = with pkgs; [
 		# DE
-		eww-wayland # bar / panel
-    wdisplays # GUI for setting monitors
-		qt6.qtwayland # to make qt apps work
-		libsForQt5.qt5.qtwayland # to make qt apps work
-		swww # wallpapers
-		polkit_gnome # authentication agent
-		swaylock-effects # lock screen
-		wtype # allows programs to send keystrokes and mouse clicks etc (for pasting emojis with rofi-emoji)
-		cliphist # clipboard manager
-		wl-clip-persist # makes sure clipboard is not cleared when closing programs on wayland
-		wl-clipboard # dependency of cliphist
-		swaynotificationcenter # notifications and control center
-    libnotify # enables notify-send
-		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		rofi-pulse-select # rofi util for picking input / output devices
-		# rofi-power-menu # rofi util for power off, reboot etc
-		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
-		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
-		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
-
-		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
-		# jq # json processor used by eww widget for workspaces
-		# python312 # used for widgets in eww panel
-
-		# fufexan's eww bar dependencies
-		# inputs.fufexan.packages.x86_64-linux.gross
-    material-symbols
-		# bash
-    # blueberry
-    # bluez
-    # brillo
-    # coreutils
-    # dbus
-    # findutils
-    # gawk
-    # gnome.gnome-control-center
-    # gnused
-    # imagemagick
-    # jaq
-    # jc
-    # networkmanager
-    # pavucontrol
-    # playerctl
-    # procps
-    # pulseaudio
-    # ripgrep
-    # socat
-    # udev
-    # upower
-    # util-linux
-    # wget
-    # wireplumber
-    # wlogout
-
-		# Utilities
-		hyprpicker # color picker
-		grim # screenshot util
-		slurp # screen area selector (to be used with grim)
-		swappy # gui for annotating images
-		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
+		gnome.dconf-editor
+		gnome.gnome-tweaks
+		gnomeExtensions.gtile
+		gnomeExtensions.top-panel-workspace-scroll
+		gnomeExtensions.blur-my-shell
+		gnomeExtensions.vertical-workspaces
+		gnomeExtensions.gsconnect
+		gnomeExtensions.user-themes
+		gnomeExtensions.clipman
+		layan-gtk-theme
 
 		# Apps
-		# fixes slack screensharing with wayland and forces running under wayland
+		# fixes slack screensharing with wayland
 		(slack.overrideAttrs
 			(default: {
 				installPhase = default.installPhase + ''
@@ -510,15 +454,11 @@ in {
 		)
 		google-chrome
 		firefox
-		# vscode # has a hm module
+		vscode
+		# spotify: spicetify install spotify too
 		obsidian
 		discord
 		figma-linux
-		libreoffice-fresh
-		# spellcheck packages for libreoffice
-		hunspell
-    hunspellDicts.en_US
-    hunspellDicts.da_DK
 
 		# Terminal
 		thefuck
