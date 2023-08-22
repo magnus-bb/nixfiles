@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Take password prompt from STDIN, print password to STDOUT
+# the sed piece just removes the colon from the provided
+# prompt: rofi -p already gives us a colon
+rofi -dmenu \
+	-password \
+	-no-fixed-num-lines \
+	-theme-str 'entry { placeholder: "Type password"; }' \
+	-p "$(printf '%s' "$1" | sed s/://)" # shows text from the programme that requests the password (usually sudo -A, but can be used with other programmes as well)

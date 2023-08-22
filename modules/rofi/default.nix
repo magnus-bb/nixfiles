@@ -15,6 +15,15 @@ let
 
 			text = builtins.readFile ./power-menu;
 		}) { };
+
+	askpass = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
+		pkgs.writeShellApplication {
+			name = "askpass";
+
+			runtimeInputs = with pkgs; [ gnused ];
+
+			text = builtins.readFile ./askpass;
+		}) { };
 in
 {
   # imports = [
@@ -75,6 +84,8 @@ in
 
 		home.packages = with pkgs; [
 			calculator
+			power-menu
+			askpass
 		];
   };
 }
