@@ -1,13 +1,20 @@
 { config, pkgs, lib, ... }:
 let
-	calculator = { pkgs ? import <nixpkgs> {} }:
+	calculator = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
 		pkgs.writeShellApplication {
 			name = "calculator";
 
-			# runtimeInputs = with pkgs; [ rofi-wayland rofi-calc ];
-
 			text = builtins.readFile ./calculator;
-		};
+		}) { };
+
+	power-menu = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
+		pkgs.writeShellApplication {
+			name = "power-menu";
+
+			runtimeInputs = with pkgs; [ rofi-power-menu ];
+
+			text = builtins.readFile ./power-menu;
+		}) { };
 in
 {
   # imports = [
@@ -19,6 +26,8 @@ in
     # Option declarations.
     # Declare what settings a user of this module module can set.
     # Usually this includes an "enable" option to let a user of this module choose.
+
+		# This allows us to pass in iconTheme, so we can control it from home.nix
 		rofi.iconTheme= lib.mkOption {
       type = lib.types.str;
       example = "Papirus-Dark";
@@ -34,6 +43,7 @@ in
     # Usually these are depend on whether a user of this module chose to "enable" it
     # using the "option" above. 
     # You also set options here for modules that you imported in "imports".
+
 		programs.rofi = {
 			enable = true;
 			package = pkgs.rofi-wayland;
@@ -64,7 +74,7 @@ in
 		};
 
 		home.packages = with pkgs; [
-			(callPackage calculator { })
+			calculator
 		];
   };
 }

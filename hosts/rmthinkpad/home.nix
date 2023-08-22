@@ -51,11 +51,6 @@ in {
 			source = ../../configs/swaync;
 		};
 
-		# ".config/rofi" = {
-		# 	recursive = true;
-		# 	source = ../../configs/rofi;
-		# };
-		
 		# ".config/mako" = {
 		# 	recursive = true;
 		# 	source = ../../configs/mako;
@@ -80,12 +75,9 @@ in {
 
 		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
 		swayosd.enable = true;
-
-		# # Media keys to control music
-		# playerctld.enable = true;
 	};
 
-	# custom module that handles setup of rofi + plugins and custom scripts
+	# Custom module that handles setup of rofi + plugins and custom scripts
 	rofi.iconTheme = iconTheme;
 	
 	programs = {
@@ -325,30 +317,6 @@ in {
       ];
     };
 
-		# # App launcher / runner
-		# rofi = {
-		# 	enable = true;
-		# 	package = pkgs.rofi-wayland;
-		# 	font = "Arimo Nerd Font 14";
-		# 	# pass = {
-		# 	# 	enable = true;
-		# 	# 	stores = ["$HOME/passwords"];
-		# 	# };
-		# 	terminal = "kitty";
-		# 	theme = "themes/everblush.rasi";
-		# 	plugins = with pkgs; [
-		# 		rofi-calc
-		# 		rofi-emoji
-		# 	];
-
-		# 	extraConfig = {
-		# 		modi = "drun,run,calc,emoji";
-		# 		show-icons = true;
-		# 		icon-theme = iconTheme;
-		# 		scroll-method = 1;
-		# 	};
-		# };
-
 		# eww = {
 		# 	enable = true;
 		# 	package = pkgs.eww-wayland;
@@ -455,11 +423,9 @@ in {
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 		rofi-pulse-select # rofi util for picking input / output devices
-		# rofi-power-menu # rofi util for power off, reboot etc
-		# (callPackage ../../packages/calculator { }) # gui for calculator
 		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
-		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
+		# (callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
 		playerctl # control music playback (pause, skip etc)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
