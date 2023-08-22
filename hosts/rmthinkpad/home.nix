@@ -7,6 +7,7 @@ let
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
+		../../modules/rofi
 	];
 
 	home.stateVersion = "23.05";
@@ -321,29 +322,29 @@ in {
       ];
     };
 
-		# App launcher / runner
-		rofi = {
-			enable = true;
-			package = pkgs.rofi-wayland;
-			font = "Arimo Nerd Font 14";
-			# pass = {
-			# 	enable = true;
-			# 	stores = ["$HOME/passwords"];
-			# };
-			terminal = "kitty";
-			theme = "themes/everblush.rasi";
-			plugins = with pkgs; [
-				rofi-calc
-				rofi-emoji
-			];
+		# # App launcher / runner
+		# rofi = {
+		# 	enable = true;
+		# 	package = pkgs.rofi-wayland;
+		# 	font = "Arimo Nerd Font 14";
+		# 	# pass = {
+		# 	# 	enable = true;
+		# 	# 	stores = ["$HOME/passwords"];
+		# 	# };
+		# 	terminal = "kitty";
+		# 	theme = "themes/everblush.rasi";
+		# 	plugins = with pkgs; [
+		# 		rofi-calc
+		# 		rofi-emoji
+		# 	];
 
-			extraConfig = {
-				modi = "drun,run,calc,emoji";
-				show-icons = true;
-				icon-theme = iconTheme;
-				scroll-method = 1;
-			};
-		};
+		# 	extraConfig = {
+		# 		modi = "drun,run,calc,emoji";
+		# 		show-icons = true;
+		# 		icon-theme = iconTheme;
+		# 		scroll-method = 1;
+		# 	};
+		# };
 
 		# eww = {
 		# 	enable = true;
@@ -452,7 +453,7 @@ in {
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 		rofi-pulse-select # rofi util for picking input / output devices
 		# rofi-power-menu # rofi util for power off, reboot etc
-		(callPackage ../../packages/rofi-calc { }) # gui for calculator
+		(callPackage ../../packages/calculator { }) # gui for calculator
 		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
 		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
