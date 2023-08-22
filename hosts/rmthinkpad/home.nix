@@ -452,6 +452,7 @@ in {
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 		rofi-pulse-select # rofi util for picking input / output devices
 		# rofi-power-menu # rofi util for power off, reboot etc
+		(callPackage ../../packages/rofi-calc { }) # gui for calculator
 		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
 		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
