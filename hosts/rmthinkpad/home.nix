@@ -75,6 +75,9 @@ in {
 
 		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
 		swayosd.enable = true;
+
+		# Notifications with power status
+		poweralertd.enable = true;
 	};
 
 	# Custom module that handles setup of rofi + plugins and custom scripts
@@ -423,32 +426,14 @@ in {
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
 		playerctl # control music playback (pause, skip etc)
+    blueberry # gnome's bluetooth frontend
+    pavucontrol # sound configuration
+    # brillo # controls screen brightness
 
+		# For eww example widgets
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
 		# python312 # used for widgets in eww panel
-
-		# fufexan's eww bar dependencies
-		# inputs.fufexan.packages.x86_64-linux.gross
-    material-symbols
-    # blueberry
-    # brillo
-    # coreutils
-    # dbus
-    # findutils
-    # gawk
-    # gnome.gnome-control-center
-    # imagemagick
-    # jaq
-    # jc
-    # pavucontrol
-    # procps
-    # ripgrep
-    # socat
-    # udev
-    # upower
-    # util-linux
-    # wlogout
 
 		# Utilities
 		hyprpicker # color picker
@@ -494,5 +479,8 @@ in {
 		nodejs_20
 		nodePackages_latest.pnpm
 		bun
+
+		# Assets
+    material-symbols
 	];
 }
