@@ -3,7 +3,6 @@ let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
 
  iconTheme = "Papirus-Dark";
-#  gtkTheme = "Layan-Dark";
  gtkTheme = "Everblush";
 in {
   imports = [
@@ -79,9 +78,10 @@ in {
 		# };
 
 		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
-		swayosd = {
-			enable = true;
-		};
+		swayosd.enable = true;
+
+		# # Media keys to control music
+		# playerctld.enable = true;
 	};
 	
 	programs = {
@@ -106,7 +106,7 @@ in {
 
 		git = {
 			enable = true;
-			userName  = "Magnus Bendix Borregaard";
+			userName  = "magnus-bb";
 			userEmail = "magnus.borregaard@gmail.com";
 			extraConfig = {
 				core = {
@@ -209,9 +209,6 @@ in {
 
 				# Better cat with syntax highlighting, git integration, and line numbers
 				cat = "bat --paging=never"; # use -p to remove line numbers (for copy-pasting)
-
-				nuke = "rm -rf";
-				rm = "rm -i"; # ask confirmation
 
 				# git
 				g = "git";
@@ -458,6 +455,7 @@ in {
 		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
 		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc
+		playerctl # control music playback (pause, skip etc)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
 		# jq # json processor used by eww widget for workspaces
@@ -527,7 +525,7 @@ in {
 
 		# Terminal
 		thefuck
-		lsd
+		lsd # get exa instead
 		ranger
 		tty-clock
 		cmatrix
@@ -537,6 +535,5 @@ in {
 		nodejs_20
 		nodePackages_latest.pnpm
 		bun
-		# podman-compose
 	];
 }

@@ -35,7 +35,7 @@ in {
 
 		git = {
 			enable = true;
-			userName  = "Magnus Bendix Borregaard";
+			userName  = "magnus-bb";
 			userEmail = "magnus.borregaard@gmail.com";
 			extraConfig = {
 				core = {
@@ -116,7 +116,7 @@ in {
 			# };
 			shellAliases = {
 				upnix = "sudo nixos-rebuild switch --flake /etc/nixos/#";
-				# ednix = "$EDITOR /etc/nixos/configuration.nix";
+				ednix = "$EDITOR /etc/nixos";
 
 				zshreload = "source ~/.zshrc";
 
@@ -307,7 +307,6 @@ in {
 					"user-theme@gnome-shell-extensions.gcampax.github.com"
 					"appindicatorsupport@rgcjonas.gmail.com"
 				];
-
 			};
 
 			"org/gnome/shell/extensions/clipman" = {
@@ -459,6 +458,7 @@ in {
 		obsidian
 		discord
 		figma-linux
+		citrix_workspace # only for work
 
 		# Terminal
 		thefuck

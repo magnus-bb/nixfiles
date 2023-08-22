@@ -25,8 +25,6 @@ stdenvNoCC.mkDerivation rec {
 	installPhase = ''
 		mkdir -p $out/share/themes/Everblush
 
-		ls -al $src
-
 		cp -r $src/assets $out/share/themes/Everblush
 		cp -r $src/gtk-3.0 $out/share/themes/Everblush
 		cp -r $src/gtk-2.0 $out/share/themes/Everblush
