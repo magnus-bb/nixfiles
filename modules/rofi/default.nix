@@ -1,49 +1,23 @@
 { config, pkgs, lib, ... }:
 let
-	# mkPackage
+	mkShellPackage = with pkgs; { name, deps ? [] }: callPackage ({ pkgs ? import <nixpkgs> {} }:
+		writeShellApplication {
+			inherit name;
 
-	calculator = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
-		pkgs.writeShellApplication {
-			name = "calculator";
+			runtimeInputs = deps;
 
-			text = builtins.readFile ./calculator;
+			text = builtins.readFile ./${name};
 		}) { };
 
-	power-menu = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
-		pkgs.writeShellApplication {
-			name = "power-menu";
+	calculator = mkShellPackage { name = "calculator"; };
 
-			runtimeInputs = with pkgs; [ rofi-power-menu ];
+	power-menu =  mkShellPackage { name = "power-menu"; deps = [ pkgs.rofi-power-menu ]; };
 
-			text = builtins.readFile ./power-menu;
-		}) { };
+	askpass = mkShellPackage { name = "askpass"; deps = [ pkgs.gnused ]; };
 
-	askpass = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
-		pkgs.writeShellApplication {
-			name = "askpass";
+	wifi-menu = mkShellPackage { name = "wifi-menu"; deps = [ pkgs.gnused pkgs.networkmanager ]; };
 
-			runtimeInputs = with pkgs; [ gnused ];
-
-			text = builtins.readFile ./askpass;
-		}) { };
-
-	wifi-menu = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
-		pkgs.writeShellApplication {
-			name = "wifi-menu";
-
-			runtimeInputs = with pkgs; [ gnused networkmanager ];
-
-			text = builtins.readFile ./wifi-menu;
-		}) { };
-
-	run-command = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
-		pkgs.writeShellApplication {
-			name = "run-command";
-
-			runtimeInputs = with pkgs; [ kitty zsh ];
-
-			text = builtins.readFile ./run-command;
-		}) { };
+	run-command = mkShellPackage { name = "run-command"; deps = [ pkgs.kitty pkgs.zsh ]; };
 in
 {
   # imports = [
@@ -77,10 +51,6 @@ in
 			enable = true;
 			package = pkgs.rofi-wayland;
 			font = "Arimo Nerd Font 14";
-			# pass = {
-			# 	enable = true;
-			# 	stores = ["$HOME/passwords"];
-			# };
 			terminal = "kitty";
 			theme = "themes/everblush.rasi";
 			plugins = with pkgs; [
