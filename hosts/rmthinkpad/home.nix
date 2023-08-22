@@ -51,10 +51,10 @@ in {
 			source = ../../configs/swaync;
 		};
 
-		".config/rofi" = {
-			recursive = true;
-			source = ../../configs/rofi;
-		};
+		# ".config/rofi" = {
+		# 	recursive = true;
+		# 	source = ../../configs/rofi;
+		# };
 		
 		# ".config/mako" = {
 		# 	recursive = true;
@@ -84,6 +84,9 @@ in {
 		# # Media keys to control music
 		# playerctld.enable = true;
 	};
+
+	# custom module that handles setup of rofi + plugins and custom scripts
+	rofi.iconTheme = iconTheme;
 	
 	programs = {
 
@@ -428,12 +431,12 @@ in {
 	# home.sessionVariables.GTK_THEME = "Layan-Dark";
 	home.sessionVariables.GTK_THEME = gtkTheme;
 
-	dconf = {
-		enable = true; # allow gnome settings with dconf
-		settings = {
+	# dconf = {
+	# 	enable = true; # allow gnome settings with dconf
+	# 	settings = {
 
-		};
-	};
+	# 	};
+	# };
 
 	home.packages = with pkgs; [
 		# DE
@@ -453,7 +456,7 @@ in {
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 		rofi-pulse-select # rofi util for picking input / output devices
 		# rofi-power-menu # rofi util for power off, reboot etc
-		(callPackage ../../packages/calculator { }) # gui for calculator
+		# (callPackage ../../packages/calculator { }) # gui for calculator
 		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		(callPackage ../../packages/rofi-askpass { }) # gui for password prompts with sudo -A and SUDO_ASKPASS
 		(callPackage ../../packages/power-menu { }) # gui for power off, reboot etc

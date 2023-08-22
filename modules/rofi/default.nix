@@ -1,15 +1,32 @@
-{ config, pkgs, iconTheme, ... }:
+{ config, pkgs, lib, ... }:
+let
+	calculator = { pkgs ? import <nixpkgs> {} }:
+		pkgs.writeShellApplication {
+			name = "calculator";
+
+			# runtimeInputs = with pkgs; [ rofi-wayland rofi-calc ];
+
+			text = builtins.readFile ./calculator;
+		};
+in
 {
   # imports = [
     # Paths to other modules.
     # Compose this module out of smaller ones.
   # ];
 
-  # options = {
+  options = {
     # Option declarations.
     # Declare what settings a user of this module module can set.
     # Usually this includes an "enable" option to let a user of this module choose.
-  # };
+		rofi.iconTheme= lib.mkOption {
+      type = lib.types.str;
+      example = "Papirus-Dark";
+      description = ''
+				The name of the installed icon theme to use for rofi.
+      '';
+    };
+  };
 
   config = {
     # Option definitions.
@@ -35,9 +52,19 @@
 			extraConfig = {
 				modi = "drun,run,calc,emoji";
 				show-icons = true;
-				icon-theme = iconTheme;
+				icon-theme = config.rofi.iconTheme;
 				scroll-method = 1;
 			};
 		};
+
+
+		home.file.".config/rofi" = {
+			recursive = true;
+			source = ../../configs/rofi;
+		};
+
+		home.packages = with pkgs; [
+			(callPackage calculator { })
+		];
   };
 }
