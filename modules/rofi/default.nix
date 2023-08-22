@@ -73,9 +73,8 @@ in
 		};
 
 		home.packages = with pkgs; [
-			# from pkgs (TODO: make these custom to control how rofi is displayed)
 			rofi-bluetooth # gui for bluetooth
-			rofi-pulse-select # rofi util for picking input / output devices
+			rofi-pulse-select # rofi util for picking input / output devices (TODO: make this custom to be able to control rofi display)
 			# own packages
 			calculator
 			power-menu

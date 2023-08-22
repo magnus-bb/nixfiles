@@ -23,6 +23,7 @@
 
 .notification-row {
 	border-radius: 14px;
+	padding: 1px;
 }
 
 .notification-row:focus,
@@ -90,10 +91,11 @@
 
 /* Box behind the notification (kinda the row) */
 .notification-background {
-	background: transparent;
+	background: none;
+	border-radius: 12px;
 }
 .notification-background:hover {
-	background: transparent;
+	background: none;
 }
 
 /* Regular notification box */
