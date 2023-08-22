@@ -421,8 +421,6 @@ in {
 		wl-clipboard # dependency of cliphist
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
-		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
-		rofi-pulse-select # rofi util for picking input / output devices
 		playerctl # control music playback (pause, skip etc)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
@@ -432,31 +430,23 @@ in {
 		# fufexan's eww bar dependencies
 		# inputs.fufexan.packages.x86_64-linux.gross
     material-symbols
-		# bash
     # blueberry
-    # bluez
     # brillo
     # coreutils
     # dbus
     # findutils
     # gawk
     # gnome.gnome-control-center
-    # gnused
     # imagemagick
     # jaq
     # jc
-    # networkmanager
     # pavucontrol
-    # playerctl
     # procps
-    # pulseaudio
     # ripgrep
     # socat
     # udev
     # upower
     # util-linux
-    # wget
-    # wireplumber
     # wlogout
 
 		# Utilities

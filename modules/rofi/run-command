@@ -1,0 +1,3 @@
+#!/bin/sh
+
+rofi -show run -run-shell-command 'kitty -e zsh -ic "{cmd} && read"' -no-show-icons

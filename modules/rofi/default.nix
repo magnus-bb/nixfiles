@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 let
+	# mkPackage
+
 	calculator = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
 		pkgs.writeShellApplication {
 			name = "calculator";
@@ -32,6 +34,15 @@ let
 			runtimeInputs = with pkgs; [ gnused networkmanager ];
 
 			text = builtins.readFile ./wifi-menu;
+		}) { };
+
+	run-command = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
+		pkgs.writeShellApplication {
+			name = "run-command";
+
+			runtimeInputs = with pkgs; [ kitty zsh ];
+
+			text = builtins.readFile ./run-command;
 		}) { };
 in
 {
@@ -92,10 +103,15 @@ in
 		};
 
 		home.packages = with pkgs; [
+			# from pkgs (TODO: make these custom to control how rofi is displayed)
+			rofi-bluetooth # gui for bluetooth
+			rofi-pulse-select # rofi util for picking input / output devices
+			# own packages
 			calculator
 			power-menu
 			askpass
 			wifi-menu
+			run-command
 		];
   };
 }
