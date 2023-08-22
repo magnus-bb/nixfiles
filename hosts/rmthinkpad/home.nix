@@ -212,6 +212,7 @@ in {
 				gc = "git commit";
 				gcm = "git commit -m";
 				gcam = "git commit -a -m";
+				gammend = "git commit --amend";
 				gpl = "git pull";
 				gps = "git push";
 				grh = "git reset --hard HEAD~1";
