@@ -94,7 +94,7 @@
           },
           {
             "label": "󰖩",
-            "command": "rofi-wifi-menu"
+            "command": "wifi-menu"
           },
           {
             "label": "󰂯",

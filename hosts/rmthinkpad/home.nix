@@ -423,7 +423,6 @@ in {
     libnotify # enables notify-send
 		rofi-bluetooth # gui for bluetooth (needs rofi and bluez)
 		rofi-pulse-select # rofi util for picking input / output devices
-		(callPackage ../../packages/rofi-wifi-menu { }) # gui for wifi selection
 		playerctl # control music playback (pause, skip etc)
 
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)

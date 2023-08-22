@@ -24,6 +24,15 @@ let
 
 			text = builtins.readFile ./askpass;
 		}) { };
+
+	wifi-menu = pkgs.callPackage ({ pkgs ? import <nixpkgs> {} }:
+		pkgs.writeShellApplication {
+			name = "wifi-menu";
+
+			runtimeInputs = with pkgs; [ gnused networkmanager ];
+
+			text = builtins.readFile ./wifi-menu;
+		}) { };
 in
 {
   # imports = [
@@ -86,6 +95,7 @@ in
 			calculator
 			power-menu
 			askpass
+			wifi-menu
 		];
   };
 }
