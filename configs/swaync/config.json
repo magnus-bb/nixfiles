@@ -69,7 +69,7 @@
         "actions": [ 
           {
             "label": "󰜉",
-            "command": "shutdown -r now"
+            "command": "systemctl reboot"
           },
           {
             "label": "󰌾",
@@ -77,11 +77,11 @@
           },
           {
             "label": "󰍃",
-            "command": "hyprctl dispatch exit"
+            "command": "loginctl terminate-session ${XDG_SESSION_ID-}"
           },
           {
             "label": "󰐥",
-            "command": "shutdown -h now"
+            "command": "systemctl poweroff"
           }
         ]
       },

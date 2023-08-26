@@ -76,6 +76,25 @@ in {
 		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
 		swayosd.enable = true;
 
+		swayidle = {
+			enable = true;
+
+			events = [
+				# “before-sleep”, “after-resume”, “lock”, “unlock”
+				# { event = "lock"; command = "swaylock -f"; }
+			];
+				# swayidle -w \\
+				# timeout 300 'swaylock -f -c 000000' \\
+				# timeout 600 'swaymsg "output * power off"' \\
+				# 	resume 'swaymsg "output * power on"' \\
+				# before-sleep 'swaylock -f -c 000000'
+
+			timeouts = [
+  			{ timeout = 3; command = "notify-send 'Locking'"; }
+			];
+
+		};
+
 		# Notifications with power status
 		poweralertd.enable = true;
 	};
@@ -84,6 +103,7 @@ in {
 	rofi.iconTheme = iconTheme;
 	
 	programs = {
+		# TODO: install udiskie OR udisks2 service AND/OR gnome-disks (if this does not also install udisks2)
 
 		starship.enable = true;
 
@@ -425,10 +445,13 @@ in {
 		wl-clipboard # dependency of cliphist
 		swaynotificationcenter # notifications and control center
     libnotify # enables notify-send
+		# TODO: use this liskin thing to make custom playerctld functionality https://work.lisk.in/2020/05/06/linux-media-control.html
 		playerctl # control music playback (pause, skip etc)
     blueberry # gnome's bluetooth frontend
     pavucontrol # sound configuration
+		swayidle # automatic locking of screen, turning off screen and suspension
     # brillo # controls screen brightness
+
 
 		# For eww example widgets
 		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
@@ -438,9 +461,11 @@ in {
 		# Utilities
 		hyprpicker # color picker
 		grim # screenshot util
-		slurp # screen area selector (to be used with grim)
+		wl-screenrec # screenrecorder
+		slurp # screen area selector (to be used with grim, wl-screenrec etc)
 		swappy # gui for annotating images
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
+		jaq # json processor used by eww widget
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
