@@ -41,6 +41,9 @@
       enable = true;
       powerOnBoot = true;
     };
+
+    # control brightness with brillo
+    brillo.enable = true;
   };
 
   # Set your time zone.

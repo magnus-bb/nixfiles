@@ -3,7 +3,7 @@ clock
 indicator
 indicator-caps-lock
 #     Show the current Caps Lock state also on the indicator.
-grace=2
+grace=5
 grace-no-mouse
 # fade-in=0.1 # makes the blur effect very slow :(
 

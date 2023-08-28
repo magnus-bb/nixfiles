@@ -258,7 +258,7 @@ in {
 				sshkitty = "kitty +kitten ssh"; # fixes ssh issues by copying terminfo files to the server
 
 				# Misc.
-				weather = "curl wttr.in";
+				weather = "curl wttr.in/lystrup";
 				dotenv = "export $(cat -p .env | xargs)"; # sources .env file from cwd
 			};
 
@@ -402,9 +402,13 @@ in {
 		#   name = "FiraCode Nerd Font Mono Medium";
 		# };
 
+		# cursorTheme = {
+		# 	name = "Nordzy-cursors";
+		# 	package = pkgs.nordzy-cursor-theme;
+		# };
 		cursorTheme = {
-			name = "Nordzy-cursors";
-			package = pkgs.nordzy-cursor-theme;
+			name = "Vimix Cursors - White";
+			package = (pkgs.callPackage ../../packages/vimix-cursors { }); # custom package for theme;
 		};
 
 		gtk2.extraConfig = ''
@@ -433,7 +437,6 @@ in {
 	home.packages = with pkgs; [
 		# DE
 		eww-wayland # bar / panel
-    wdisplays # GUI for setting monitors
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
 		swww # wallpapers
@@ -450,6 +453,7 @@ in {
     blueberry # gnome's bluetooth frontend
     pavucontrol # sound configuration
 		swayidle # automatic locking of screen, turning off screen and suspension
+		brightnessctl
     # brillo # controls screen brightness
 
 
@@ -465,7 +469,7 @@ in {
 		slurp # screen area selector (to be used with grim, wl-screenrec etc)
 		swappy # gui for annotating images
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
-		jaq # json processor used by eww widget
+		jq # json processer used by some eww widgets
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -481,6 +485,7 @@ in {
 				'';
 			})
 		)
+    wdisplays # GUI for setting monitors
 		google-chrome
 		firefox
 		obsidian
@@ -491,6 +496,8 @@ in {
 		hunspell
     hunspellDicts.en_US
     hunspellDicts.da_DK
+		caprine-bin
+		signal-desktop
 
 		# Terminal
 		thefuck
@@ -504,6 +511,8 @@ in {
 		nodejs_20
 		nodePackages_latest.pnpm
 		bun
+		python312
+		ngrok
 
 		# Assets
     material-symbols
