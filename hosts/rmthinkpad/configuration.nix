@@ -165,6 +165,7 @@
         sddm = {
           enable = true;
           enableHidpi = true;
+          theme =  "sugar-dark";
         };
         # gdm = {
         #   enable = true;
@@ -259,6 +260,8 @@
       polkit_gnome
       pulseaudio # this just installs command line tools like pactl, but the config uses pipewire
       # wlr-randr
+      (callPackage ../../packages/sddm-sugar-dark-theme { }) # sddm theme
+      libsForQt5.qt5.qtgraphicaleffects # required for sddm theme
     ];
   };
 
