@@ -162,10 +162,14 @@
       videoDrivers = ["displaylink"]; # this SHOULD enable displaylink and set necessary options (I think)
 
       displayManager = {
-        gdm = {
+        sddm = {
           enable = true;
-          wayland = true; # necessary for hyprland?
+          enableHidpi = true;
         };
+        # gdm = {
+        #   enable = true;
+        #   wayland = true; # necessary for hyprland?
+        # };
         # Enable automatic login for the user.
         # autoLogin.enable = true;
         # autoLogin.user = user;

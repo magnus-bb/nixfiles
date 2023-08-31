@@ -11,13 +11,13 @@ stdenvNoCC.mkDerivation rec {
     owner = "vinceliuice";
     repo = "Vimix-cursors";
     rev = version;
-    sha256 = "";
+    sha256 = "sha256-TfcDer85+UOtDMJVZJQr81dDy4ekjYgEvH1RE1IHMi4=";
   };
 
 	installPhase = ''
 		mkdir -p $out/share/icons
 
-		cp -r $src/dist $out/share/icons/Vimix-cursors
-		cp -r $src/dist-white $out/share/icons/Vimix-cursors-white
+		cp -r $src/dist $out/share/icons/Vimix\ Cursors
+		cp -r $src/dist-white $out/share/icons/Vimix\ Cursors\ -\ White
 	'';
 }

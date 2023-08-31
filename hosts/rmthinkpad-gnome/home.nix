@@ -272,8 +272,8 @@ in {
 		# };
 
 		cursorTheme = {
-			name = "Nordzy-cursors";
-			package = pkgs.nordzy-cursor-theme;
+			name = "Vimix Cursors - White";
+			package = (pkgs.callPackage ../../packages/vimix-cursors { }); # custom package for theme;
 		};
 
 		gtk2.extraConfig = ''
