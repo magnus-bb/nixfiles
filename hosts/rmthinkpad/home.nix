@@ -51,6 +51,11 @@ in {
 			source = ../../configs/swaync;
 		};
 
+		".config/k9s" = {
+			recursive = true;
+			source = ../../configs/k9s;
+		},
+
 		# ".config/mako" = {
 		# 	recursive = true;
 		# 	source = ../../configs/mako;
@@ -125,12 +130,13 @@ in {
 
 		git = {
 			enable = true;
-			userName  = "magnus-bb";
-			userEmail = "magnus.borregaard@gmail.com";
+			userName  = "magbor";
+			userEmail = "magbor@rm.dk";
 			extraConfig = {
 				core = {
 					editor = "code";
 				};
+				pull.rebase = false;
 			};
 		};
 		
@@ -381,6 +387,13 @@ in {
 				# Configuration written to Visual Studio Code’s settings.json.
 			};
 		};
+
+		k9s = {
+			enable = true;
+			settings = {
+
+			};
+		};
 	};
 
 	gtk = {
@@ -454,7 +467,6 @@ in {
     pavucontrol # sound configuration
 		swayidle # automatic locking of screen, turning off screen and suspension
 		brightnessctl
-    # brillo # controls screen brightness
 
 
 		# For eww example widgets
@@ -513,6 +525,8 @@ in {
 		bun
 		python312
 		ngrok
+		oauth2-proxy
+		postman
 
 		# Assets
     material-symbols
