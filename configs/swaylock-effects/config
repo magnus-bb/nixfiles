@@ -66,10 +66,11 @@ caps-lock-key-hl-color=e57474
 
 # ==========
 
-# Set these all to transparent to not show any lines around and in the ring
-separator-color=00000000
+# Everblush background
+separator-color=141b1e
 #     Sets the color of the lines that separate highlight segments.
 
+# Set these all to transparent to not show any lines around and in the ring
 line-color=00000000
 #     Sets the color of the line between the inside and ring.
 

@@ -3,6 +3,7 @@
 
   inputs = {
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Nix user repository packages
@@ -25,10 +26,17 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
   
-  outputs = { nixpkgs, nur, home-manager, ... }@inputs: 
+  outputs = { nixpkgs, nixpkgs-stable, nur, home-manager, ... }@inputs: 
   let
     system = "x86_64-linux";
     user = "magnus";
+    overlay-stable = final: prev: {
+      stable = import nixpkgs-stable {
+        inherit system;
+        config.allowUnfree = true;
+        # legacyPackages.${prev.system};
+      };
+    };
   in {
     # Available through 'nixos-rebuild --flake .#host'
     nixosConfigurations = {
@@ -61,6 +69,9 @@
         specialArgs = { inherit inputs user; host = "rmthinkpad"; }; # Pass flake inputs to our config
 
         modules = [
+          # Allows the use of stable packages with pkgs.stable.<pkg>
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
+
           ./hosts/rmthinkpad/configuration.nix # system wide configuration
 
           ./hosts/rmthinkpad/hardware-configuration.nix # generated machine configuration ('nixos-generate-config')

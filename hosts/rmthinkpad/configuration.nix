@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, config, pkgs, host, user, ... }:
+{ inputs, lib, config, pkgs, host, user, stable, ... }:
 {
   # You can import other NixOS modules here
   imports = [ 
@@ -65,18 +65,6 @@
   };
 
   nixpkgs = {
-    # You can add overlays here
-    # overlays = [
-      # If you want to use overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    # ];
 
     # Configure your nixpkgs instance
     config = {
@@ -92,6 +80,17 @@
       #?  };
       #? };
     };
+    # You can add overlays here
+    # overlays = [
+      # If you want to use overlays exported from other flakes:
+      # neovim-nightly-overlay.overlays.default
+      # Or define it inline, for example:
+      # (final: prev: {
+      #   hi = final.hello.overrideAttrs (oldAttrs: {
+      #     patches = [ ./change-hello-to-hi.patch ];
+      #   });
+      # })
+    # ];
   };
 
   nix = {
@@ -154,6 +153,10 @@
     xwayland.enable = true;
   };
 
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
   services = {
     xserver = {
       # Enable the X11 windowing system.
@@ -162,18 +165,18 @@
       videoDrivers = ["displaylink"]; # this SHOULD enable displaylink and set necessary options (I think)
 
       displayManager = {
-        sddm = {
-          enable = true;
-          enableHidpi = true;
-          theme =  "sugar-dark";
-        };
-        # gdm = {
+        # sddm = {
         #   enable = true;
-        #   wayland = true; # necessary for hyprland?
+        #   enableHidpi = true;
+        #   theme =  "sugar-dark";
         # };
+        gdm = {
+          enable = true;
+          wayland = true; # necessary for hyprland?
+        };
         # Enable automatic login for the user.
-        # autoLogin.enable = true;
-        # autoLogin.user = user;
+        autoLogin.enable = true;
+        autoLogin.user = user;
       };
     };
     # Enable CUPS to print documents.
