@@ -522,9 +522,12 @@ in {
 		ngrok
 		oauth2-proxy
 		postman
+<<<<<<< HEAD
 		openssl # makes postman work
 		kubectl
 		kubelogin-oidc
+=======
+>>>>>>> eab6c6ec77fa8d6f3ed23f1ec8bb10e1ec98dfa4
 
 		# Assets
     material-symbols
