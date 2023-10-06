@@ -468,20 +468,15 @@ in {
 		swayidle # automatic locking of screen, turning off screen and suspension
 		brightnessctl
 
-
-		# For eww example widgets
-		# socat # allows us to hook into the socket that shows which window is active (for window title in panel)
-		# jq # json processor used by eww widget for workspaces
-		# python312 # used for widgets in eww panel
-
 		# Utilities
 		hyprpicker # color picker
+		kazam # screen recorder
 		grim # screenshot util
-		wl-screenrec # screenrecorder
 		slurp # screen area selector (to be used with grim, wl-screenrec etc)
 		swappy # gui for annotating images
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
 		jq # json processer used by some eww widgets
+		unzip
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -527,6 +522,9 @@ in {
 		ngrok
 		oauth2-proxy
 		postman
+		openssl # makes postman work
+		kubectl
+		kubelogin-oidc
 
 		# Assets
     material-symbols
