@@ -20,6 +20,21 @@ in {
 			source = ../../configs/ranger;
 		};
 
+		".local/share/applications/ranger.desktop" = {
+			text = ''
+				[Desktop Entry]
+				Type=Application
+				Name=ranger
+				Comment=Launches the ranger file manager
+				Icon=utilities-terminal
+				Terminal=false
+				Exec=kitty ranger
+				Categories=ConsoleOnly;System;FileTools;FileManager
+				MimeType=inode/directory;
+				Keywords=File;Manager;Browser;Explorer;Launcher;Vi;Vim;Python
+			'';
+		};
+
 		".config/cava" = {
 			recursive = true;
 			source = ../../configs/cava;
@@ -447,6 +462,19 @@ in {
 
 	# 	};
 	# };
+
+	xdg = {
+		# Set default file picker etc
+		mimeApps = {
+			enable = true;
+			associations.added = {
+				"inode/directory" = "ranger.desktop";
+			};
+			defaultApplications = {
+				"inode/directory" = "ranger.desktop";
+			};
+		};
+	};
 
 	home.packages = with pkgs; [
 		# DE
