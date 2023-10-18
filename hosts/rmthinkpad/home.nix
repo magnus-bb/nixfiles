@@ -468,6 +468,7 @@ in {
     pavucontrol # sound configuration
 		swayidle # automatic locking of screen, turning off screen and suspension
 		brightnessctl
+		ripdrag # drag and drop files from terminal
 
 		# Utilities
 		hyprpicker # color picker
@@ -525,6 +526,8 @@ in {
 		postman
 		openssl # makes postman work
 		kubectl
+		kubectx
+		kubeseal
 		kubelogin-oidc
 
 		# Assets
