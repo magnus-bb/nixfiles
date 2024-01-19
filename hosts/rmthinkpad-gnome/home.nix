@@ -100,7 +100,6 @@ in {
 					# "git"           # own aliases simpler?
 					# "git-auto-fetch"  # automatically fetch remotes (not pull) when in repo
 					"thefuck"         # fix mistakes
-					"dotenv"          # auto source .env when cd-ing into directories
 					"golang"          # aliases + autocomplete
 					"helm"            # aliases + autocomplete
 					"kubectl"         # aliases + autocomplete
@@ -456,7 +455,7 @@ in {
 		firefox
 		vscode
 		# spotify: spicetify install spotify too
-		obsidian
+		stable.obsidian
 		discord
 		figma-linux
 		citrix_workspace # only for work

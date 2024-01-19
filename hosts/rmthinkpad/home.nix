@@ -132,6 +132,7 @@ in {
 			enable = true;
 			settings = {
 				theme_background = false;
+				update_ms = 500;
 				# more here: https://github.com/aristocratos/btop#configurability
 			};
 		};
@@ -154,6 +155,11 @@ in {
 				};
 				pull.rebase = false;
 			};
+		};
+
+		go = {
+			enable = true;
+			package = pkgs.go;
 		};
 		
 		kitty = {
@@ -212,7 +218,6 @@ in {
 					# "git"           # own aliases simpler?
 					# "git-auto-fetch"  # automatically fetch remotes (not pull) when in repo
 					"thefuck"         # fix mistakes
-					"dotenv"          # auto source .env when cd-ing into directories
 					"golang"          # aliases + autocomplete
 					"helm"            # aliases + autocomplete
 					"kubectl"         # aliases + autocomplete
@@ -294,7 +299,7 @@ in {
 					fi
 				}
 				# deletes branch of name $1 and syncs it with origin
-				gdb() { # git new branch
+				gdb() { # git delete branch
 					if [ -n "$1" ]
 					then
 						git push origin -d "$1"
@@ -466,13 +471,13 @@ in {
 	xdg = {
 		# Set default file picker etc
 		mimeApps = {
-			enable = true;
-			associations.added = {
-				"inode/directory" = "ranger.desktop";
-			};
-			defaultApplications = {
-				"inode/directory" = "ranger.desktop";
-			};
+			# enable = true;
+			# associations.added = {
+			# 	"inode/directory" = "ranger.desktop";
+			# };
+			# defaultApplications = {
+			# 	"inode/directory" = "ranger.desktop";
+			# };
 		};
 	};
 
@@ -507,6 +512,7 @@ in {
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
 		jq # json processer used by some eww widgets
 		unzip
+		(callPackage ../../packages/libpcap-dev { }) # custom package for theme
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -535,6 +541,7 @@ in {
     hunspellDicts.da_DK
 		caprine-bin
 		signal-desktop
+		nextcloud-client
 
 		# Terminal
 		thefuck
@@ -551,12 +558,14 @@ in {
 		python312
 		ngrok
 		oauth2-proxy
-		postman
-		openssl # makes postman work
+		bruno
+		# postman
+		# openssl # makes postman work
 		kubectl
 		kubectx
 		kubeseal
 		kubelogin-oidc
+		wails # gui framework for Go
 
 		# Assets
     material-symbols

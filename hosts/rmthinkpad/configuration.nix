@@ -70,6 +70,8 @@
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
+      permittedInsecurePackages = [ "electron-25.9.0" ];
+
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = (_: true);
 
@@ -226,9 +228,14 @@
     ${user} = {
       isNormalUser = true;
       description = "Magnus Bendix Borregaard";
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker"];
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker" "wireshark"];
       shell = pkgs.zsh;
     };
+  };
+
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
   };
 
   # Allows users in the group "video" to change brightness by changing udev rules for /sys/class/backlight/%k/brightness

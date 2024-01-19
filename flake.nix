@@ -3,7 +3,7 @@
 
   inputs = {
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Nix user repository packages
@@ -33,7 +33,10 @@
     overlay-stable = final: prev: {
       stable = import nixpkgs-stable {
         inherit system;
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          permittedInsecurePackages = [ "electron-25.9.0" ];
+        };
         # legacyPackages.${prev.system};
       };
     };
