@@ -2,108 +2,125 @@ screenshots
 clock
 indicator
 indicator-caps-lock
-#     Show the current Caps Lock state also on the indicator.
-grace=5
-grace-no-mouse
-# fade-in=0.1 # makes the blur effect very slow :(
 
-# ==========
-
+daemonize
+show-failed-attempts
 effect-blur=15x5
-font=Arimo Nerd Font
-#     Sets the font of the text.
-indicator-radius=150
-#     Sets the indicator radius. The default value is 50.
-indicator-thickness=10
-#     Sets the indicator thickness. The default value is 10.
+effect-vignette=0.5:0.5
+color=6272A4
+font="Arimo Nerd Font"
+indicator-radius=200
+indicator-thickness=20
+line-color=282A36
+ring-color=BD93F9
+inside-color=282A3680
+key-hl-color=50FA7B
+separator-color=00000000
+text-color=F8F8F2
+text-caps-lock-color=""
+line-ver-color=BD93F9
+ring-ver-color=BD93F9
+inside-ver-color=282A3680
+text-ver-color=8BE9FD
+ring-wrong-color=FF5555
+text-wrong-color=FF5555
+inside-wrong-color=282A3680
+inside-clear-color=282A3680
+text-clear-color=8BE9FD
+ring-clear-color=8BE9FD
+line-clear-color=8BE9FD
+line-wrong-color=282A36
+bs-hl-color=8BE9FD
+grace=2
+grace-no-mouse
+grace-no-touch
+ignore-empty-password
 
-# ==========
 
-# Set all of these to Everblush background with 50% opacity
-inside-color=141b1e80
-#     Sets the color of the inside of the indicator when verifying.
-inside-clear-color=141b1e80
-#     Sets the color of the inside of the indicator.
-inside-ver-color=141b1e80
-#     Sets the color of the inside of the indicator when cleared.
-inside-caps-lock-color=141b1e80
-#     Sets the color of the inside of the indicator when Caps Lock is active.
-inside-wrong-color=141b1e80
-#     Sets the color of the inside of the indicator when invalid.
+#* OLD THEME
+# font=Arimo Nerd Font
+# #     Sets the font of the text.
+# indicator-radius=150
+# #     Sets the indicator radius. The default value is 50.
+# indicator-thickness=10
+# #     Sets the indicator thickness. The default value is 10.
 
-# ==========
+# # ==========
 
-# Everblush blue
-ring-color=67b0e8
-#     Sets the color of the ring of the indicator when typing or idle.
-# Everblush yellow
-ring-clear-color=e5c76b
-#     Sets the color of the ring of the indicator when cleared.
-# Everblush magenta
-ring-ver-color=c47fd5
-#     Sets the color of the ring of the indicator when verifying.
-# Everblush red
-ring-caps-lock-color=e57474
-#     Sets the color of the ring of the indicator when Caps Lock is active.
-# Everblush red
-ring-wrong-color=e57474
-#     Sets the color of the ring of the indicator when invalid.
+# # inside-color=141b1e80
+# inside-color=191c2280
+# #     Sets the color of the inside of the indicator when verifying.
+# # inside-clear-color=141b1e80
+# inside-clear-color=191c2280
+# #     Sets the color of the inside of the indicator.
+# # inside-ver-color=141b1e80
+# inside-ver-color=191c2280
+# #     Sets the color of the inside of the indicator when cleared.
+# #inside-caps-lock-color=141b1e80
+# inside-caps-lock-color=191c2280
+# #     Sets the color of the inside of the indicator when Caps Lock is active.
+# #inside-wrong-color=141b1e80
+# inside-wrong-color=191c2280
+# #     Sets the color of the inside of the indicator when invalid.
 
-# ==========
+# # ==========
 
-# Everblush green
-key-hl-color=8ccf7e
-#     Sets the color of the key press highlight segments.
-# Everblush red
-bs-hl-color=e57474
-#     Sets the color of backspace highlight segments.
-# Everblush green
-caps-lock-bs-hl-color=8ccf7e
-#     Sets the color of backspace highlight segments when Caps Lock is active.
-# Everblush red
-caps-lock-key-hl-color=e57474
-#     Sets the color of the key press highlight segments when Caps Lock is active.
+# # ring-color=67b0e8
+# #     Sets the color of the ring of the indicator when typing or idle.
+# # ring-clear-color=e5c76b
+# #     Sets the color of the ring of the indicator when cleared.
+# # ring-ver-color=c47fd5
+# #     Sets the color of the ring of the indicator when verifying.
+# # ring-caps-lock-color=e57474
+# #     Sets the color of the ring of the indicator when Caps Lock is active.
+# # ring-wrong-color=e57474
+# #     Sets the color of the ring of the indicator when invalid.
 
-# ==========
+# # ==========
 
-# Everblush background
-separator-color=141b1e
-#     Sets the color of the lines that separate highlight segments.
+# # key-hl-color=8ccf7e
+# #     Sets the color of the key press highlight segments.
+# # bs-hl-color=e57474
+# #     Sets the color of backspace highlight segments.
+# # caps-lock-bs-hl-color=8ccf7e
+# #     Sets the color of backspace highlight segments when Caps Lock is active.
+# # caps-lock-key-hl-color=e57474
+# #     Sets the color of the key press highlight segments when Caps Lock is active.
 
-# Set these all to transparent to not show any lines around and in the ring
-line-color=00000000
-#     Sets the color of the line between the inside and ring.
+# # ==========
 
-line-clear-color=00000000
-#     Sets the color of the line between the inside and ring when cleared.
+# # separator-color=141b1e
+# #     Sets the color of the lines that separate highlight segments.
 
-line-caps-lock-color=00000000
-#     Sets the color of the line between the inside and ring when Caps Lock is active.# 
+# # Set these all to transparent to not show any lines around and in the ring
+# line-color=00000000
+# #     Sets the color of the line between the inside and ring.
 
-line-ver-color=00000000
-#     Sets the color of the line between the inside and ring when verifying.
+# line-clear-color=00000000
+# #     Sets the color of the line between the inside and ring when cleared.
 
-line-wrong-color=00000000
-#     Sets the color of the line between the inside and ring when invalid.
+# line-caps-lock-color=00000000
+# #     Sets the color of the line between the inside and ring when Caps Lock is active.# 
 
-# ==========
+# line-ver-color=00000000
+# #     Sets the color of the line between the inside and ring when verifying.
 
-# Everblush blue
-text-color=67b0e8
-#     Sets the color of the text.
+# line-wrong-color=00000000
+# #     Sets the color of the line between the inside and ring when invalid.
 
-# Everblush yellow
-text-clear-color=e5c76b
-#     Sets the color of the text when cleared.
+# # ==========
 
-# Everblush red
-text-caps-lock-color=e57474
-#     Sets the color of the text when Caps Lock is active.
+# # text-color=67b0e8
+# #     Sets the color of the text.
 
-# Everblush magenta
-text-ver-color=c47fd5
-#     Sets the color of the text when verifying.
+# # text-clear-color=e5c76b
+# #     Sets the color of the text when cleared.
 
-# Everblush red
-text-wrong-color=e57474
-#     Sets the color of the text when invalid.
+# # text-caps-lock-color=e57474
+# #     Sets the color of the text when Caps Lock is active.
+
+# # text-ver-color=c47fd5
+# #     Sets the color of the text when verifying.
+
+# # text-wrong-color=e57474
+# #     Sets the color of the text when invalid.

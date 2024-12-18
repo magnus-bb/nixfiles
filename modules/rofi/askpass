@@ -6,5 +6,5 @@
 rofi -dmenu \
 	-password \
 	-no-fixed-num-lines \
-	-theme-str 'entry { placeholder: "Type password"; }' \
+	-theme-str 'entry { placeholder: "Type password"; } icon-search { enabled: false; }' \
 	-p "$(printf '%s' "$1" | sed s/://)" # shows text from the programme that requests the password (usually sudo -A, but can be used with other programmes as well)

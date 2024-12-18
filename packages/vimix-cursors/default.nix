@@ -16,8 +16,12 @@ stdenvNoCC.mkDerivation rec {
 
 	installPhase = ''
 		mkdir -p $out/share/icons
+		mkdir -p $out/.icons
 
 		cp -r $src/dist $out/share/icons/Vimix\ Cursors
 		cp -r $src/dist-white $out/share/icons/Vimix\ Cursors\ -\ White
+
+		cp -r $src/dist $out/.icons/Vimix\ Cursors
+		cp -r $src/dist-white $out/.icons/Vimix\ Cursors\ -\ White
 	'';
 }

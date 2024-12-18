@@ -1,0 +1,18 @@
+#!/usr/bin/env bun
+import { $ } from "bun"
+
+const PROFILES = [
+	'power-saver', 'balanced', 'performance'
+]
+
+const numProfiles = PROFILES.length
+
+const powerProfile = (await $`powerprofilesctl get`.text()).replace(/\s/g, '')
+
+const indexOfProfile = PROFILES.indexOf(powerProfile)
+
+const indexOfNextProfile = (indexOfProfile + 1) % numProfiles
+
+const nextProfile = PROFILES[indexOfNextProfile]
+
+await $`powerprofilesctl set ${nextProfile}`

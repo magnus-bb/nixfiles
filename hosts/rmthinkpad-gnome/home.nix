@@ -1,6 +1,9 @@
-{ inputs, pkgs, lib, ... }: 
+{ inputs, pkgs, lib, config, ... }: 
 let
  spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
+
+  iconTheme = "Papirus-Dark";
+ 	gtkTheme = "Layan-Dark";
 in {
   imports = [
 		inputs.spicetify-nix.homeManagerModule
@@ -20,10 +23,24 @@ in {
 			recursive = true;
 			source = ../../configs/cava;
 		};
+
+		"Pictures/wallpapers" = {
+			recursive = true;
+			source = ../../assets/wallpapers;
+		};
 	};
 	
 	programs = {
 		starship.enable = true;
+
+		btop = {
+			enable = true;
+			settings = {
+				theme_background = false;
+				update_ms = 500;
+				# more here: https://github.com/aristocratos/btop#configurability
+			};
+		};
 
 		bat = {
 			enable = true;
@@ -35,13 +52,19 @@ in {
 
 		git = {
 			enable = true;
-			userName  = "magnus-bb";
-			userEmail = "magnus.borregaard@gmail.com";
+			userName  = "magbor";
+			userEmail = "magbor@rm.dk";
 			extraConfig = {
 				core = {
 					editor = "code";
 				};
+				pull.rebase = false;
 			};
+		};
+
+		go = {
+			enable = true;
+			package = pkgs.go;
 		};
 		
 		kitty = {
@@ -53,7 +76,7 @@ in {
 			
 			font = {
 				name = "FiraCode Nerd Font Mono";
-				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; });
+				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
 			};
 
 			keybindings = {
@@ -70,8 +93,12 @@ in {
 			};
 		};
 
+		fzf.enable = true;
+
 		zsh = {
 			enable = true;
+			enableCompletion = true;
+			autocd = true;
 			plugins = [
 				{
 					name = "zsh-autosuggestions";
@@ -119,7 +146,7 @@ in {
 
 				zshreload = "source ~/.zshrc";
 
-				rmvpn = "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
+				rmvpn = "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect --useragent AnyConnect";
 
 				# filesystem
 				".." = "cd ..";
@@ -146,7 +173,7 @@ in {
 				gc = "git commit";
 				gcm = "git commit -m";
 				gcam = "git commit -a -m";
-				gammend = "git commit --amend";
+				gamend = "git commit --amend";
 				gpl = "git pull";
 				gps = "git push";
 				grh = "git reset --hard HEAD~1";
@@ -158,7 +185,7 @@ in {
 				gcb = "git checkout";
 
 				# NPM
-				dev = "npm run dev";
+				dev = "pnpm dev";
 
 				# KITTY
 				# Show images in term
@@ -169,7 +196,7 @@ in {
 				sshkitty = "kitty +kitten ssh"; # fixes ssh issues by copying terminfo files to the server
 
 				# Misc.
-				weather = "curl wttr.in";
+				weather = "curl wttr.in/lystrup";
 				dotenv = "export $(cat -p .env | xargs)"; # sources .env file from cwd
 			};
 
@@ -234,6 +261,38 @@ in {
 				# Make sure ctrl-backspace/delete deletes whole words
 				bindkey '^H' backward-kill-word
 				bindkey '^[[3;5~' kill-word
+
+				# fzf plugin (ctrl + r to search history & ctrl + t to search disk)
+				if [ -n "''${commands[fzf-share]}" ]; then
+					source "$(fzf-share)/key-bindings.zsh"
+					source "$(fzf-share)/completion.zsh"
+				fi
+
+				# Zsh options
+				setopt correct						# Asks if you want to correct misspelled commands
+				setopt rcexpandparam      # Array expansion with parameters
+				setopt nocheckjobs        # Don't warn about running processes when exiting
+				setopt numericglobsort    # Sort filenames numerically when it makes sense
+				setopt nobeep             # No beep
+				setopt appendhistory      # Immediately append history instead of overwriting
+				setopt histignorealldups  # If a new command is a duplicate, remove the older one
+				setopt autocd             # if only directory path is entered, cd there.
+				setopt auto_pushd					# cd will actually use 'pushd' which allows the use of 'popd' that will take you back to your last directory (can be chained, which 'cd -' cannot)
+				setopt pushd_ignore_dups
+				setopt pushdminus
+
+				# Completion options
+				zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+				zstyle ':completion:*' rehash true                              # automatically find new executables in path 
+				zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
+				zstyle ':completion:*' completer _expand _complete _ignored _approximate
+				zstyle ':completion:*' menu select
+				zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+				zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
+				# Speed up completions
+				zstyle ':completion:*' accept-exact '*(N)'
+				zstyle ':completion:*' use-cache on
+				zstyle ':completion:*' cache-path ~/.cache/zcache
 			'';
 		};
 
@@ -251,20 +310,62 @@ in {
 				skipOrPlayLikedSongs
       ];
     };
+
+		vscode = {
+			enable = true;
+			# allow extensions to be handled outside of this config
+			mutableExtensionsDir = true; 
+
+			# extensions = [
+				# e.g.: pkgs.vscode.extensions.bbenoist.nix
+			# ];
+			globalSnippets = {
+				# e.g.:
+				# fixme = {
+				# 	body = [
+				# 		"$LINE_COMMENT FIXME: $0"
+				# 	];
+				# 	description = "Insert a FIXME remark";
+				# 	prefix = [
+				# 		"fixme"
+				# 	];
+				# };
+			};
+
+			keybindings = [
+				# e.g.:
+				# {
+				# 	key = "ctrl+c";
+				# 	command = "editor.action.clipboardCopyAction";
+				# 	when = "textInputFocus";
+				# }
+			];
+
+			userSettings = {
+				# Configuration written to Visual Studio Code’s settings.json.
+			};
+		};
+
+		k9s = {
+			enable = true;
+			settings = {
+
+			};
+		};
 	};
 
 	gtk = {
 		enable = true;
 		
-		# iconTheme = {
-		#   name = "Papirus-Dark";
-		#   package = pkgs.papirus-icon-theme;
-		# };
-
-		theme = {
-			name = "Layan-Dark";
-			package = pkgs.layan-gtk-theme;
+		iconTheme = {
+		  name = iconTheme;
+		  package = pkgs.papirus-icon-theme;
 		};
+
+		# theme = {
+		# 	name = gtkTheme;
+		# 	package = pkgs.layan-gtk-theme;
+		# };
 
 		# font = {
 		#   name = "FiraCode Nerd Font Mono Medium";
@@ -288,7 +389,7 @@ in {
 		};
 	};
 
-	home.sessionVariables.GTK_THEME = "Layan-Dark";
+	# home.sessionVariables.GTK_THEME = gtkTheme;
 
 	dconf = {
 		enable = true; # allow gnome settings with dconf
@@ -299,38 +400,77 @@ in {
 
 				# `gnome-extensions list` to list extensions
 				enabled-extensions = [
-					"clipman@popov895.ukr.net"
-					"blur-my-shell@aunetx"
-					"gTile@vibou"
-					"scroll-workspaces@gfxmonk.net"
-					"vertical-workspaces@G-dH.github.com"
 					"user-theme@gnome-shell-extensions.gcampax.github.com"
+					"blur-my-shell@aunetx"
+					"panel-workspace-scroll@polymeilex.github.io"
+					"vertical-workspaces@G-dH.github.com"
 					"appindicatorsupport@rgcjonas.gmail.com"
+					"caffeine@patapon.info"
+					"pop-shell@system76.com"
+					"emoji-copy@felipeftn"
+					"clipboard-indicator@tudmotu.com"
+					"mprisLabel@moon-0xff.github.com"
+					"compiz-windows-effect@hermes83.github.com"
+					"no-overview@fthx"
 				];
 			};
 
-			"org/gnome/shell/extensions/clipman" = {
-				history-size = 25;
-				toggle-menu-shortcut = [ "<Super>c" ];
-				web-search-url = "https://google.com/?q=%s";
+			"/org/gnome/shell/extensions/com/github/hermes83/compiz-windows-effect" = {
+				friction = 8.0;
+				mass = 80.0;
+				maximize-effect = true;
+				resize-effect = true;
+				speedup-factor-divider = 6.0;
+				spring-k = 8.0;
+			};
+			
+
+			"/org/gnome/shell/extensions/mpris-label" = {
+				auto-switch-to-most-recent = true;
+				divider-string = " | ";
+				extension-place = "left";
+				left-click-action = "play-pause";
+				middle-click-action = "open-menu";
+				left-padding = 0;
+				right-padding = 0;
+				remove-text-when-paused = false;
+				use-album = false;
+			};
+
+			"/org/gnome/shell/extensions/pop-shell" = {
+				active-hint = true;
+				active-hint-border-radius = 8;
+				gap-inner = 2;
+				gap-outer = 2;
+				mouse-cursor-focus-location = 4;
+				smart-gaps = true;
+				snap-to-grid = true;
+				stacking-with-mouse = false;
+				tile-by-default = true;
+				# These remove hjkl bindings
+				focus-left = ["<Super>Left"];
+				focus-right = ["<Super>Right"];
+				focus-up = ["<Super>Up"];
+				focus-down = ["<Super>Down"];
+			};
+
+			"/org/gnome/shell/extensions/caffeine" = {
+				show-indicator = "always";
+			};
+
+			"/org/gnome/shell/extensions/clipboard-indicator" = {
+				cache-size = 10;
+				disable-down-arrow = true;
+				display-mode = 2;
+				history-size = 50;
+				toggle-menu = ["<Super>v"];
+				topbar-preview-size = 30;
 			};
 			"org/gnome/shell/extensions/blur-my-shell" = {
 				hacks-level = 3;
 			};
 			"org/gnome/shell/extensions/blur-my-shell/panel" = {
 				unblur-in-overview = true;
-			};
-			"org/gnome/shell/extensions/gtile" = {
-				insets-primary-bottom = 8;
-				insets-primary-left = 8;
-				insets-primary-right = 8;
-				insets-primary-top = 8;
-				insets-secondary-bottom = 8;
-				insets-secondary-left = 8;
-				insets-secondary-right = 8;
-				insets-secondary-top = 8;
-				window-margin = 8;
-				theme = "Minimal Dark";
 			};
 			"org/gnome/shell/extensions/vertical-workspaces" = {
 				dash-position = 4; # hide dash in overview
@@ -346,38 +486,53 @@ in {
 				show-bg-in-overview = true;
 				startup-state = 0;
 			};
-			"org/gnome/shell/extensions/net/gfxmonk/scroll-workspaces" = {
-				indicator = true;
-				scroll-delay = 50;
-			};
 
 			"org/gnome/shell/extensions/user-theme" = {
-				name = "Layan-Dark";
+				# name = gtkTheme;
 			};
 
 			"org/gnome/desktop/interface" = {
 				color-scheme = "prefer-dark";
+				clock-show-weekday = true;
+			};
+
+			"org/gnome/desktop/calendar" = {
+				show-weekdate = true;
 			};
 
 			"org/gnome/desktop/wm/preferences" = {
 				resize-with-right-button = true;
 			};
 
+			"org/gnome/desktop/peripherals/pointingstick" = {
+				accel-profile = "flat";
+			};
+			"org/gnome/desktop/peripherals/mouse" = {
+				accel-profile = "flat";
+			};
 			"org/gnome/desktop/peripherals/touchpad" = {
 				tap-to-click = true;
+				accel-profile = "flat";
 			};
+
+			"org/gnome/desktop/wm/preferences" = {
+				focus-mode = "sloppy";
+			}; 
 
 			"org/gnome/desktop/wm/keybindings" = {
 				switch-to-workspace-up = ["<Control><Super>Up"];
 				switch-to-workspace-down = ["<Control><Super>Down"];
-				maximize = ["<Super>M" "<Super>Up"];
+				maximize = []; # Super + up should be used to change focus
+				minimize = []; # There should be no minimizing with tiling
+				toggle-maximized = ["<Super>M" "<Control><Alt>Tab"]; # logitech mx master thumb button sends this keybind
 				close = ["<Super>Q"];
-				# switch-panels = ["<Shift><Control>Tab"]; # only rebound so ctrl+right-alt+tab can be bound to the overview (because logitech mx master mouse will trigger this keybind with thumb button)
+				toggle-fullscreen = ["F11"];
+				switch-panels = ["<Shift><Control>Tab"]; # only rebound so ctrl+right-alt+tab can be bound to the overview (because logitech mx master mouse will trigger this keybind with thumb button)
 			};
 
-			# "org/gnome/desktop/input-sources" = {
-			#   xkb-options = [ "lv3:ralt_alt" ]; # allows binding right-alt (used by logitech mx master mouse to show overview)
-			# };
+			"org/gnome/desktop/input-sources" = {
+			  xkb-options = [ "lv3:ralt_alt" ]; # allows binding right-alt (used by logitech mx master mouse to show overview)
+			};
 
 			"org/gnome/shell/keybindings" = {
 				# toggle-overview = [ "<Control><Alt>Tab" ]; # logitech mx master thumb button sends this keybind
@@ -388,14 +543,6 @@ in {
 				workspaces-only-on-primary = true;
 				dynamic-workspaces = true;
 				edge-tiling = true;
-			};
-
-			"org/gnome/desktop/calendar" = {
-				show-weekdate = true;
-			};
-
-			"org/gnome/desktop/interface" = {
-				clock-show-weekday = true;
 			};
 
 			# Shortcuts for launching Kitty and System Monitor on GNOME
@@ -428,13 +575,21 @@ in {
 		# DE
 		gnome.dconf-editor
 		gnome.gnome-tweaks
-		gnomeExtensions.gtile
-		gnomeExtensions.top-panel-workspace-scroll
-		gnomeExtensions.blur-my-shell
-		gnomeExtensions.vertical-workspaces
-		gnomeExtensions.gsconnect
+		# gnomeExtensions.gtile
+		# gnomeExtensions.gsconnect
+		# gnomeExtensions.top-panel-workspace-scroll # outdated
 		gnomeExtensions.user-themes
-		gnomeExtensions.clipman
+		gnomeExtensions.blur-my-shell
+		gnomeExtensions.panel-workspace-scroll
+		gnomeExtensions.vertical-workspaces
+		gnomeExtensions.appindicator
+		gnomeExtensions.caffeine
+		gnomeExtensions.pop-shell
+		gnomeExtensions.emoji-copy
+		gnomeExtensions.clipboard-indicator
+		gnomeExtensions.mpris-label
+		gnomeExtensions.compiz-windows-effect
+		gnomeExtensions.no-overview
 		layan-gtk-theme
 
 		# Apps
@@ -453,12 +608,19 @@ in {
 		)
 		google-chrome
 		firefox
-		vscode
-		# spotify: spicetify install spotify too
-		stable.obsidian
+		obsidian
 		discord
 		figma-linux
-		citrix_workspace # only for work
+		libreoffice-fresh
+		# spellcheck packages for libreoffice
+		hunspell
+    hunspellDicts.en_US
+    hunspellDicts.da_DK
+		citrix_workspace
+		caprine-bin
+		signal-desktop
+		nextcloud-client
+		quickemu # VM for windows 11
 
 		# Terminal
 		thefuck
@@ -467,11 +629,25 @@ in {
 		tty-clock
 		cmatrix
 		cava
+		unzip
+		ripdrag # drag and drop files from terminal
 
 		# Development
 		nodejs_20
 		nodePackages_latest.pnpm
 		bun
-		# podman-compose
+		python312
+		ngrok
+		oauth2-proxy
+		bruno
+		kubectl
+		kubectx
+		kubeseal
+		kubelogin-oidc
+		wails # gui framework for Go
+		openssl # makes postman work
+
+		# Assets
+    material-symbols
 	];
 }

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, config, pkgs, host, user, ... }:
+{ inputs, lib, config, pkgs, host, user, stable, ... }:
 {
   # You can import other NixOS modules here
   imports = [ 
@@ -16,6 +16,7 @@
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
+  boot.loader.timeout = 0; # don't show generation selection on boot unless SPACE is pressed while booting
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = host; # Define your hostname.
@@ -55,6 +56,22 @@
   };
 
   nixpkgs = {
+    # Configure your nixpkgs instance
+    config = {
+      # Disable if you don't want unfree packages
+      allowUnfree = true;
+      permittedInsecurePackages = [ "electron-25.9.0" ];
+
+      # Workaround for https://github.com/nix-community/home-manager/issues/2942
+      allowUnfreePredicate = (_: true);
+
+      #? # enable nix user repository as nur.
+      #? packageOverrides = pkgs: {
+      #?  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      #?    inherit pkgs;
+      #?  };
+      #? };
+    };
     # You can add overlays here
     # overlays = [
       # If you want to use overlays exported from other flakes:
@@ -68,20 +85,6 @@
       # })
     # ];
 
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-      # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = (_: true);
-
-      #? # enable nix user repository as nur.
-      #? packageOverrides = pkgs: {
-      #?  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-      #?    inherit pkgs;
-      #?  };
-      #? };
-    };
   };
 
   nix = {
@@ -141,36 +144,55 @@
     # };
   };
 
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
   services = {
+    displayManager = {
+      # Enable automatic login for the user.
+      autoLogin.enable = true;
+      autoLogin.user = user;
+    };
+
     xserver = {
+      displayManager = {
+        gdm = {
+          enable = true;
+          wayland = true;
+        };
+      };
       # Enable the X11 windowing system.
       enable = true;
       # Enable the GNOME Desktop Environment.
-      displayManager = {
-        gdm.enable = true;
-        # Enable automatic login for the user.
-        autoLogin.enable = true;
-        autoLogin.user = user;
-      };
       desktopManager.gnome.enable = true;
       # Keyboard
-      layout = "dk";
-      xkbVariant = "";
-      libinput = {
-        # touchpad
-        enable = true;
-        # disabling mouse acceleration
-        mouse = {
-          accelProfile = "flat";
-        };
-        # disabling touchpad acceleration
-        touchpad = {
-          accelProfile = "flat";
-        };
+      xkb = {
+        variant = "";
+        layout = "dk";
+      };
+    };
+
+    libinput = {
+      # touchpad
+      enable = true;
+      # disabling mouse acceleration
+      mouse = {
+        accelProfile = "flat";
+      };
+      # disabling touchpad acceleration
+      touchpad = {
+        accelProfile = "flat";
       };
     };
     # Enable CUPS to print documents.
     printing.enable = true;
+    # Enable autodiscovery of network printers
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
 
     flatpak.enable = true;
 
@@ -178,10 +200,21 @@
     udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   };
 
-  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
-
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "Dias";
+        location = "Bordfodboldrummet";
+        deviceUri = "ipp://10.32.194.26/ipp";
+        model = "drv:///sample.drv/generic.ppd";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "Dias";
+  };
+  
   # Fonts
   fonts.packages = with pkgs; [
     source-code-pro
@@ -203,9 +236,15 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    wireplumber = {
+      enable = true;
+    };
+    audio.enable = true;
     pulse.enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -219,8 +258,8 @@
     ${user} = {
       isNormalUser = true;
       description = "Magnus Bendix Borregaard";
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker"];
       shell = pkgs.zsh;
+      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker"];
     };
   };
 
@@ -237,19 +276,28 @@
       NIXOS_OZONE_WL = "1"; # tell electron apps to use wayland
     };
 
+    # Adds .local/bin to PATH in case any programs end up there
+    localBinInPath = true;
+
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
-      openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
+      openconnect # VPN from terminal (e.g. "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect --useragent AnyConnect")
     ];
 
     # GNOME apps I don't need
     gnome.excludePackages = with pkgs.gnome; [
       epiphany
-      gedit
+      pkgs.gedit
       yelp
       geary
       seahorse
+      gnome-music
+      gnome-terminal
+      tali
+      iagno
+      hitori
+      atomix
     ];
   };
 
@@ -269,7 +317,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 3000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

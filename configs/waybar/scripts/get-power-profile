@@ -1,0 +1,12 @@
+#!/usr/bin/env bun
+import { $ } from "bun"
+
+const PROFILES = {
+	'power-saver': '󰾆',
+	balanced: '󰗑',
+	performance: '󱐋'
+}
+
+const powerProfile = (await $`powerprofilesctl get`.text()).replace(/\s/g, '')
+
+console.log(`{ "text": "${PROFILES[powerProfile]}", "tooltip": "${powerProfile}" }`)

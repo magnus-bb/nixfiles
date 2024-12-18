@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, config, pkgs, host, user, stable, ... }:
+{ inputs, lib, config, pkgs, host, user, unstable, ... }:
 {
   # You can import other NixOS modules here
   imports = [ 
@@ -18,10 +18,12 @@
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
+  boot.loader.timeout = 0; # don't show generation selection on boot unless SPACE is pressed while booting
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = host; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+	# networking.enableIPv6 = false; # Fixes bug with bun not being able to resolve packages.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -65,7 +67,6 @@
   };
 
   nixpkgs = {
-
     # Configure your nixpkgs instance
     config = {
       # Disable if you don't want unfree packages
@@ -124,6 +125,16 @@
 
   # Containers
   virtualisation = {
+    vmVariant = {
+      # following configuration is added only when building VM with build-vm
+      virtualisation = {
+        memorySize =  4096;
+        cores = 4;         
+      };
+    };
+
+    libvirtd.enable = true;
+
     docker = {
       enable = true;
       rootless = {
@@ -148,11 +159,86 @@
     # };
   };
 
+  stylix = {
+    enable = true;
+    polarity = "dark";
+    # base16Scheme = "${pkgs.base16-schemes}/share/themes/tomorrow-night.yaml";
+    image = ../../assets/wallpapers/mountain-lake.jpg;
+
+    cursor = {
+      name = "Vimix Cursors";
+			package = (pkgs.callPackage ../../packages/vimix-cursors { }); # custom package for theme;
+      size = 24;
+    };
+
+    fonts = {
+      monospace = {
+        name = "FiraCode Nerd Font Mono";
+        package = (pkgs.nerdfonts.override { # Nerdfont Icons override
+          fonts = [
+            "FiraCode"
+          ];
+        });
+      };
+
+      sansSerif = {
+        name = "Arimo Nerd Font";
+        package = (pkgs.nerdfonts.override { # Nerdfont Icons override
+          fonts = [
+            "Arimo"
+          ];
+        });
+      };
+
+      sizes = {
+        terminal = 11;
+      };
+
+    };
+
+    opacity = {
+      popups = 0.5;
+      terminal = 0.7;
+    };
+  };
+
+	programs.nix-ld.enable = true; # fixes nuxthub cloudflare workerd running locally
+
+
+  programs.virt-manager.enable = true;
+
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland; # from flake
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
+  };
+
+  # https://nixos.wiki/wiki/Thunar
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin # zip, tar, etc in context menu
+      thunar-volman # auto mount volumes (e.g. USB drives)
+    ];
+  };
+  programs.xfconf.enable = true; # persist thunar preferences
+  programs.file-roller.enable = true; # Neccessary for thunar-archive-plugin
+  services.tumbler.enable = false; # thumbnails for thunar
+  services.gvfs.enable = true; # Neccessary for thunar https://docs.xfce.org/xfce/thunar/unix-filesystem#gnome_virtual_file_system_gvfs
+
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # adds fileChooser to chrome etc (e.g. upload-file dialog)
+    config = {
+      common = {
+        default = [
+          "hyprland" # use xdg-desktop-portal-hyprland
+          "gtk" # fall back to xdg-desktop-portal-gtk for interfaces hyprland portal does not support
+        ];
+      };
+    };
   };
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
@@ -160,6 +246,12 @@
   systemd.services."autovt@tty1".enable = false;
 
   services = {
+    displayManager = {
+      # Enable automatic login for the user.
+      autoLogin.enable = true;
+      autoLogin.user = user;
+    };
+
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
@@ -167,25 +259,61 @@
       videoDrivers = ["displaylink"]; # this SHOULD enable displaylink and set necessary options (I think)
 
       displayManager = {
-        # sddm = {
-        #   enable = true;
-        #   enableHidpi = true;
-        #   theme =  "sugar-dark";
-        # };
         gdm = {
           enable = true;
           wayland = true; # necessary for hyprland?
         };
-        # Enable automatic login for the user.
-        autoLogin.enable = true;
-        autoLogin.user = user;
       };
     };
-    # Enable CUPS to print documents.
-    printing.enable = true;
+    libinput = {
+      # touchpad
+      enable = true;
+      # disabling mouse acceleration
+      mouse = {
+        accelProfile = "flat";
+      };
+      # disabling touchpad acceleration
+      touchpad = {
+        accelProfile = "flat";
+      };
+    };
+    # Enable autodiscovery of network printers
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
 
     # Enable powerprofilesctl to change between performance, balanced, and power-saver modes
     power-profiles-daemon.enable = true;
+
+    upower = {
+      enable = true;
+      percentageLow = 25;
+      percentageCritical = 15;
+      percentageAction = 5;      
+    };
+
+    # Enable CUPS to print documents.
+    printing = {
+      enable = true;
+      drivers = with pkgs; [ gutenprint cups-filters ];
+    };
+  };
+
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "Dias";
+        location = "Bordfodboldrummet";
+        deviceUri = "ipp://10.32.194.26/ipp";
+        model = "drv:///sample.drv/generic.ppd";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "Dias";
   };
 
   # Fonts
@@ -204,19 +332,22 @@
   console.keyMap = "dk-latin1";
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  sound.enable = false;
   hardware.pulseaudio.enable = false;
+  hardware.enableAllFirmware = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    wireplumber.enable = true;
+    wireplumber = {
+      enable = true;
+    };
     audio.enable = true;
     pulse.enable = true;
     alsa = {
       enable = true;
       support32Bit = true;
     };
-    jack.enable = true;
+    # jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -228,18 +359,25 @@
     ${user} = {
       isNormalUser = true;
       description = "Magnus Bendix Borregaard";
-      extraGroups = [ "networkmanager" "wheel" "video" "audio" "input" "camera" "docker" "wireshark"];
       shell = pkgs.zsh;
+      extraGroups = [ 
+        "networkmanager"
+        "wheel"
+        "video"
+        "audio"
+        "input"
+        "camera"
+        "docker" # makes docker rootless work
+        "libvirtd" # makes virtmanager work without sudo
+      ];
     };
-  };
-
-  programs.wireshark = {
-    enable = true;
-    package = pkgs.wireshark;
   };
 
   # Allows users in the group "video" to change brightness by changing udev rules for /sys/class/backlight/%k/brightness
   programs.light.enable = true;
+
+  # Disables dialog that asks for credentials when using git with HTTPS because it froze the whole system, even when credentials were saved in store
+  programs.ssh.enableAskPassword = false;
 
   programs.zsh.enable = true;
 
@@ -258,20 +396,17 @@
     localBinInPath = true;
 
     # Files in /etc to create
-    etc = {
-      # This file is needed for swaylock (and swaylock-effects) to work
-      "pam.d/swaylock".text = "auth include login";
-    };
+    #!etc = {
+    #!  # This file is needed for swaylock (and swaylock-effects) to work
+    #!  "pam.d/swaylock".text = "auth include login";
+    #!};
 
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
-      openconnect # VPN from terminal (e.g. "sudo openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect")
+      openconnect # VPN from terminal (e.g. "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect --useragent AnyConnect")
       polkit_gnome
       pulseaudio # this just installs command line tools like pactl, but the config uses pipewire
-      # wlr-randr
-      (callPackage ../../packages/sddm-sugar-dark-theme { }) # sddm theme
-      libsForQt5.qt5.qtgraphicaleffects # required for sddm theme
     ];
   };
 
@@ -284,8 +419,13 @@
   # };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+		3000
+		57621 # https://nixos.wiki/wiki/Spotify
+	];
+  networking.firewall.allowedUDPPorts = [
+		5353 # https://nixos.wiki/wiki/Spotify
+	];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

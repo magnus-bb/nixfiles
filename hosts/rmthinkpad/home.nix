@@ -1,13 +1,15 @@
 { inputs, pkgs, lib, config, ... }: 
 let
- spicePkgs = inputs.spicetify-nix.packages.${pkgs.system}.default;
+ spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 
  iconTheme = "Papirus-Dark";
- gtkTheme = "Everblush";
+ gtkTheme = "";
 in {
   imports = [
-		inputs.spicetify-nix.homeManagerModule
+		inputs.spicetify-nix.homeManagerModules.default
+		# inputs.ags.homeManagerModules.default
 		../../modules/rofi
+		../../modules/ags
 	];
 
 	home.stateVersion = "23.05";
@@ -40,6 +42,24 @@ in {
 			source = ../../configs/cava;
 		};
 
+		".config/waybar/scripts/get-power-profile" = {
+			executable = true;
+			source = ../../configs/waybar/scripts/get-power-profile;
+		};
+		".config/waybar/scripts/cycle-power-profile" = {
+			executable = true;
+			source = ../../configs/waybar/scripts/cycle-power-profile;
+		};
+		".config/waybar/scripts/spotify.sh" = {
+			executable = true;
+			source = ../../configs/waybar/scripts/spotify.sh;
+		};
+
+		".config/avizo" = {
+			recursive = true;
+			source = ../../configs/avizo;
+		};
+
 		".config/hypr" = {
 			recursive = true;
 			source = ../../configs/hypr;
@@ -51,82 +71,499 @@ in {
 			source = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
 		};
 
-		"Pictures/wallpapers" = {
-			recursive = true;
-			source = ../../assets/wallpapers;
-		};
 
 		".config/swaylock" = {
 			recursive = true;
 			source = ../../configs/swaylock-effects;
 		};
 
-		".config/swaync" = {
-			recursive = true;
-			source = ../../configs/swaync;
-		};
-
-		".config/k9s" = {
-			recursive = true;
-			source = ../../configs/k9s;
-		};
-
-
 		# ".config/mako" = {
 		# 	recursive = true;
 		# 	source = ../../configs/mako;
 		# };
 
-		# DOES NOT HAVE NERD FONT VERSION, USE ARIMO NERD FONT INSTEAD
-  	# "local/share/fonts/ProductSans".source = lib.cleanSourceWith {
-		# 	filter = name: _: (lib.hasSuffix ".ttf" (baseNameOf (toString name)));
-		# 	src = pkgs.fetchzip {
-		# 		url = "https://befonts.com/wp-content/uploads/2018/08/product-sans.zip";
-		# 		sha256 = "sha256-PF2n4d9+t1vscpCRWZ0CR3X0XBefzL9BAkLHoqWFZR4=";
-		# 		stripRoot = false;
-		# 	};
-		# };
-	};
-
-	services = {
-		# Notification daemon
-		# mako = {
-		#  enable = true;
-		# };
-
-		# On-screen display for volume, brightness (and caps + num lock, but backend for caps lock and num lock does not work)
-		swayosd.enable = true;
-
-		swayidle = {
-			enable = true;
-
-			events = [
-				# “before-sleep”, “after-resume”, “lock”, “unlock”
-				# { event = "lock"; command = "swaylock -f"; }
-			];
-				# swayidle -w \\
-				# timeout 300 'swaylock -f -c 000000' \\
-				# timeout 600 'swaymsg "output * power off"' \\
-				# 	resume 'swaymsg "output * power on"' \\
-				# before-sleep 'swaylock -f -c 000000'
-
-			timeouts = [
-  			{ timeout = 3; command = "notify-send 'Locking'"; }
-			];
-
+		"Pictures/wallpapers" = {
+			recursive = true;
+			source = ../../assets/wallpapers;
 		};
 
-		# Notifications with power status
-		poweralertd.enable = true;
+		#!".local/share/icons/Vimix Cursors" = {
+		#!	recursive = true;
+		#!	source = ../../assets/cursors/vimix-cursors;
+		#!};
+
+		#!".local/share/icons/Vimix Cursors - White" = {
+		#!	recursive = true;
+		#!	source = ../../assets/cursors/vimix-cursors-white;
+		#!};
 	};
 
 	# Custom module that handles setup of rofi + plugins and custom scripts
 	rofi.iconTheme = iconTheme;
+
+	stylix = {
+		targets = {
+			vscode.enable = false;
+			rofi.enable = false;
+			btop.enable = true;
+			firefox.enable = true;
+			fzf.enable = true;
+			swaylock.enable = false;
+		};
+	};
+
+	wayland.windowManager.hyprland = {
+		enable = true;
+		systemd.variables = ["--all"]; # https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/#programs-dont-work-in-systemd-services-but-do-on-the-terminal
+		plugins = [
+			# inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+			# pkgs.hyprlandPlugins.hyprexpo
+			# inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
+		];
+
+		# settings = {
+		# 	general = {
+		# 		"col.active.border" = lib.mkForce "rgb(${config.stylix.base16Scheme.base0E})";
+		# 	};
+		# };
+	};
 	
 	programs = {
 		# TODO: install udiskie OR udisks2 service AND/OR gnome-disks (if this does not also install udisks2)
 
 		starship.enable = true;
+
+		#! ags = {
+		#! 	enable = true;
+
+		#! 	# null or path, leave as null if you don't want hm to manage the config
+		#! 	# configDir = ../../configs/ags;
+		#! 	configDir = null;
+
+		#! 	# additional packages to add to gjs's runtime
+		#! 	extraPackages = with pkgs; [
+		#! 		gtksourceview
+		#! 		webkitgtk
+		#! 		accountsservice
+		#! 	];
+		#! };
+
+		#! Used by Aylur's ags dots
+		#! fd = {
+		#! 	enable = true;
+		#! 	hidden = true;
+		#! };
+
+		waybar = {
+			enable = true;
+			settings = [{
+				### GLOBAL ###
+				layer = "top";
+				spacing = 16;
+				margin-top = 12;
+				margin-left = 12;
+				margin-right = 12;
+
+				### LEFT ###
+				modules-left = [
+					"clock"
+					"group/audio"
+					"custom/spotify"
+					# "hyprland/window"
+				];
+
+				clock = {
+					format = " {:%H:%M}";
+					tooltip-format = "{:%A %d. %b. %Y}";
+				};
+
+				"group/audio" = {
+					orientation = "inherit";
+					modules = [ "pulseaudio" "cava" ];
+				};
+
+				pulseaudio = {
+					tooltip = false;
+					format = "{icon} {volume}%";
+					format-muted = "󰖁";
+					on-click = "pavucontrol";
+					on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+					reverse-scrolling = true;
+					smooth-scrolling-threshold = 0.5;
+					format-icons = {
+						car = "";
+						default = [ "" "" "" ];
+						handsfree = "󱡏";
+						headphones = "";
+						headset = "";
+						phone = "";
+						portable = "";
+					};
+				};
+
+				cava = {
+					hide_on_silence = true;
+					method = "pipewire";
+					format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+					framerate = 60;
+					autosens = 1;
+					bars = 12;
+					sleep_timer = 5;
+					stereo = true;
+					noise_reduction = 0.5;
+					input_delay = 5;
+					bar_delimiter = 0;
+				};
+
+				"custom/spotify" = {
+					interval = 1;
+					return-type = "json";
+					exec = "~/.config/waybar/scripts/spotify.sh";
+					exec-if = "pgrep spotify";
+					escape = true;
+					on-click = "playerctl play-pause";
+				};
+
+
+				# "hyprland/window" = {
+				# 	max-length = 130;
+				# 	separate-outputs = true;
+				# };
+
+				### CENTER ###
+				modules-center = [ "hyprland/workspaces" ];
+
+				"hyprland/workspaces" = {
+					format = "{icon}";
+					format-icons = {
+						active = "<span size=\"large\"></span>";
+						default = "";
+					};
+					on-scroll-up = "hyprctl dispatch workspace r+1";
+					on-scroll-down = "hyprctl dispatch workspace r-1";
+					on-click = "activate";
+					smooth-scrolling-threshold = 0.5;
+					reverse-mouse-scrolling = true;
+					# 	format = "<big>{windows}</big>";
+					# 	format-window-separator = " ";
+					# 	window-rewrite-default = "";
+					# 	window-rewrite = {
+					# 		"class<google-chrome>" = ""; # Windows whose classes are "chrome"
+					# 		kitty = ""; # Windows that contain "kitty" in either class or title. For optimization reasons, it will only match against a title if at least one other window explicitly matches against a title.
+					# 		code = "󰨞";
+					# 	};
+				};
+
+				### RIGHT ###
+				modules-right = [ 
+					"tray"
+					"network"
+					"bluetooth"
+					"idle_inhibitor"
+					"backlight"
+					"group/power-mode"
+					"custom/power"
+				];
+
+				tray = {
+					icon-size = 18;
+					spacing = 8;
+					reverse-direction = true;
+				};
+
+				network = {
+					# "interface": "wlp2*", // (Optional) To force the use of this interface
+					tooltip = false;
+					format-wifi = "{icon} {essid}";
+					format-ethernet = "󰈀";
+					format-linked = "{ifname} (No IP) 󰈁";
+					format-disconnected = "󱚵";
+					format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
+					on-click = "networkmanager_dmenu";
+				};
+
+				bluetooth = {
+					tooltip = false;
+					format = "󰂯";
+					format-disabled = "󰂲";
+					format-off = "󰂲";
+					format-on = "󰂯";
+					format-connected = "󰂯 {device_alias}";
+					format-connected-battery = "󰂯 {device_alias} {device_battery_percentage}%";
+					on-click = "blueberry";
+				};
+
+
+				idle_inhibitor = {
+					tooltip = false;
+					format = "<big>{icon}</big>";
+					format-icons = {
+						activated = "󰅶";
+						deactivated = "󰛊";
+					};
+				};
+
+				backlight = {
+					tooltip = false;
+					format = "{icon} {percent}%";
+					format-icons = ["󰃞" "󰃟" "󰃝" "󰃠"];
+					reverse-scrolling = true;
+					smooth-scrolling-threshold = 0.5;
+				};
+
+				"group/power-mode" = {
+					orientation = "inherit";
+					modules = [ "battery" "custom/power-profile"];
+					drawer = {
+						transition-duration = 300;
+        		transition-left-to-right = false;
+					};
+				};
+
+				battery = {
+					states = {
+							good = 95;
+							warning = 30;
+							critical = 20;
+					};
+					format = "{icon}  {capacity}%";
+					format-charging = " {capacity}%";
+					format-plugged = " {capacity}%";
+					format-alt = "{time} {icon}";
+					format-icons = ["" "" "" "" ""];
+    		};
+
+				"custom/power-profile" = {
+					interval = "once";
+					exec = "~/.config/waybar/scripts/get-power-profile";
+					exec-on-event = false;
+					return-type = "json";
+					signal = 8;
+					on-click = "~/.config/waybar/scripts/cycle-power-profile; pkill -SIGRTMIN+8 waybar";
+				};
+
+				"custom/power" = {
+					format = "<big></big>";
+					tooltip = false;
+					on-click = "sleep 0.1 && power-menu"; # hack to fix rofi bug with panels on hyprland https://github.com/Alexays/Waybar/issues/1850
+				};
+			}];
+
+			style = ''
+				/* Everblush colors */
+				@define-color bg rgba(20, 27, 30, 0.50);
+				@define-color bg-lighter rgba(35, 42, 45, 0.75);
+				@define-color border rgba(218, 218, 218, 0.4);
+				@define-color muted #3D3D3D;
+				@define-color red #e57474;
+				@define-color green #8ccf7e;
+				@define-color yellow #e5c76b;
+				@define-color blue	#67b0e8;
+				@define-color magenta #c47fd5;
+				@define-color cyan	#6cbfbf;
+				@define-color gray	#b3b9b8;
+				@define-color fg #dadada;
+
+				* {
+					border: none;
+					border-radius: 8px;
+					font-family: "Arimo Nerd Font" ;
+					font-weight: 600;
+					font-size: 14px;
+					min-height: 0px;
+				}
+
+				widget {
+					background-color: transparent;
+				}
+
+				window#waybar {
+					background: transparent;
+					border: none;
+				}
+
+				window#waybar.hidden {
+					opacity: 0.2;
+				}
+
+				#custom-logo {
+					background: @bg;
+					color: @fg;
+					/* border: 2px solid @fg; */
+					padding-top: 0px;
+					padding-left: 0px;
+					padding-left: 0px;
+					padding-right: 0px;
+					border-radius: 999px;
+				}
+
+				#window {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					font-family: "FiraCode Nerd Font Mono";
+					background: @bg;
+					color: @fg;
+					border: 2px solid @fg;
+				}
+
+				#workspaces {
+					border-radius: 8px;
+					min-height: 28px;
+				}
+
+				#workspaces button {
+					color: @fg; 
+					background: @bg;
+					border: 2px solid @border;
+					border-bottom-color: @border;
+					border-radius: 999px;
+					padding-left: 4px;
+					padding-right: 4px;
+					padding-top: 0px;
+					padding-bottom: 0px;
+				}
+
+				#workspaces button + button {
+					margin-left: 8px;
+				}
+
+				#workspaces button.active {
+					/*padding-left: 2px;
+					padding-right: 2px;*/
+					border-bottom-color: @border;
+				}
+
+				#workspaces button:hover {
+					background: @gray;
+				}
+
+				#clock {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @green;
+					border: 2px solid @green;
+					background: @bg;
+				}
+
+
+				#audio {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					border: 2px solid @green;
+					color: @green;
+					background: @bg;
+				}
+
+				#custom-spotify {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @green;
+					border: 2px solid @green;
+					background: @bg;
+				}
+
+				#cava {
+					margin-left: 10px;
+					font-family: "bargraph";
+				}
+
+				#bluetooth {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					color: @blue;
+					border: 2px solid @blue;
+					background: @bg;
+				}
+
+				#network {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @blue;
+					border: 2px solid @blue;
+					background: @bg;
+				}
+
+				#power-mode {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					color: @red;
+					border: 2px solid @red;
+					background: @bg;
+				}
+
+				#battery.charging, #battery.plugged {
+					/*color: @green;
+					border: 2px solid @green;*/
+				}
+
+				#battery.critical:not(.charging) {
+					/*color: @red;*/
+				}
+
+				#idle_inhibitor {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @yellow;
+					border: 2px solid @yellow;
+					background: @bg;
+				}
+
+				#backlight {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					color: @yellow;
+					border: 2px solid @yellow;
+					background: @bg;
+				}
+
+				#tray {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @gray;
+					border: 2px solid @gray;
+					background: @bg;
+				}
+
+				#custom-power {
+					padding-left: 10px;
+					padding-right: 10px;
+					border-radius: 8px;
+					transition: none;
+					color: @red;
+					border: 2px solid @red;
+					background: @bg;
+				}
+
+				#custom-power-profile {
+					margin-right: 10px;
+				}
+
+				#custom-wallpaper {
+					padding-left: 10px;
+					padding-right: 5px;
+					border-radius: 8px;
+					transition: none;
+					color: #161320;
+					background: #C9CBFF;
+				}
+			'';
+		};
 
 		btop = {
 			enable = true;
@@ -140,7 +577,7 @@ in {
 		bat = {
 			enable = true;
 			config = {
-				theme = "Visual Studio Dark+";
+				#!theme = "Visual Studio Dark+";
 				italic-text = "always";
 			};
 		};
@@ -155,6 +592,7 @@ in {
 				};
 				pull.rebase = false;
 			};
+			lfs.enable = true;
 		};
 
 		go = {
@@ -169,10 +607,10 @@ in {
 
 			theme = "GitHub Dark Colorblind";
 			
-			font = {
-				name = "FiraCode Nerd Font Mono";
-				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
-			};
+			#!font = {
+			#!	name = "FiraCode Nerd Font Mono";
+			#!	package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
+			#!};
 
 			keybindings = {
 				"ctrl+v" = "paste_from_clipboard";
@@ -183,13 +621,17 @@ in {
 				window_padding_width = 8;
 				inactive_text_alpha = "0.9";
 				hide_window_decorations = "yes";
-				background_opacity = "0.7";
+				#!background_opacity = "0.7";
 				editor = ".";
 			};
 		};
 
+		fzf.enable = true;
+
 		zsh = {
 			enable = true;
+			enableCompletion = true;
+			autocd = true;
 			plugins = [
 				{
 					name = "zsh-autosuggestions";
@@ -235,10 +677,11 @@ in {
 				sudo = "sudo -A"; # use rofi-askpass to type pw instead of typing in the terminal
 				upnix = "sudo -A nixos-rebuild switch --flake /etc/nixos#";
 				ednix = "$EDITOR /etc/nixos";
+				relags = "ags -q && hyprctl dispatch exec ags";
 
 				zshreload = "source ~/.zshrc";
 
-				rmvpn = "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect";
+				rmvpn = "sudo -A openconnect sslvpn.rm.dk/IT-RM --protocol=anyconnect --useragent=AnyConnect";
 
 				# filesystem
 				".." = "cd ..";
@@ -262,7 +705,7 @@ in {
 				gc = "git commit";
 				gcm = "git commit -m";
 				gcam = "git commit -a -m";
-				gammend = "git commit --amend";
+				gamend = "git commit --amend";
 				gpl = "git pull";
 				gps = "git push";
 				grh = "git reset --hard HEAD~1";
@@ -274,7 +717,7 @@ in {
 				gcb = "git checkout";
 
 				# NPM
-				dev = "npm run dev";
+				dev = "pnpm dev";
 
 				# KITTY
 				# Show images in term
@@ -350,13 +793,45 @@ in {
 				# Make sure ctrl-backspace/delete deletes whole words
 				bindkey '^H' backward-kill-word
 				bindkey '^[[3;5~' kill-word
+
+				# fzf plugin (ctrl + r to search history & ctrl + t to search disk)
+				if [ -n "''${commands[fzf-share]}" ]; then
+					source "$(fzf-share)/key-bindings.zsh"
+					source "$(fzf-share)/completion.zsh"
+				fi
+
+				# Zsh options
+				setopt correct						# Asks if you want to correct misspelled commands
+				setopt rcexpandparam      # Array expansion with parameters
+				setopt nocheckjobs        # Don't warn about running processes when exiting
+				setopt numericglobsort    # Sort filenames numerically when it makes sense
+				setopt nobeep             # No beep
+				setopt appendhistory      # Immediately append history instead of overwriting
+				setopt histignorealldups  # If a new command is a duplicate, remove the older one
+				setopt autocd             # if only directory path is entered, cd there.
+				setopt auto_pushd					# cd will actually use 'pushd' which allows the use of 'popd' that will take you back to your last directory (can be chained, which 'cd -' cannot)
+				setopt pushd_ignore_dups
+				setopt pushdminus
+
+				# Completion options
+				zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'       # Case insensitive tab completion
+				zstyle ':completion:*' rehash true                              # automatically find new executables in path 
+				zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
+				zstyle ':completion:*' completer _expand _complete _ignored _approximate
+				zstyle ':completion:*' menu select
+				zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+				zstyle ':completion:*:descriptions' format '%U%F{cyan}%d%f%u'
+				# Speed up completions
+				zstyle ':completion:*' accept-exact '*(N)'
+				zstyle ':completion:*' use-cache on
+				zstyle ':completion:*' cache-path ~/.cache/zcache
 			'';
 		};
 
 		spicetify = {
-      enable = true;
+      enable = false;
 
-      theme = spicePkgs.themes.Ziro;
+      theme = spicePkgs.themes.ziro;
 
       enabledExtensions = with spicePkgs.extensions; [
         fullAppDisplay
@@ -368,16 +843,10 @@ in {
       ];
     };
 
-		# eww = {
-		# 	enable = true;
-		# 	package = pkgs.eww-wayland;
-		# 	configDir = ../../configs/eww;
-		# };
-
 		vscode = {
 			enable = true;
 			# allow extensions to be handled outside of this config
-			mutableExtensionsDir = true; # TODO: turn this off and handle all vscode conf in here 
+			mutableExtensionsDir = true; 
 
 			# extensions = [
 				# e.g.: pkgs.vscode.extensions.bbenoist.nix
@@ -425,25 +894,15 @@ in {
 		  package = pkgs.papirus-icon-theme;
 		};
 
-		theme = {
-			# name = gtkTheme;
-			# package = pkgs.layan-gtk-theme;
-			name = gtkTheme;
-			package = (pkgs.callPackage ../../packages/everblush-gtk-theme { }); # custom package for theme
-		};
+		#!theme = {
+		#!	name = gtkTheme;
+		#!	package = (pkgs.callPackage ../../packages/everblush-gtk-theme { }); # custom package for theme
+		#!};
 
-		# font = {
-		#   name = "FiraCode Nerd Font Mono Medium";
-		# };
-
-		# cursorTheme = {
-		# 	name = "Nordzy-cursors";
-		# 	package = pkgs.nordzy-cursor-theme;
-		# };
-		cursorTheme = {
-			name = "Vimix Cursors - White";
-			package = (pkgs.callPackage ../../packages/vimix-cursors { }); # custom package for theme;
-		};
+		#!cursorTheme = {
+		#!	name = "Vimix Cursors";
+		#!	package = (pkgs.callPackage ../../packages/vimix-cursors { }); # custom package for theme;
+		#!};
 
 		gtk2.extraConfig = ''
 			gtk-application-prefer-dark-theme=1
@@ -458,53 +917,80 @@ in {
 		};
 	};
 
-	# home.sessionVariables.GTK_THEME = "Layan-Dark";
 	home.sessionVariables.GTK_THEME = gtkTheme;
 
-	# dconf = {
-	# 	enable = true; # allow gnome settings with dconf
-	# 	settings = {
+	# Configuration manager (made for GSettings)
+	dconf = {
+		enable = true; # allow gnome settings with dconf
 
-	# 	};
-	# };
+		settings = {
+			# Configuration to make virtmanager work
+			"org/virt-manager/virt-manager/connections" = {
+				autoconnect = ["qemu:///system"];
+				uris = ["qemu:///system"];
+			};
+
+			# Tells xdg-desktop-portal-gtk to tell chrome to prefer dark mode on webpages
+			"org/gnome/desktop/interface" = {
+				color-scheme = "prefer-dark";
+			};
+		};
+	};
 
 	xdg = {
 		# Set default file picker etc
 		mimeApps = {
-			# enable = true;
-			# associations.added = {
-			# 	"inode/directory" = "ranger.desktop";
-			# };
-			# defaultApplications = {
-			# 	"inode/directory" = "ranger.desktop";
-			# };
+			enable = true;
+			associations = {
+				added = {
+					"inode/directory" = "thunar.desktop";
+					"application/pdf" = "org.gnome.Papers.desktop";
+					"application/sql" = "mysql-workbench.desktop;code.desktop";
+					"image/svg+xml" = "code.desktop";
+					"text/vnd.trolltech.linguist" = "code.desktop";
+				};
+				removed = {
+					"inode/directory" = "code.desktop";
+				};
+			};
+			defaultApplications = {
+				"inode/directory" = "thunar.desktop";
+				"text/html" = "google-chrome.desktop";
+				"x-scheme-handler/http" = "google-chrome.desktop";
+				"x-scheme-handler/https" = "google-chrome.desktop";
+				"x-scheme-handler/about" = "google-chrome.desktop";
+				"x-scheme-handler/unknown" = "google-chrome.desktop";
+			};
 		};
 	};
 
 	home.packages = with pkgs; [
 		# DE
-		eww-wayland # bar / panel
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
 		swww # wallpapers
 		polkit_gnome # authentication agent
 		swaylock-effects # lock screen
+		swayidle # automatic locking of screen, turning off screen and suspension
 		wtype # allows programs to send keystrokes and mouse clicks etc (for pasting emojis with rofi-emoji)
 		cliphist # clipboard manager
 		wl-clip-persist # makes sure clipboard is not cleared when closing programs on wayland
 		wl-clipboard # dependency of cliphist
-		swaynotificationcenter # notifications and control center
-    libnotify # enables notify-send
-		# TODO: use this liskin thing to make custom playerctld functionality https://work.lisk.in/2020/05/06/linux-media-control.html
+		libnotify # enables notify-send
 		playerctl # control music playback (pause, skip etc)
-    blueberry # gnome's bluetooth frontend
-    pavucontrol # sound configuration
-		swayidle # automatic locking of screen, turning off screen and suspension
-		brightnessctl
+		blueberry # gnome's bluetooth frontend
+		pavucontrol # sound configuration
 		ripdrag # drag and drop files from terminal
+		avizo # OSD with volume and brightness control
+		poweralertd # show notifications when battery is low on pc and devices (uses upower and notification daemon)
+		networkmanagerapplet # network picker in waybar
+		ffmpegthumbnailer # maybe necessary for thumbnails in thunar for videos?
+		xfce.tumbler # necessary for tumbler thumbnails, maybe services.tumbler is not?
+		caffeine-ng # Systray caffeine
 
 		# Utilities
 		hyprpicker # color picker
+		hyprcursor
 		kazam # screen recorder
 		grim # screenshot util
 		slurp # screen area selector (to be used with grim, wl-screenrec etc)
@@ -512,7 +998,6 @@ in {
 		killall # helps close all apps with a name (used in hotkeys to toggle rofi)
 		jq # json processer used by some eww widgets
 		unzip
-		(callPackage ../../packages/libpcap-dev { }) # custom package for theme
 
 		# Apps
 		# fixes slack screensharing with wayland and forces running under wayland
@@ -528,7 +1013,7 @@ in {
 				'';
 			})
 		)
-    wdisplays # GUI for setting monitors
+		wdisplays # GUI for setting monitors
 		google-chrome
 		firefox
 		obsidian
@@ -537,12 +1022,12 @@ in {
 		libreoffice-fresh
 		# spellcheck packages for libreoffice
 		hunspell
-    hunspellDicts.en_US
-    hunspellDicts.da_DK
+		hunspellDicts.en_US
+		hunspellDicts.da_DK
 		caprine-bin
 		signal-desktop
 		nextcloud-client
-
+		quickemu # VM for windows 11
 		# Terminal
 		thefuck
 		lsd # get exa instead
@@ -550,24 +1035,32 @@ in {
 		tty-clock
 		cmatrix
 		cava
+		papers # gnome pdf viewer
+		gnome.gnome-calculator
+		spotify
 
 		# Development
 		nodejs_20
 		nodePackages_latest.pnpm
-		bun
+		pkgs.unstable.bun
 		python312
 		ngrok
 		oauth2-proxy
 		bruno
 		# postman
-		# openssl # makes postman work
 		kubectl
 		kubectx
 		kubeseal
 		kubelogin-oidc
 		wails # gui framework for Go
-
+		openssl # makes postman work
+		docker-compose
+		lazydocker
+		mysql-workbench
+		mongodb-compass
+		pkgs.unstable.android-studio-full
+		
 		# Assets
-    material-symbols
+		material-symbols
 	];
 }
