@@ -65,9 +65,12 @@ in
 				(pkgs.rofi-calc.override {
 					rofi-unwrapped = rofi-wayland-unwrapped;
 				})
-				(pkgs.rofi-emoji.override {
-					rofi-unwrapped = rofi-wayland-unwrapped;
-				})
+				# (pkgs.rofi-emoji.override {
+				# 	rofi-unwrapped = rofi-wayland-unwrapped;
+				# })
+				(pkgs.rofi-emoji.overrideAttrs (oldAttrs: {
+					buildInputs = (oldAttrs.buildInputs or []) ++ [ rofi-wayland-unwrapped ];
+				}))
 			];
 			extraConfig = {
 				modi = "drun,run,calc,emoji";

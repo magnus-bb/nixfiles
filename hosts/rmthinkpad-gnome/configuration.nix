@@ -220,11 +220,12 @@
     source-code-pro
     font-awesome          # Icons
     corefonts             # MS
-    (nerdfonts.override { # Nerdfont Icons override
-      fonts = [
-        "FiraCode"
-      ];
-    })
+    # (nerdfonts.override { # Nerdfont Icons override
+    #   fonts = [
+    #     "FiraCode"
+    #   ];
+    # })
+    nerd-fonts.fira-code; # TODO: use after 25.05
   ];
 
   # Configure console keymap

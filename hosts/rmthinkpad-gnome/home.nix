@@ -76,7 +76,8 @@ in {
 			
 			font = {
 				name = "FiraCode Nerd Font Mono";
-				package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
+				# package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
+				package = pkgs.nerd-fonts.fira-code; # TODO: use after 25.05
 			};
 
 			keybindings = {
@@ -618,7 +619,6 @@ in {
     hunspellDicts.da_DK
 		citrix_workspace
 		caprine-bin
-		signal-desktop
 		nextcloud-client
 		quickemu # VM for windows 11
 

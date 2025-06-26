@@ -12,7 +12,7 @@
     dart-sass
     fd
     brightnessctl
-    swww
+    pkgs.unstable.swww
     inputs.matugen.packages.${system}.default
     slurp
     wf-recorder

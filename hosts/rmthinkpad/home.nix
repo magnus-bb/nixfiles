@@ -109,17 +109,18 @@ in {
 			firefox.enable = true;
 			fzf.enable = true;
 			swaylock.enable = false;
+			waybar.enable = false;
 		};
 	};
 
 	wayland.windowManager.hyprland = {
 		enable = true;
 		systemd.variables = ["--all"]; # https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/#programs-dont-work-in-systemd-services-but-do-on-the-terminal
-		plugins = [
+		# plugins = [
 			# inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
 			# pkgs.hyprlandPlugins.hyprexpo
 			# inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
-		];
+		# ];
 
 		# settings = {
 		# 	general = {
@@ -605,12 +606,13 @@ in {
 
 			shellIntegration.enableZshIntegration = true;
 
-			theme = "GitHub Dark Colorblind";
+			themeFile = "GitHub_Dark_Colorblind";
 			
-			#!font = {
-			#!	name = "FiraCode Nerd Font Mono";
-			#!	package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
-			#!};
+			font = {
+				name = "FiraCode Nerd Font Mono";
+				# package = (pkgs.nerdfonts.override { fonts = [ "FiraCode" "Arimo" ]; });
+				# package = pkgs.nerd-fonts.fira-code; # TODO: user after 25.05
+			};
 
 			keybindings = {
 				"ctrl+v" = "paste_from_clipboard";
@@ -732,7 +734,8 @@ in {
 				dotenv = "export $(cat -p .env | xargs)"; # sources .env file from cwd
 			};
 
-			initExtra = ''
+			# initExtra = ''
+			initContent = '' # TODO: use this after 25.05
 				# creates new branch of name $1 and syncs it with origin
 				gnb() { # git new branch
 					if [ -n "$1" ]
@@ -851,37 +854,11 @@ in {
 			# extensions = [
 				# e.g.: pkgs.vscode.extensions.bbenoist.nix
 			# ];
-			globalSnippets = {
-				# e.g.:
-				# fixme = {
-				# 	body = [
-				# 		"$LINE_COMMENT FIXME: $0"
-				# 	];
-				# 	description = "Insert a FIXME remark";
-				# 	prefix = [
-				# 		"fixme"
-				# 	];
-				# };
-			};
-
-			keybindings = [
-				# e.g.:
-				# {
-				# 	key = "ctrl+c";
-				# 	command = "editor.action.clipboardCopyAction";
-				# 	when = "textInputFocus";
-				# }
-			];
-
-			userSettings = {
-				# Configuration written to Visual Studio Code’s settings.json.
-			};
 		};
 
 		k9s = {
 			enable = true;
 			settings = {
-
 			};
 		};
 	};
@@ -916,8 +893,6 @@ in {
 			gtk-application-prefer-dark-theme = 1;
 		};
 	};
-
-	home.sessionVariables.GTK_THEME = gtkTheme;
 
 	# Configuration manager (made for GSettings)
 	dconf = {
@@ -964,11 +939,20 @@ in {
 		};
 	};
 
+	home.sessionVariables = {
+		PNPM_HOME = "$HOME/.local/share/pnpm";
+		GTK_THEME = gtkTheme;
+	};
+	home.sessionPath = [
+		"$HOME/.local/share/pnpm"
+		"$HOME/.bun/bin"
+	];
+
 	home.packages = with pkgs; [
 		# DE
 		qt6.qtwayland # to make qt apps work
 		libsForQt5.qt5.qtwayland # to make qt apps work
-		swww # wallpapers
+		pkgs.unstable.swww # wallpapers
 		polkit_gnome # authentication agent
 		swaylock-effects # lock screen
 		swayidle # automatic locking of screen, turning off screen and suspension
@@ -1025,7 +1009,6 @@ in {
 		hunspellDicts.en_US
 		hunspellDicts.da_DK
 		caprine-bin
-		signal-desktop
 		nextcloud-client
 		quickemu # VM for windows 11
 		# Terminal
@@ -1036,7 +1019,7 @@ in {
 		cmatrix
 		cava
 		papers # gnome pdf viewer
-		gnome.gnome-calculator
+		gnome-calculator
 		spotify
 
 		# Development
@@ -1057,8 +1040,9 @@ in {
 		docker-compose
 		lazydocker
 		mysql-workbench
+		dbeaver-bin
 		mongodb-compass
-		pkgs.unstable.android-studio-full
+		pkgs.unstable.android-studio
 		
 		# Assets
 		material-symbols

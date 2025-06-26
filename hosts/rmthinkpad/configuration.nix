@@ -114,6 +114,8 @@
       # Use hyprland cache so we don't rebuild from source every time
       substituters = ["https://hyprland.cachix.org"];
       trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+
+			download-buffer-size = 524288000; # https://github.com/NixOS/nix/issues/11728
     };
 
     gc = {
@@ -160,10 +162,11 @@
   };
 
   stylix = {
-    enable = true;
+    enable = true; # TODO: re-enable when this is fixed: https://github.com/nix-community/stylix/issues/1538
     polarity = "dark";
-    # base16Scheme = "${pkgs.base16-schemes}/share/themes/tomorrow-night.yaml";
-    image = ../../assets/wallpapers/mountain-lake.jpg;
+    # base16Scheme = "${pkgs.base16-schemes}/share/themes/penumbra-dark.yaml";
+    base16Scheme = ../../configs/stylix/penumbra-dark.yaml;
+    # image = ../../assets/wallpapers/abstract_ultrawide.png;
 
     cursor = {
       name = "Vimix Cursors";
@@ -174,20 +177,22 @@
     fonts = {
       monospace = {
         name = "FiraCode Nerd Font Mono";
-        package = (pkgs.nerdfonts.override { # Nerdfont Icons override
-          fonts = [
-            "FiraCode"
-          ];
-        });
+        # package = (pkgs.nerdfonts.override { # Nerdfont Icons override
+        #   fonts = [
+        #     "FiraCode"
+        #   ];
+        # });
+        package = pkgs.nerd-fonts.fira-code; # TODO: use after 25.05
       };
 
       sansSerif = {
         name = "Arimo Nerd Font";
-        package = (pkgs.nerdfonts.override { # Nerdfont Icons override
-          fonts = [
-            "Arimo"
-          ];
-        });
+        # package = (pkgs.nerdfonts.override { # Nerdfont Icons override
+        #   fonts = [
+        #     "Arimo"
+        #   ];
+        # });
+				package = pkgs.nerd-fonts.arimo; # TODO: use after 25.05
       };
 
       sizes = {
@@ -198,7 +203,7 @@
 
     opacity = {
       popups = 0.5;
-      terminal = 0.7;
+      terminal = 0.8;
     };
   };
 
@@ -321,19 +326,20 @@
     source-code-pro
     font-awesome          # Icons
     corefonts             # MS
-    (nerdfonts.override { # Nerdfont Icons override
-      fonts = [
-        "FiraCode"
-      ];
-    })
+    # (nerdfonts.override { # Nerdfont Icons override
+    #   fonts = [
+    #     "FiraCode"
+    #   ];
+    # })
+		nerd-fonts.fira-code # TODO: use after 25.05
   ];
 
   # Configure console keymap
   console.keyMap = "dk-latin1";
 
   # Enable sound with pipewire.
-  sound.enable = false;
-  hardware.pulseaudio.enable = false;
+  # hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false; # TODO: use this after 25.05
   hardware.enableAllFirmware = true;
   security.rtkit.enable = true;
   services.pipewire = {

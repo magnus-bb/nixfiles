@@ -2,7 +2,7 @@
   description = "Magnus Bendix Borregaard NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -13,7 +13,7 @@
     # };
     
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-25.05";
       # url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -47,7 +47,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix/1ff9d37d27377bfe8994c24a8d6c6c1734ffa116"; # latest (2024-09-30) hadd a bug with regreet and cursorTheme, so I rolled back
+    # stylix.url = "github:danth/stylix/1ff9d37d27377bfe8994c24a8d6c6c1734ffa116"; # latest (2024-09-30) had a bug with regreet and cursorTheme, so I rolled back
+		stylix.url = "github:nix-community/stylix/release-25.05"; # must match nixos version https://nix-community.github.io/stylix/installation.html
   };
   
   outputs = { self, nixpkgs, unstable, stylix, home-manager, ... }@inputs: 
